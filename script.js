@@ -28,8 +28,10 @@ function chooseRandomRestaurant() {
         "Marea"
     ]
     const selectedRestaurant = restaurants[Math.floor(Math.random() * restaurants.length)];
-    console.log(selectedRestaurant);
-    location.replace("results.html");
-    const resultsContainer = document.getElementById("selected-restaurant");
-    resultsContainer.innerText = selectedRestaurant;
+    const resultsText = document.getElementById("selected-restaurant");
+    resultsText.innerText = selectedRestaurant;
+}
+
+function loadPage(){
+    window.location.replace("results.html");
 }
