@@ -27,9 +27,9 @@ function chooseRandomRestaurant() {
         "Cote",
         "Marea"
     ]
-
-    const selectedRestaurant = restaurant[Math.floor(Math.random() * restaurants.length)];
-    window.location.replace("results.html");
-    const resultsContainer = document.getElementById("results-container");
+    const selectedRestaurant = restaurants[Math.floor(Math.random() * restaurants.length)];
+    console.log(selectedRestaurant);
+    location.replace("results.html");
+    const resultsContainer = document.getElementById("selected-restaurant");
     resultsContainer.innerText = selectedRestaurant;
 }
