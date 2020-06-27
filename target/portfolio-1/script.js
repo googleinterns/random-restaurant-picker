@@ -35,3 +35,33 @@ function chooseRandomRestaurant() {
 function loadPage(){
     window.location.replace("results.html");
 }
+
+function getResults() {
+    fetch("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyBcmH-zM_eWqi8tVB4CaVHNGERZvWeS6hU").then(response => response.json()).then((responseJson)=>console.log(responseJson));
+    
+    //console.log("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyAe6XHsLdycEkorMAKZN_7wtkWP8TQWtAg");
+}
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+
+      console.log(pos);
+      return pos;
+    }, function() {
+        // Geolocation service failed
+      pos = {lat: 0, lng: 0};
+      console.log(pos);
+      return pos;
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    pos = {lat: -34.397, lng: 150.644};
+    console.log(pos);
+    return pos;
+  }
+}
