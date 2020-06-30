@@ -32,36 +32,44 @@ function chooseRandomRestaurant() {
     resultsText.innerText = selectedRestaurant;
 }
 
-function loadPage(){
-    window.location.replace("results.html");
+// function loadPage() {
+//     window.location.replace("results.html");
+// }
+
+function test() {
+    let obj;
+    let url = 'https://jsonplaceholder.typicode.com/posts/1';
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => obj = data)
+        .then(() => console.log(obj))
 }
 
-function getResults() {
-    fetch("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyBcmH-zM_eWqi8tVB4CaVHNGERZvWeS6hU").then(response => response.json()).then((responseJson)=>console.log(responseJson));
-    
-    //console.log("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyAe6XHsLdycEkorMAKZN_7wtkWP8TQWtAg");
-}
+function test2() {
+    let url = 'https://jsonplaceholder.typicode.com/posts/1';
+    let url2 = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
 
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-        };
-
-      console.log(pos);
-      return pos;
-    }, function() {
-        // Geolocation service failed
-      pos = {lat: 0, lng: 0};
-      console.log(pos);
-      return pos;
+    $.getJSON(url2, function(response) {
+        console.log(response);
     });
-  } else {
-    // Browser doesn't support Geolocation
-    pos = {lat: -34.397, lng: 150.644};
-    console.log(pos);
-    return pos;
-  }
+}
+
+function test3() {
+    let obj;
+    let url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => obj = data)
+        .then(() => console.log(obj))
+}
+
+function test4() {
+    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    fetch(proxyurl + url)
+        .then(response => response.json())
+        .then(contents => console.log(contents))
+        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"))
 }
