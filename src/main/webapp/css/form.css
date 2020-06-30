@@ -197,6 +197,7 @@ input {
 /* input group 1 */
 /* end input group 1 */
 .input-group {
+  font-family: "Comfortaa";
   position: relative;
   margin-bottom: 32px;
   border-bottom: 1px solid #e5e5e5;
@@ -365,11 +366,6 @@ input {
   display: table;
 }
 
-.card-2 .card-heading {
-  background: url("../images/bg-heading-02.jpg") top left/cover no-repeat;
-  width: 29.1%;
-  display: table-cell;
-}
 
 .card-2 .card-body {
   display: table-cell;
@@ -385,7 +381,7 @@ input {
     width: 100%;
     display: block;
     padding-top: 300px;
-    background-position: left center;
+    /* background-position: left center; */
   }
   .card-2 .card-body {
     display: block;

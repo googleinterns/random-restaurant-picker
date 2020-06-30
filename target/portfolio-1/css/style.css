@@ -50,11 +50,19 @@ p {
 .btn {
     align-content: center;
     background-color: white;
+    font-family: "Comfortaa";
+}
+
+.location {
+    border: 2px solid black;
+    font-size: 14px;
+}
+
+.random {
     border: 5px solid black;
     border-radius: 10px;
     color: black;
     cursor: pointer;
-    font-family: "Comfortaa";
     font-size: 50px;
     font-weight: bold;
     margin-top: 100px;
@@ -62,6 +70,12 @@ p {
 }
 
 .random:hover {
+    background-color: black;
+    border-color: white;
+    color: white;
+}
+
+.location:hover {
     background-color: black;
     border-color: white;
     color: white;

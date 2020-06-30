@@ -62,3 +62,43 @@ function query() {
         .then(() => console.log(searchResults))
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
+
+// retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
+function getLocation() {
+    location = document.getElementById("location-container");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+
+      console.log(pos);
+      location = pos;
+    }, function() {
+        // Geolocation service failed
+      pos = {lat: 0, lng: 0};
+      console.log(pos);
+      location = pos;
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    pos = {lat: -34.397, lng: 150.644};
+    console.log(pos);
+    location = pos;
+  }
+}
+
+// convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
+// address in the location-container spot (so it was in the spot as the sydney australia address)
+function convertLocation(location) {
+    const url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&key=' + apiKey;
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+    fetch(proxyurl + url)
+        .then(response => response.json())
+        .then(response => location = response)
+        .then(() => console.log(location))
+        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+}
+
