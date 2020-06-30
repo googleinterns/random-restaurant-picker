@@ -14,7 +14,7 @@
 
 /*=========================
     RESTAURANT QUERY AND RE-ROLL
-=========================*/
+ =========================*/
 $("#randomize-form").submit(function(event) {
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
@@ -76,7 +76,7 @@ function reroll() {
 
 /*=========================
     USER'S LOCATION AND ADDRESS
-=========================*/
+ =========================*/
 function getLocation() {
     if (navigator.geolocation)
         navigator.geolocation.getCurrentPosition(geoLocEnabled, geoLocFallback);
@@ -147,7 +147,7 @@ function convertLocation(location) {
 
 /*=========================
     USER SIGN-IN
-=========================*/
+ =========================*/
 function onSignIn(googleUser) {
     let id_token = googleUser.getAuthResponse().id_token;
     let profile = googleUser.getBasicProfile();
@@ -202,7 +202,7 @@ window.onclick = function(event) {
 
 /*=========================
     Retrieving SEARCHES
-=========================*/
+ =========================*/
 //Retrieve searches associated with the current user
 function getSearches() {
     let userID = 0;
@@ -221,7 +221,7 @@ function getSearches() {
 
 /*=========================
     HTML
-=========================*/
+ =========================*/
 // Form underline element
 $("input, textarea").blur(function() {
     if ($(this).val() != "") {
