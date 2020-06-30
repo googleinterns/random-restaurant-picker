@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* ==========================================================================
-   RESTAURANT QUERY AND RE-ROLL
-   ========================================================================== */
-$("#randomize-form").submit(event => {
+/*=========================
+    RESTAURANT QUERY AND RE-ROLL
+ =========================*/
+$("#randomize-form").submit(function(event) {
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
 
@@ -217,7 +217,6 @@ window.onclick = event => {
 /*
     FUNCTIONS RELATED TO THE ACCOUNTS PAGE
 */
-
 function accountFunctions() {
     getNumSearches();
     getLastVisited();
@@ -305,9 +304,9 @@ function getNumReviews() {
    RETRIEVING SEARCHES
    ========================================================================== */
 // Retrieve searches associated with the current user
-function getSearches(){
+function getSearches() {
     let userID = 0;
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
@@ -472,7 +471,7 @@ async function getFeedback(search) {
 
 /*=========================
     HTML
-=========================*/
+ =========================*/
 // Form underline element
 $("input, textarea").blur(() => {
     if ($(this).val() != "") {
