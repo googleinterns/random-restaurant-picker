@@ -27,6 +27,7 @@ import java.io.IOException;
 import com.google.sps.data.Response;
 import com.google.sps.data.Restaurant;
 import com.google.sps.data.User;
+import com.google.sps.data.UrlOpener;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -46,7 +47,16 @@ public class QueryServlet extends HttpServlet {
     private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
     private final Gson gson = new GsonBuilder().create();
     private User user;
+    private UrlOpener urlOpener;
 
+    public QueryServlet(UrlOpener opener){
+        this.urlOpener = opener;
+    }
+
+    public QueryServlet(){
+        this.urlOpener = new UrlOpener();
+    }
+    
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
@@ -69,10 +79,7 @@ public class QueryServlet extends HttpServlet {
         String searchTerms = servletRequest.getParameter("searchTerms");
         String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
 
-        URLConnection conn = new URL(urlStr).openConnection();
-        conn.connect();
-
-        JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
+        JsonElement jsonElement = urlOpener.openUrl(urlStr);
         JsonObject responseJson = jsonElement.getAsJsonObject();
         Response response = gson.fromJson(responseJson, Response.class);
 
