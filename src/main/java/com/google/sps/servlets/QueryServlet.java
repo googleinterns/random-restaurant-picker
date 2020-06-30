@@ -28,6 +28,7 @@ import com.google.sps.data.Response;
 import com.google.sps.data.Restaurant;
 import com.google.sps.data.User;
 import com.google.sps.data.AccessSecret;
+import com.google.sps.data.UrlOpener;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -46,7 +47,16 @@ public class QueryServlet extends HttpServlet {
     private final Gson gson = new GsonBuilder().create();
     private Response response;
     private User user;
+    private UrlOpener urlOpener;
 
+    public QueryServlet(UrlOpener opener){
+        this.urlOpener = opener;
+    }
+
+    public QueryServlet(){
+        this.urlOpener = new UrlOpener();
+    }
+    
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {

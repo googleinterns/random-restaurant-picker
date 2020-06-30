@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* ==========================================================================
-   RESTAURANT QUERY AND RE-ROLL
-   ========================================================================== */
+/*=========================
+    RESTAURANT QUERY AND RE-ROLL
+ =========================*/
+
 function query(queryStr) {
     const errorEl = document.getElementById("error");
     fetch(`/query?${queryStr}`, { method: "POST" })
