@@ -14,7 +14,7 @@
 
 /*=========================
     RESTAURANT QUERY AND RE-ROLL
-=========================*/
+ =========================*/
 $("#randomize-form").submit(function(event) {
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
@@ -36,10 +36,11 @@ function query(queryStr) {
     fetch(`/query?${queryStr}`, { method: "POST"})
         .then((response) => response.json())
         .then((response) => {
+            console.log(response);
             if (response.status === "OK") {
                 let name = response.pick.name;
                 let rating = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=';
                 errorEl.innerText = name;
                 resultsPage(name, rating, photoUrl);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
@@ -64,7 +65,7 @@ function reroll() {
             if (response.status === "OK") {
                 pickEl.innerText = response.pick.name;
                 ratingEl.innerText = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=';
                 loadImage(photoUrl);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
@@ -76,7 +77,7 @@ function reroll() {
 
 /*=========================
     USER'S LOCATION AND ADDRESS
-=========================*/
+ =========================*/
 function getLocation() {
     if (navigator.geolocation)
         navigator.geolocation.getCurrentPosition(geoLocEnabled, geoLocFallback);
@@ -99,27 +100,19 @@ function geoLocEnabled(position) {
 // Use inaccurate IP-based geolocation instead
 function geoLocFallback() {
     let locationEl = document.getElementById("location-container");
-    $.ajax({
-        type: "POST",
-        url: 'https://www.googleapis.com/geolocation/v1/geolocate?key=' + 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc', // TODO: use safe API key storage!!!
-        data: { considerIp: 'true' },
-        success: function(response) {
+    fetch("/geolocate", {method: "POST"}).then(response => response.json()).then(response => {
+        try{
             let pos = {
                 lat: response.location.lat,
                 lng: response.location.lng,
             };
+            console.log(response);
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address) => { locationEl.innerText = address; });
-        },
-        error: function(xhr) {
-            if (xhr.status == 404)
-                console.log("No results");
-            if (xhr.status == 403)
-                console.log("Usage limits exceeded");
-            if (xhr.status == 400)
-                console.log("API key is invalid or JSON parsing error");
-            geoLocHardcoded(); // DEBUG
+        } catch(error){
+            throw "Location not found";
+            geoLocHardcoded();
         }
     });
 }
@@ -140,14 +133,14 @@ function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
     return fetch(`/convert?lat=${lat}&lng=${long}`)
-        .then((response) => response.json())
+        .then(response => response.json())
         .then((response) => { return response.results[0].formatted_address; })
         .catch((error) => console.log(error));
 }
 
 /*=========================
     USER SIGN-IN
-=========================*/
+ =========================*/
 function onSignIn(googleUser) {
     let id_token = googleUser.getAuthResponse().id_token;
     let profile = googleUser.getBasicProfile();
@@ -201,8 +194,63 @@ window.onclick = function(event) {
 };
 
 /*=========================
+    USER SIGN-IN
+ =========================*/
+function onSignIn(googleUser) {
+    let id_token = googleUser.getAuthResponse().id_token;
+    let profile = googleUser.getBasicProfile();
+    fetch(`/login?id_token=${id_token}`)
+        .then((response) => response.json())
+        .then((data) => {
+            localStorage.setItem("user", data.id);
+            localStorage.setItem("loggedIn", true);
+            addUserContent(profile.getName(), profile.getImageUrl());
+            toggleAccountMenu();
+        }).catch((error) =>{
+            console.log(error);
+        });
+}
+
+//Add user information to signed in UI
+function addUserContent(name, image) {
+    document.getElementById("user-name").innerText = name;
+    document.getElementById("profile-pic").src = image;
+}
+
+//Replaces the sign-in button with signed in UI
+function toggleAccountMenu() {
+    document.getElementById("account-menu").classList.toggle("show");
+    document.getElementById("sign-in").classList.toggle("hide");
+}
+
+//Logs out of the account
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function() {
+        console.log("User signed out.");
+    });
+    localStorage.setItem("user", 0);
+    localStorage.setItem("loggedIn", false);
+    toggleAccountMenu();
+}
+
+function toggleShow() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+//Close account dropdown when clicking elsewhere
+window.onclick = function(event) {
+    if (!event.target.matches(".dropbtn")) {
+        let dropdownEl = document.getElementById("myDropdown");
+        if (dropdownEl.classList.contains("show")) {
+            dropdownEl.classList.remove("show");
+        }
+    }
+};
+
+/*=========================
     Retrieving SEARCHES
-=========================*/
+ =========================*/
 //Retrieve searches associated with the current user
 function getSearches() {
     let userID = 0;
@@ -221,7 +269,7 @@ function getSearches() {
 
 /*=========================
     HTML
-=========================*/
+ =========================*/
 // Form underline element
 $("input, textarea").blur(function() {
     if ($(this).val() != "") {
@@ -245,11 +293,12 @@ function resultsPage(name, rating, photoUrl) {
 }
 
 //Retrieve and display restaurant image
-function loadImage(photoUrl) {
+async function loadImage(photoUrl) {
     let photoEl = document.getElementById("photo");
     photoEl.innerHTML = "";
 
     let img = document.createElement('img');
-    img.src = photoUrl;
+    let url = encodeURIComponent(photoUrl);
+    img.src = `/image?url=${url}`;
     photoEl.appendChild(img);
 }

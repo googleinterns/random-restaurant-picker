@@ -14,43 +14,46 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.AccessSecret;
+import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.sps.data.AccessSecret;
-<<<<<<< HEAD
-=======
-
->>>>>>> 5d685cc... Access Secret Correct implementation + removing embedded API keys
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.io.IOException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 
-@WebServlet("/convert")
-public class ConvertLocationServlet extends HttpServlet {
 
+@WebServlet("/image")
+public class FetchImageServlet extends HttpServlet {
     @Override
-    // TODO: return a user-friendly error rather than throwing an exception
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html");
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        String decodedUrl = new URLDecoder().decode(request.getParameter("url"));
         String apiKey = (AccessSecret.getInstance()).getKey();
-        String lat = request.getParameter("lat");
-        String lng = request.getParameter("lng");
-        String sURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&result_type=street_address&key=" + apiKey;
+        String urlStr = decodedUrl + apiKey;
         
-        // Connect to the URL using java's native library
-        URLConnection conn = new URL(sURL).openConnection();
+        URLConnection conn = new URL(urlStr).openConnection();
         conn.connect();
 
-        JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        response.getWriter().println(jsonObj.toString());
+        OutputStream os = response.getOutputStream();
+        InputStream is = conn.getInputStream();
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        response.setContentType(conn.getContentType());
+        while ((bytesRead = is.read(buffer)) != -1) {
+            os.write(buffer, 0, bytesRead);
+        }
+        os.close();
+        is.close();
     }
 }
