@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Random Restaurant Picker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Form -->
+    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+    <link href="css/form.css" rel="stylesheet" media="all">
+</head>
+
+<body>
+    <div class="p-t-80" style="text-align:center">
+        <h>Random Restaurant Picker</h>
+    </div>
+    <div class="page-wrapper p-t-40 font-robo">
+        <div class="wrapper wrapper--w960">
+            <div class="card card-2">
+                <div class="card-heading"></div>
+                <div class="card-body">
+                    <h2>Your location:</h2>
+                    </br>
+                    <p>Pirrama Rd, Pyrmont NSW 2009, Australia</p>
+                    </br></br></br>
+                    <form id="randomize-form" method="POST">
+                        <div class="input-group">
+                            <input class="input--style-2" type="text" placeholder="Search terms" id="searchTerms">
+                        </div>
+                        <div class="row row-space">
+                            <!-- <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-2 js-datepicker" type="text" placeholder="Time" name="birthday">
+                                    <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                </div>
+                            </div> -->
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-2" type="text" placeholder="Distance (meters)" id="distance">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="gender">
+                                            <option disabled="disabled" selected="selected">Type</option>
+                                            <option>No preference</option>
+                                            <option>Dine-in</option>
+                                            <option>Fast Food</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="gender">
+                                            <option disabled="disabled" selected="selected">Price</option>
+                                            <option>No preference</option>
+                                            <option>$</option>
+                                            <option>$$</option>
+                                            <option>$$$</option>
+                                            <option>$$$$</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="gender">
+                                            <option disabled="disabled" selected="selected">Rating</option>
+                                            <option>No preference</option>
+                                            <option>☆</option>
+                                            <option>☆☆</option>
+                                            <option>☆☆☆</option>
+                                            <option>☆☆☆☆</option>
+                                            <option>☆☆☆☆☆</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="class">
+                                    <option disabled="disabled" selected="selected">Dietary options</option>
+                                    <option>Nothing specific</option>
+                                    <option>Vegetarian</option>
+                                    <option>Vegan</option>
+                                    <option>Kosher</option>
+                                    <option>Halal</option>
+                                    <option>Gluten-free</option>
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+                        <!-- <button class="btn random" type="submit">Randomize</button> -->
+                    </form>
+                    <button class="btn random" onclick="query()">Randomize</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/query.js"></script>
+
+    <!-- Form -->
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/datepicker/moment.min.js"></script>
+    <script src="vendor/datepicker/daterangepicker.js"></script>
+    <script src="js/form.js"></script>
+</body>
+
+</html>
