@@ -101,4 +101,3 @@ function convertLocation(location) {
         .then(() => console.log(location))
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
-

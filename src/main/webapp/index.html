@@ -20,7 +20,7 @@
     <div class="p-t-80" style="text-align:center">
         <h>Random Restaurant Picker</h>
     </div>
-    <div class="page-wrapper p-t-40 font-robo">
+    <div class="page-wrapper p-t-40">
         <div class="wrapper wrapper--w960">
             <div class="card card-2">
                 <div class="card-heading"></div>
@@ -30,7 +30,7 @@
                     <button class="btn location" onclick="getLocation()">Allow location access</button>
                     <p id="location-container"></p>
                     <p>Pirrama Rd, Pyrmont NSW 2009, Australia</p>
-                    </br></br></br>
+                    </br></br>
                     <form id="randomize-form" method="POST">
                         <div class="input-group">
                             <input class="input--style-2" type="text" placeholder="Cuisine preference(s)" id="searchTerms">
@@ -114,7 +114,9 @@
                             </div>
                         </div>
                     </form>
-                    <button class="btn random" onclick="query()">Randomize</button>
+                    <div align="middle">
+                        <button class="btn random" onclick="query()">Randomize</button>
+                    </div>
                 </div>
             </div>
         </div>
