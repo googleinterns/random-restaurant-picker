@@ -59,16 +59,19 @@ function query() {
     fetch(proxyurl + url)
         .then(response => response.json())
         .then(response => searchResults = response)
-        .then(() => console.log(searchResults))
+        .then(() => {
+            console.log(searchResults);
+            saveSearch();
+        })
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
 
 function onSignIn(googleUser) {
   let id_token = googleUser.getAuthResponse().id_token;
   fetch(`/login?id_token=${id_token}`).then(response => response.json()).then((data) => {
-      console.log(data)
-      console.log(data.id);
-      });
+      localStorage.setItem("user", data.id); 
+      localStorage.setItem("loggedIn", true);
+    });
 }
 
 function signOut() {
@@ -76,4 +79,25 @@ function signOut() {
   auth2.signOut().then(function () {
     console.log('User signed out.');
   });
+}
+
+function saveSearch(){
+    let userID = 0;
+    if(localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+
+    let data = {
+        'user': userID,
+        'radius': document.getElementById('distance').value,
+        'keywords': document.getElementById('searchTerms').value,
+    };
+
+    fetch("/searches", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(search)
+    });
 }
