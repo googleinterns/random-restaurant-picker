@@ -59,7 +59,12 @@ function query() {
     fetch(proxyurl + url)
         .then(response => response.json())
         .then(response => searchResults = response)
-        .then(() => console.log(searchResults))
+        .then(() => {
+            let restaurantResults = searchResults["results"];
+            weightedRestaurant = weightRestaurants(restaurantResults);
+            console.log(weightedRestaurant)
+        })
+        //console.log(searchResults))
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
 
@@ -100,4 +105,42 @@ function convertLocation(location) {
         .then(response => location = response)
         .then(() => console.log(location))
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+}
+
+function weightRestaurants(restaurants) {
+    requestedPrice = document.getElementById('price');
+    requestedRating = document.getElementById('rating');
+    restaurantMap = new Map(); 
+    for (restaurant in restaurants) {
+        score = 0;
+        priceLevel = restaurant.price_level;
+        ratingLevel = restaurant.rating;
+        if (requestedPrice == 0 || requestedPrice == priceLevel) {
+            score += 4;
+        } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
+            score += 3;
+        } else if (Math.abs(requestedPrice-priceLevel) <= 2) {
+            score += 2;
+        }
+
+        if (requestedRating == 0 || requestedRating == ratingLevel) {
+            score += 4;
+        } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
+            score += 3;
+        } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
+            score += 2;
+        }
+        restaurantMap.set(restaurant, score);
+    }
+    total = restaurantMap.values().sum();
+    selected = Math.floor(Math.random() * total);
+    prevScore = 0;
+    for (i = 0; i < restaurants.length; i++) {
+        prevScore = restaurantMap.get(restaurants[i-1]);
+        curScore = restaurantMap.get(restaurants[i]);
+        if (prevScore <= selected && selected < prevScore + curScore) {
+            return restaurants[i];
+        }
+        prevScore = prevScore + curScore;
+    }
 }

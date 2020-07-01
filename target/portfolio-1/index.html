@@ -34,12 +34,6 @@
                             <input class="input--style-2" type="text" placeholder="Search terms" id="searchTerms">
                         </div>
                         <div class="row row-space">
-                            <!-- <div class="col-2">
-                                <div class="input-group">
-                                    <input class="input--style-2 js-datepicker" type="text" placeholder="Time" name="birthday">
-                                    <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
-                                </div>
-                            </div> -->
                             <div class="col-2">
                                 <div class="input-group">
                                     <input class="input--style-2" type="text" placeholder="Distance (meters)" id="distance">
@@ -78,7 +72,7 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="gender">
+                                        <select id="rating">
                                             <option disabled="disabled" selected="selected">Rating</option>
                                             <option>No preference</option>
                                             <option>☆</option>
@@ -94,7 +88,7 @@
                         </div>
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="class">
+                                <select id="dietary">
                                     <option disabled="disabled" selected="selected">Dietary options</option>
                                     <option>Nothing specific</option>
                                     <option>Vegetarian</option>
@@ -106,7 +100,6 @@
                                 <div class="select-dropdown"></div>
                             </div>
                         </div>
-                        <!-- <button class="btn random" type="submit">Randomize</button> -->
                     </form>
                     <button class="btn random" onclick="query()">Randomize</button>
                 </div>
