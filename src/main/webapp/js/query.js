@@ -110,11 +110,14 @@ function convertLocation(location) {
 function weightRestaurants(restaurants) {
     requestedPrice = document.getElementById('price');
     requestedRating = document.getElementById('rating');
+    requestedType = document.getElementById('type');
+    requestedDietary = document.getElementById('dietary');
+
     restaurantMap = new Map(); 
     for (restaurant in restaurants) {
         score = 0;
-        priceLevel = restaurant.price_level;
-        ratingLevel = restaurant.rating;
+        priceLevel = restaurant.get("price_level");
+        ratingLevel = restaurant.get("rating");
         if (requestedPrice == 0 || requestedPrice == priceLevel) {
             score += 4;
         } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
@@ -129,6 +132,21 @@ function weightRestaurants(restaurants) {
             score += 3;
         } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
             score += 2;
+        } else if (Math.abs(requestedRating.ratingLevel) <= 3) {
+            score += 1;
+        }
+
+        // not sure below is helpful/accurate - might want to eliminate b/c will prob get taken care of w $$$
+        if (requestedType == "No preference" || 
+        (requestedType == "Fast Food" && restaurant.get("types").contains("meal_takeaway")) || 
+        (requestedType == "Dine-in" && !restaurant.get("types").contains("meal_takeaway"))) {
+            score += 2;
+        }
+
+        if (restaurant.get("reviews").get("text").contains(requestedDietary)) {
+            if (!(restaurant.get("reviews").get("text").contains("no " + requestedDietary)) || !(restaurant.get("reviews").get("text").contains("not " + requestedDietary))) {
+                score += 4;
+            }
         }
         restaurantMap.set(restaurant, score);
     }
