@@ -34,43 +34,37 @@ import java.util.Date;
 import org.json.JSONObject;
 import org.json.JSONException;
 import org.json.HTTP;
+import com.google.sps.data.Search;
 
 @WebServlet("/searches")
 public class SearchServlet extends HttpServlet {
 
   @Override
-  /*public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String user = request.getParameter("user");
+    Query<Entity> query = Query.newEntityQueryBuilder().setKind("Task").setFilter(PropertyFilter.eq("user", user)).build();
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    String numComments = request.getParameter("num-comments");
-    int commentAmount = 0;
-    try{
-        commentAmount = Integer.parseInt(numComments);
-    }catch (NumberFormatException e) {
-      log("Could not convert " + numComments + "to int", e);
-      commentAmount = 5;
-    }
 
-    List<Comment> comments = new ArrayList<>();
-    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(commentAmount))) {
-      String content = (String) entity.getProperty("content");
-      String date = (String) entity.getProperty("date");
-      String tag = (String) entity.getProperty("tags");
+    List<Search> searches = new ArrayList<>();
+    //results.asIterable(FetchOptions.Builder.withLimit(commentAmount))
+    for (Entity entity : results) {
       String user = (String) entity.getProperty("user");
-      long timestamp = (long) entity.getProperty("timestamp");
+      String date = (String) entity.getProperty("date");
+      String keywords = (String) entity.getProperty("keywords");
+      int radius = (long) entity.getProperty("radius");
+      String url = (String) entity.getProperty("url");
       long id = entity.getKey().getId();
 
-      Comment comment = new Comment(content, timestamp, id, date, user, tag);
-      comments.add(comment);
+      Search search = new Search(content, timestamp, id, date, user, tag);
+      searches.add(search);
     }
-
     Gson gson = new Gson();
-
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(comments));
-  }*/
+  }
 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String user = request.getParameter("user");
