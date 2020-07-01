@@ -21,10 +21,10 @@ public class Search {
     private String date;
     private String keywords;
     private String url;
-    private int radius;
+    private String radius;
     private long id;
 
-    public Search(String user, String date, String keywords, String url, int radius, long id){
+    public Search(String user, String date, String keywords, String url, String radius, long id){
         this.user = user;
         this.date = date;
         this.keywords = keywords;

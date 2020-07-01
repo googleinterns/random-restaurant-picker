@@ -51,14 +51,14 @@ public class SearchServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-
+    System.out.println("Success");
     List<Search> searches = new ArrayList<>();
     //results.asIterable(FetchOptions.Builder.withLimit(commentAmount))
     for (Entity entity : results.asIterable()) {
       String userID = (String) entity.getProperty("user");
       String date = (String) entity.getProperty("date");
       String keywords = (String) entity.getProperty("keywords");
-      int radius = (int) entity.getProperty("radius");
+      String radius = (String) entity.getProperty("radius");
       String url = (String) entity.getProperty("url");
       long id = entity.getKey().getId();
 
