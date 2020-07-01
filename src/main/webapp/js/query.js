@@ -96,5 +96,5 @@ function getSearch(){
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json).then(data => console.log(data));
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then(data => console.log(data));
 }

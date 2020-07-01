@@ -28,6 +28,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.FetchOptions;
 import java.text.SimpleDateFormat;  
 import java.util.Date;
@@ -42,7 +45,8 @@ public class SearchServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String user = request.getParameter("user");
-    Query<Entity> query = Query.newEntityQueryBuilder().setKind("Task").setFilter(PropertyFilter.eq("user", user)).build();
+    Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
+    Query query = new Query("savedSearch").setFilter(propertyFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -50,20 +54,20 @@ public class SearchServlet extends HttpServlet {
 
     List<Search> searches = new ArrayList<>();
     //results.asIterable(FetchOptions.Builder.withLimit(commentAmount))
-    for (Entity entity : results) {
-      String user = (String) entity.getProperty("user");
+    for (Entity entity : results.asIterable()) {
+      String userID = (String) entity.getProperty("user");
       String date = (String) entity.getProperty("date");
       String keywords = (String) entity.getProperty("keywords");
-      int radius = (long) entity.getProperty("radius");
+      int radius = (int) entity.getProperty("radius");
       String url = (String) entity.getProperty("url");
       long id = entity.getKey().getId();
 
-      Search search = new Search(content, timestamp, id, date, user, tag);
+      Search search = new Search(userID, date, keywords, url, radius, id);
       searches.add(search);
     }
     Gson gson = new Gson();
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(comments));
+    response.getWriter().println(gson.toJson(searches));
   }
 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
