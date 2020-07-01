@@ -79,6 +79,7 @@ function signOut() {
   auth2.signOut().then(function () {
     console.log('User signed out.');
   });
+  localStorage.setItem("user", 0);
 }
 
 function saveSearch(url, radius, keyword){
