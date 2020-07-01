@@ -73,10 +73,10 @@ public class SearchServlet extends HttpServlet {
   }*/
 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    JSONObject jsonObject = new JSONObject(request.getParameterMap());
-    String user = (String)jsonObject.get("user");
-    String radius = (String)jsonObject.get("radius");
-    String keywords = (String)jsonObject.get("keywords");
+    String user = request.getParameter("user");
+    String radius = request.getParameter("radius");
+    String keywords = request.getParameter("keywords");
+    String url = request.getParameter("url");
     long timestamp = System.currentTimeMillis();
 
     SimpleDateFormat formatter = new SimpleDateFormat("MMM d, 'at' HH:mm");
@@ -91,11 +91,12 @@ public class SearchServlet extends HttpServlet {
     searchEntity.setProperty("date", formattedDate);
     searchEntity.setProperty("keywords", keywords);
     searchEntity.setProperty("timestamp", timestamp);
+    searchEntity.setProperty("url", url);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(searchEntity);
 
     // Redirect back to the HTML page.
-    //response.sendRedirect("/more.html");
+    response.sendRedirect("/index.html");
   }
 }
