@@ -27,6 +27,7 @@ body {
 h {
     align-content: center;
     color: black;
+    font-family: "Comfortaa";
     font-size: 70px;
     font-weight: bold;
     margin: 0px;
@@ -45,6 +46,10 @@ h3 {
 p {
     align-content: center;
     padding: 10px;
+}
+
+p1 {
+    font-size: 20px;
 }
 
 .btn {
@@ -113,4 +118,11 @@ select:hover {
 
 option {
     font-family: "Comfortaa";
+}
+
+.card-object {
+    align-content: left;
+    font-family: "Comfortaa";
+    margin: 20px;
+    padding: 10px;
 }
