@@ -27,6 +27,7 @@ body {
 h {
     align-content: center;
     color: black;
+    font-family: "Comfortaa";
     font-size: 70px;
     font-weight: bold;
     margin: 0px;
@@ -47,29 +48,18 @@ p {
     padding: 10px;
 }
 
+p1 {
+    font-size: 20px;
+}
+
 .btn {
     align-content: center;
     background-color: white;
-<<<<<<< HEAD
-=======
-    font-family: "Comfortaa";
-}
-
-.location {
-    border: 2px solid black;
-    font-size: 14px;
-}
-
-.random {
->>>>>>> prototype
     border: 5px solid black;
     border-radius: 10px;
     color: black;
     cursor: pointer;
-<<<<<<< HEAD
     font-family: "Comfortaa";
-=======
->>>>>>> prototype
     font-size: 50px;
     font-weight: bold;
     margin-top: 100px;
@@ -82,15 +72,6 @@ p {
     color: white;
 }
 
-<<<<<<< HEAD
-=======
-.location:hover {
-    background-color: black;
-    border-color: white;
-    color: white;
-}
-
->>>>>>> prototype
 .reroll {
     border: 2px solid black;
     font-size: 16px;
@@ -104,8 +85,21 @@ p {
     border-color: white;
     color: white;
 }
-<<<<<<< HEAD
-=======
+
+.location {
+    border: 1px solid black;
+    font-size: 16px;
+    font-weight: normal;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    padding: 5px 8px;
+}
+
+.location:hover {
+    background-color: black;
+    border-color: white;
+    color: white;
+}
 
 #sign-in{
     position: fixed;
@@ -183,4 +177,32 @@ p {
   padding: 16px;
   font-size: 16px;
 }
->>>>>>> prototype
+
+select {
+    background-color: white;
+    border-radius: 8px;
+    font-family: "Comfortaa";
+    padding: 5px;
+}
+
+select:hover {
+    cursor: pointer;
+}
+
+option {
+    font-family: "Comfortaa";
+}
+
+.card-object {
+    align-content: left;
+    font-family: "Comfortaa";
+    margin: 20px;
+    padding: 10px;
+}
+
+.sign-in{
+    position: fixed;
+    right: 20px;
+    top: 20px;
+}
+
