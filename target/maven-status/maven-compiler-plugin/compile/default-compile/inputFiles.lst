@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+/Users/jason/Documents/School/Freshman summer/STEP/Work/Random Restaurant Picker/random-restaurant-picker copy/src/main/java/com/google/sps/servlets/DeleteCommentServlet.java
+/Users/jason/Documents/School/Freshman summer/STEP/Work/Random Restaurant Picker/random-restaurant-picker copy/src/main/java/com/google/sps/servlets/NewCommentServlet.java
+/Users/jason/Documents/School/Freshman summer/STEP/Work/Random Restaurant Picker/random-restaurant-picker copy/src/main/java/com/google/sps/servlets/ListCommentsServlet.java
+/Users/jason/Documents/School/Freshman summer/STEP/Work/Random Restaurant Picker/random-restaurant-picker copy/src/main/java/com/google/sps/data/Comment.java
+=======
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Search.java
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/LoginServlet.java
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/SearchServlet.java
+>>>>>>> prototype

@@ -56,6 +56,12 @@ function query() {
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + 'location=' + lat + ',' + long + '&radius=' + radius + '&type=' + type + '&keyword=' + keyword + '&key=' + apiKey;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
+    fetch(proxyurl + url)
+        .then(response => response.json())
+        .then(response => searchResults = response)
+        .then(() => console.log(searchResults))
+        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+
     saveSearch(url, radius, keyword);
     fetch(proxyurl + url)
         .then(response => response.json())
@@ -227,3 +233,4 @@ function weightRestaurants(restaurants) {
         prevScore = prevScore + curScore;
     }
 }
+

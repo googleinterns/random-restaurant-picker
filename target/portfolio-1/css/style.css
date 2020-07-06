@@ -50,6 +50,8 @@ p {
 .btn {
     align-content: center;
     background-color: white;
+<<<<<<< HEAD
+=======
     font-family: "Comfortaa";
 }
 
@@ -59,10 +61,15 @@ p {
 }
 
 .random {
+>>>>>>> prototype
     border: 5px solid black;
     border-radius: 10px;
     color: black;
     cursor: pointer;
+<<<<<<< HEAD
+    font-family: "Comfortaa";
+=======
+>>>>>>> prototype
     font-size: 50px;
     font-weight: bold;
     margin-top: 100px;
@@ -75,12 +82,15 @@ p {
     color: white;
 }
 
+<<<<<<< HEAD
+=======
 .location:hover {
     background-color: black;
     border-color: white;
     color: white;
 }
 
+>>>>>>> prototype
 .reroll {
     border: 2px solid black;
     font-size: 16px;
@@ -94,6 +104,8 @@ p {
     border-color: white;
     color: white;
 }
+<<<<<<< HEAD
+=======
 
 #sign-in{
     position: fixed;
@@ -171,3 +183,4 @@ p {
   padding: 16px;
   font-size: 16px;
 }
+>>>>>>> prototype

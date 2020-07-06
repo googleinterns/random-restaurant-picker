@@ -55,34 +55,15 @@ p1 {
 .btn {
     align-content: center;
     background-color: white;
+    border: 5px solid black;
     border-radius: 10px;
     color: black;
     cursor: pointer;
     font-family: "Comfortaa";
     font-size: 50px;
     font-weight: bold;
-    margin-bottom: 50px;
-    margin-top: 50px;
+    margin-top: 100px;
     padding: 20px 30px;
-}
-
-.location {
-    border: 1px solid black;
-    font-size: 16px;
-    font-weight: normal;
-    margin-bottom: 20px;
-    margin-top: 0px;
-    padding: 6px 10px;
-}
-
-.location:hover {
-    background-color: black;
-    border-color: white;
-    color: white;
-}
-
-.random {
-    border: 5px solid black;
 }
 
 .random:hover {
@@ -209,3 +190,4 @@ option {
     right: 20px;
     top: 20px;
 }
+
