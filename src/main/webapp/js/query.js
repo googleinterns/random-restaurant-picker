@@ -34,13 +34,11 @@ function query() {
     fetch(proxyurl + url)
         .then(response => response.json())
         .then((response) => {
-            console.log(response);
             let restaurantResults = response.results;
             weightedRestaurant = weightRestaurants(restaurantResults);
             console.log(weightedRestaurant);
         })
         .catch((error) => {
-            console.log(error);
             console.log("Can’t access " + url + " response. Blocked by browser?")
         });
 }
