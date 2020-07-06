@@ -28,20 +28,16 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-@WebServlet("/query")
+@WebServlet("/convert")
 public class PlacesAPI extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         String lat = request.getParameter("lat");
-        String lon = request.getParameter("lon");
-        String radius = request.getParameter("radius");
-        String type = request.getParameter("type");
-        String searchTerms = request.getParameter("searchTerms");
+        String lng = request.getParameter("lng");
         String apiKey = "AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw";
-        String sURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
-
+        String sURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&result_type=street_address&key=" + apiKey;
         // Connect to the URL using java's native library
         URL url = new URL(sURL);
         URLConnection requestURL = url.openConnection();

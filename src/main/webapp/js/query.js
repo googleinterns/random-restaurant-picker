@@ -45,8 +45,6 @@ function tryQuery() {
             errorEl.innerText = error;
         });
 }
-
-const apiKey = 'AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw';
 let queryArr;
 
 function loadPage() {
@@ -86,10 +84,8 @@ function getLocation() {
 function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
-    const url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&result_type=street_address&key=' + apiKey;
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
-    return fetch(proxyurl + url)
+    return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then(response => response.json())
         .then(response => {
             console.log(response.results[0].formatted_address);
