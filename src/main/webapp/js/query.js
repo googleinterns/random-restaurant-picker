@@ -153,13 +153,13 @@ function weightRestaurants(restaurants) {
     let requestedPrice = document.getElementById('price');
     let requestedRating = document.getElementById('rating');
     let requestedType = document.getElementById('type');
-    let requestedDietary = document.getElementById('dietary');
 
-    let restaurantMap = new Map(); 
+    let restaurantMap = new Map();
+    let total = 0; 
     for (restaurant in restaurants) {
         let score = 1;
-        let priceLevel = restaurant.get("price_level");
-        let ratingLevel = restaurant.get("rating");
+        let priceLevel = restaurant.price_level;
+        let ratingLevel = restaurant.rating;
         if (requestedPrice == 0 || requestedPrice == priceLevel) {
             score += 4;
         } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
@@ -180,19 +180,14 @@ function weightRestaurants(restaurants) {
 
         // not sure below is helpful/accurate - might want to eliminate b/c will prob get taken care of w $$$
         if (requestedType == "No preference" || 
-        (requestedType == "Fast Food" && restaurant.get("types").contains("meal_takeaway")) || 
-        (requestedType == "Dine-in" && !restaurant.get("types").contains("meal_takeaway"))) {
+        (requestedType == "Fast Food" && restaurant.types.contains("meal_takeaway")) || 
+        (requestedType == "Dine-in" && !restaurant.types.contains("meal_takeaway"))) {
             score += 2;
         }
 
-        if (restaurant.get("reviews").get("text").contains(requestedDietary)) {
-            if (!(restaurant.get("reviews").get("text").contains("no " + requestedDietary)) || !(restaurant.get("reviews").get("text").contains("not " + requestedDietary))) {
-                score += 4;
-            }
-        }
         restaurantMap.set(restaurant, score);
+        total += score;
     }
-    let total = restaurantMap.values().reduce((a,b) => a + b, 0);
     let selected = Math.floor(Math.random() * total);
     let prevScore = 0;
     for (i = 0; i < restaurants.length; i++) {
