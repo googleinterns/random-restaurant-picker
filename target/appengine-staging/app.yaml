@@ -39,6 +39,10 @@ handlers:
   script: unused
   login: optional
   secure: optional
+- url: /searches
+  script: unused
+  login: optional
+  secure: optional
 - url: /login
   script: unused
   login: optional
