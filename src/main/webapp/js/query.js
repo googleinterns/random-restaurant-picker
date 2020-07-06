@@ -14,35 +14,10 @@
 
 const apiKey = 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
 let searchResults;
-
-function chooseRandomRestaurant() {
-    const restaurants = [
-        "Panera Bread",
-        "Qdoba",
-        "Los Tacos No 1",
-        "The Modern",
-        "Piccola Cucina",
-        "Superiority Burger",
-        "Cote",
-        "Marea"
-    ]
-    const selectedRestaurant = restaurants[Math.floor(Math.random() * restaurants.length)];
-    const resultsText = document.getElementById("selected-restaurant");
-    resultsText.innerText = selectedRestaurant;
-}
+let queryArr;
 
 function loadPage() {
     window.location.replace("results.html");
-}
-
-function test() {
-    let obj;
-    let url = 'https://jsonplaceholder.typicode.com/posts/1';
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => obj = data)
-        .then(() => console.log(obj))
 }
 
 function query() {
@@ -55,25 +30,21 @@ function query() {
     const keyword = document.getElementById('searchTerms').value;
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + 'location=' + lat + ',' + long + '&radius=' + radius + '&type=' + type + '&keyword=' + keyword + '&key=' + apiKey;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
-    fetch(proxyurl + url)
-        .then(response => response.json())
-        .then(response => searchResults = response)
-        .then(() => console.log(searchResults))
-        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
-
     saveSearch(url, radius, keyword);
     fetch(proxyurl + url)
         .then(response => response.json())
-        .then(response => searchResults = response)
-        .then(() => {
-            let restaurantResults = searchResults["results"];
+        .then((response) => {
+            queryArr = response.results;
+            console.log(queryArr);
+            let restaurantResults = queryArr;
+            console.log(restaurantResults);
             weightedRestaurant = weightRestaurants(restaurantResults);
-            console.log(weightedRestaurant)
+            console.log(weightedRestaurant);
         })
-        //console.log(searchResults))
-
-        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+        .catch((error) => {
+            console.log(error);
+            console.log("Can’t access " + url + " response. Blocked by browser?")
+        });
 }
 
 
@@ -87,15 +58,15 @@ function getLocation() {
             lng: position.coords.longitude
         };
 
-      console.log(pos);
-      location = pos;
-    }, function() {
+        console.log(pos);
+        location = pos;
+      }, function() {
         // Geolocation service failed
-      pos = {lat: 0, lng: 0};
-      console.log(pos);
-      location = pos;
-    });
-  } else {
+        pos = {lat: 0, lng: 0};
+        console.log(pos);
+        location = pos;
+      });
+    } else {
     // Browser doesn't support Geolocation
     pos = {lat: -34.397, lng: 150.644};
     console.log(pos);
@@ -114,6 +85,7 @@ function convertLocation(location) {
         .then(response => location = response)
         .then(() => console.log(location))
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+}
 
 function onSignIn(googleUser) {
   let id_token = googleUser.getAuthResponse().id_token;
@@ -175,7 +147,6 @@ window.onclick = function(event) {
         dropdown.classList.remove('show');
       }
   }
-}
 }
 
 function weightRestaurants(restaurants) {

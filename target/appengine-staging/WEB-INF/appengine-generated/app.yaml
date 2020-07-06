@@ -39,23 +39,23 @@ handlers:
   script: unused
   login: optional
   secure: optional
-<<<<<<< HEAD
-- url: /list-comments
-  script: unused
-  login: optional
-  secure: optional
-- url: /new-comment
-  script: unused
-  login: optional
-  secure: optional
-- url: /delete-comment
-=======
 - url: /searches
   script: unused
   login: optional
   secure: optional
 - url: /login
->>>>>>> prototype
+  script: unused
+  login: optional
+  secure: optional
+- url: /list-comments
+  script: unused
+  login: optional
+  secure: optional
+- url: /delete-comment
+  script: unused
+  login: optional
+  secure: optional
+- url: /new-comment
   script: unused
   login: optional
   secure: optional
