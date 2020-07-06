@@ -28,7 +28,7 @@ function chooseRandomRestaurant() {
     ]
     const selectedRestaurant = restaurants[Math.floor(Math.random() * restaurants.length)];
     const resultsText = document.getElementById("selected-restaurant");
-    resultsText.innerText = selectedRestaurant;
+    resultsText.innerText = localStorage.getItem("searchResults");
 }
 
 function loadPage() {
@@ -61,4 +61,14 @@ function query() {
         .then(response => searchResults = response)
         .then(() => console.log(searchResults))
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+
+
+    localStorage.setItem("searchResults", pickRandomRestaurant());
+    loadPage();
+}
+
+function pickRandomRestaurant() {
+    let restaurantArr = searchResults.results;
+    let random = restaurantArr[Math.floor(Math.random() * restaurantArr.length)];
+    return (random.name);
 }
