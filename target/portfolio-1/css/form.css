@@ -191,7 +191,11 @@ input {
   box-shadow: none;
   width: 100%;
   font-size: 14px;
+<<<<<<< HEAD
   font-family: inherit;
+=======
+  font-family: "Comfortaa";
+>>>>>>> prototype
 }
 
 /* input group 1 */
@@ -273,7 +277,11 @@ input {
   padding-left: 0;
   color: #808080;
   font-size: 16px;
+<<<<<<< HEAD
   font-family: inherit;
+=======
+  font-family: "Comfortaa";
+>>>>>>> prototype
   font-weight: 500;
 }
 
@@ -302,7 +310,11 @@ input {
 }
 
 .rs-select2 .select2-container .select2-selection--single .select2-selection__arrow:after {
+<<<<<<< HEAD
   font-family: "Material-Design-Iconic-Font";
+=======
+  font-family: "Comfortaa";
+>>>>>>> prototype
   content: '\f2f9';
   font-size: 18px;
   color: #ccc;
@@ -366,7 +378,11 @@ input {
 }
 
 .card-2 .card-heading {
+<<<<<<< HEAD
   background: url("../images/bg-heading-02.jpg") top left/cover no-repeat;
+=======
+  /*background: url("../images/bg-heading-02.jpg") top left/cover no-repeat;*/
+>>>>>>> prototype
   width: 29.1%;
   display: table-cell;
 }
