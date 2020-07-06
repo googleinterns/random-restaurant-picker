@@ -20,7 +20,8 @@ public class Search {
     private String user;
     private String date;
     private String keywords;
-    private String url;
+    private String lat;
+    private String lng;
     private String radius;
     private long id;
 
