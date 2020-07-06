@@ -6,16 +6,22 @@
     <meta charset="UTF-8">
     <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
     <title>Random Restaurant Picker</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<<<<<<< HEAD
+=======
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="js/query.js"></script>
+>>>>>>> prototype
     <!-- Form -->
-    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
-    <link href="css/form.css" rel="stylesheet" media="all">
+    <link href="third-party/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="third-party/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="third-party/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+    <!-- CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/button.css" rel="stylesheet">
+    <link href="css/form.css" rel="stylesheet">
+    <link href="css/banner.css" rel="stylesheet">
 </head>
 
 <body>
@@ -42,10 +48,11 @@
                 <div class="card-body">
                     <h2 style="margin-bottom:0px">Your location:</h2>
                     </br>
-                    <button class="btn location" onclick="getLocation()">Allow location access</button>
                     <p id="location-container">Pirrama Rd, Pyrmont NSW 2009, Australia</p>
-                    </br></br>
-                    <form id="randomize-form" method="POST">
+                    </br>
+                    <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
+                    </br></br></br>
+                    <form id="randomize-form" method="POST" onsubmit="tryQuery(); return false">
                         <div class="input-group">
                             <input class="input--style-2" type="text" placeholder="Cuisine preference(s)" id="searchTerms">
                         </div>
@@ -69,8 +76,8 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-                                        <select id="type">
-                                            <option disabled="disabled" selected="selected">Type</option>
+                                        <select name="category">
+                                            <option value="">Category...</option>
                                             <option>No preference</option>
                                             <option>Dine-in</option>
                                             <option>Fast Food</option>
@@ -99,7 +106,7 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-                                        <select id="rating">
+                                        <select id="rating" name="rating">
                                             <option disabled="disabled" selected="selected">Rating</option>
                                             <option value=0>No preference</option>
                                             <option value=1>☆</option>
@@ -115,7 +122,7 @@
                         </div>
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
-                                <select id="dietary">
+                                <select id="dietary" name="dietary-options">
                                     <option disabled="disabled" selected="selected">Dietary options</option>
                                     <option>Nothing specific</option>
                                     <option>Vegetarian</option>
@@ -127,19 +134,20 @@
                                 <div class="select-dropdown"></div>
                             </div>
                         </div>
+                        <div class="success-banner hidden" id="error"></div>
+                        <div style="text-align:center">
+                            <button class="btn style4" type="submit">Randomize</button>
+                        </div>
                     </form>
-                    <div align="middle">
-                        <button class="btn random" onclick="query()">Randomize</button>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
     <script src="js/query.js"></script>
     <!-- Form -->
-    <script src="vendor/select2/select2.min.js"></script>
-    <script src="vendor/datepicker/moment.min.js"></script>
-    <script src="vendor/datepicker/daterangepicker.js"></script>
+    <script src="third-party/select2/select2.min.js"></script>
+    <script src="third-party/datepicker/moment.min.js"></script>
+    <script src="third-party/datepicker/daterangepicker.js"></script>
     <script src="js/form.js"></script>
 </body>
 

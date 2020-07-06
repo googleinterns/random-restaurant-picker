@@ -14,7 +14,26 @@
 
 const apiKey = 'AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw';
 let searchResults;
+<<<<<<< HEAD
+
+function chooseRandomRestaurant() {
+    const restaurants = [
+        "Panera Bread",
+        "Qdoba",
+        "Los Tacos No 1",
+        "The Modern",
+        "Piccola Cucina",
+        "Superiority Burger",
+        "Cote",
+        "Marea"
+    ]
+    const selectedRestaurant = restaurants[Math.floor(Math.random() * restaurants.length)];
+    const resultsText = document.getElementById("selected-restaurant");
+    resultsText.innerText = localStorage.getItem("searchResults");
+}
+=======
 let queryArr;
+>>>>>>> prototype
 
 function loadPage() {
     window.location.replace("results.html");
@@ -90,6 +109,16 @@ function convertLocation(location) {
             return response.results[0].formatted_address;
         })
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+
+
+    localStorage.setItem("searchResults", pickRandomRestaurant());
+    loadPage();
+}
+
+function pickRandomRestaurant() {
+    let restaurantArr = searchResults.results;
+    let random = restaurantArr[Math.floor(Math.random() * restaurantArr.length)];
+    return (random.name);
 }
 
 function onSignIn(googleUser) {
