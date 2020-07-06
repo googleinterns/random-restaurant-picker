@@ -68,6 +68,7 @@ function query() {
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
 
+
 // retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
 function getLocation() {
     location = document.getElementById("location-container");
@@ -105,6 +106,21 @@ function convertLocation(location) {
         .then(response => location = response)
         .then(() => console.log(location))
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+
+function onSignIn(googleUser) {
+  let id_token = googleUser.getAuthResponse().id_token;
+  fetch(`/login?id_token=${id_token}`).then(response => response.json()).then((data) => {
+      localStorage.setItem("user", data.id); 
+      localStorage.setItem("loggedIn", true);
+    });
+}
+
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+}
 }
 
 function weightRestaurants(restaurants) {

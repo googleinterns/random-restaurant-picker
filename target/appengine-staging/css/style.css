@@ -27,7 +27,6 @@ body {
 h {
     align-content: center;
     color: black;
-    font-family: "Comfortaa";
     font-size: 70px;
     font-weight: bold;
     margin: 0px;
@@ -48,41 +47,18 @@ p {
     padding: 10px;
 }
 
-p1 {
-    font-size: 20px;
-}
-
 .btn {
     align-content: center;
     background-color: white;
+    border: 5px solid black;
     border-radius: 10px;
     color: black;
     cursor: pointer;
     font-family: "Comfortaa";
     font-size: 50px;
     font-weight: bold;
-    margin-bottom: 50px;
-    margin-top: 50px;
+    margin-top: 100px;
     padding: 20px 30px;
-}
-
-.location {
-    border: 1px solid black;
-    font-size: 16px;
-    font-weight: normal;
-    margin-bottom: 20px;
-    margin-top: 0px;
-    padding: 6px 10px;
-}
-
-.location:hover {
-    background-color: black;
-    border-color: white;
-    color: white;
-}
-
-.random {
-    border: 5px solid black;
 }
 
 .random:hover {
@@ -103,28 +79,6 @@ p1 {
     background-color: black;
     border-color: white;
     color: white;
-}
-
-select {
-    background-color: white;
-    border-radius: 8px;
-    font-family: "Comfortaa";
-    padding: 5px;
-}
-
-select:hover {
-    cursor: pointer;
-}
-
-option {
-    font-family: "Comfortaa";
-}
-
-.card-object {
-    align-content: left;
-    font-family: "Comfortaa";
-    margin: 20px;
-    padding: 10px;
 }
 
 .sign-in{
