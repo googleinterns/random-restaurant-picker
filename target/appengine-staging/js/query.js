@@ -21,8 +21,8 @@ function loadPage() {
 }
 
 function query() {
-    const lat = -33.8670522;
-    const long = 151.1957362;
+    let lat = localStorage.getItem("lat");
+    let long = localStorage.getItem("lng");
     // const lat = 39.109635;
     // const long = -108.542347;
     const radius = document.getElementById('distance').value;
@@ -51,23 +51,28 @@ function getLocation() {
     let location = document.getElementById("location-container");
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
+            let pos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
-        };
-
-        console.log(pos);
-        let address = convertLocation(pos);
-        console.log(address);
-        location.innerText = address;
+            };
+            localStorage.setItem("lat", pos.lat);
+            localStorage.setItem("lng", pos.lng);
+            convertLocation(pos).then((address)=>{
+                console.log(address);
+                location.innerText = address;
+            });
         });
     } else {
     // Browser doesn't support Geolocation
-    pos = {lat: -34.397, lng: 150.644};
-    let address = convertLocation(pos);
-    console.log(address);
-    location.innerText = address;
-  }
+        let pos = {lat: -34.397, lng: 150.644};
+        localStorage.setItem("lat", pos.lat);
+        localStorage.setItem("lng", pos.lng);
+        convertLocation(pos).then((address)=>{
+            console.log(address);
+            location.innerText = address;
+        });
+    }
+    console.log(pos.lat);
 }
 
 // convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
@@ -78,7 +83,7 @@ function convertLocation(location) {
     const url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&result_type=street_address&key=' + apiKey;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
-    fetch(proxyurl + url)
+    return fetch(proxyurl + url)
         .then(response => response.json())
         .then(response => {
             console.log(response.results[0].formatted_address);
@@ -197,6 +202,7 @@ function weightRestaurants(restaurants) {
         prevScore = restaurantMap.get(restaurants[i-1]);
         let curScore = restaurantMap.get(restaurants[i]);
         if (prevScore <= selected && selected < prevScore + curScore) {
+            console.log(restaurants[i]);
             return restaurants[i];
         }
         prevScore = prevScore + curScore;
