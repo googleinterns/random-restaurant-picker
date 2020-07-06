@@ -38,7 +38,6 @@
     <div class="page-wrapper p-t-40">
         <div class="wrapper wrapper--w960">
             <div class="card card-2">
-                <div class="card-heading"></div>
                 <div class="card-body">
                     <h2>Your location:</h2>
                     </br>
@@ -54,9 +53,9 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="gender">
+                                        <select id="distance">
                                             <!-- Can we change distance to miles instead of meteres? -->
-                                            <option disabled="disabled" selected="selected" id="distance">Max Distance</option>
+                                            <option disabled="disabled" selected="selected">Max Distance</option>
                                             <option>No preference</option>
                                             <option>5000 m</option>
                                             <option>10000 m</option>
@@ -70,7 +69,7 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="gender">
+                                        <select id="type">
                                             <option disabled="disabled" selected="selected">Type</option>
                                             <option>No preference</option>
                                             <option>Dine-in</option>
@@ -85,13 +84,13 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="gender">
+                                        <select id="price">
                                             <option disabled="disabled" selected="selected">Price</option>
-                                            <option>No preference</option>
-                                            <option>$</option>
-                                            <option>$$</option>
-                                            <option>$$$</option>
-                                            <option>$$$$</option>
+                                            <option value=0>No preference</option>
+                                            <option value=1>$</option>
+                                            <option value=2>$$</option>
+                                            <option value=3>$$$</option>
+                                            <option value=4>$$$$</option>
                                         </select>
                                         <div class="select-dropdown"></div>
                                     </div>
@@ -100,14 +99,14 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="gender">
+                                        <select id="rating">
                                             <option disabled="disabled" selected="selected">Rating</option>
-                                            <option>No preference</option>
-                                            <option>☆</option>
-                                            <option>☆☆</option>
-                                            <option>☆☆☆</option>
-                                            <option>☆☆☆☆</option>
-                                            <option>☆☆☆☆☆</option>
+                                            <option value=0>No preference</option>
+                                            <option value=1>☆</option>
+                                            <option value=2>☆☆</option>
+                                            <option value=3>☆☆☆</option>
+                                            <option value=4>☆☆☆☆</option>
+                                            <option value=5>☆☆☆☆☆</option>
                                         </select>
                                         <div class="select-dropdown"></div>
                                     </div>
@@ -116,7 +115,7 @@
                         </div>
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="class">
+                                <select id="dietary">
                                     <option disabled="disabled" selected="selected">Dietary options</option>
                                     <option>Nothing specific</option>
                                     <option>Vegetarian</option>

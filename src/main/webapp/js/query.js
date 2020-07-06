@@ -61,8 +61,12 @@ function query() {
         .then(response => response.json())
         .then(response => searchResults = response)
         .then(() => {
-            console.log(searchResults);
+            let restaurantResults = searchResults["results"];
+            weightedRestaurant = weightRestaurants(restaurantResults);
+            console.log(weightedRestaurant)
         })
+        //console.log(searchResults))
+
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
 
@@ -166,4 +170,60 @@ window.onclick = function(event) {
       }
   }
 }
+}
+
+function weightRestaurants(restaurants) {
+    requestedPrice = document.getElementById('price');
+    requestedRating = document.getElementById('rating');
+    requestedType = document.getElementById('type');
+    requestedDietary = document.getElementById('dietary');
+
+    restaurantMap = new Map(); 
+    for (restaurant in restaurants) {
+        score = 1;
+        priceLevel = restaurant.get("price_level");
+        ratingLevel = restaurant.get("rating");
+        if (requestedPrice == 0 || requestedPrice == priceLevel) {
+            score += 4;
+        } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
+            score += 3;
+        } else if (Math.abs(requestedPrice-priceLevel) <= 2) {
+            score += 2;
+        }
+
+        if (requestedRating == 0 || requestedRating == ratingLevel) {
+            score += 4;
+        } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
+            score += 3;
+        } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
+            score += 2;
+        } else if (Math.abs(requestedRating.ratingLevel) <= 3) {
+            score += 1;
+        }
+
+        // not sure below is helpful/accurate - might want to eliminate b/c will prob get taken care of w $$$
+        if (requestedType == "No preference" || 
+        (requestedType == "Fast Food" && restaurant.get("types").contains("meal_takeaway")) || 
+        (requestedType == "Dine-in" && !restaurant.get("types").contains("meal_takeaway"))) {
+            score += 2;
+        }
+
+        if (restaurant.get("reviews").get("text").contains(requestedDietary)) {
+            if (!(restaurant.get("reviews").get("text").contains("no " + requestedDietary)) || !(restaurant.get("reviews").get("text").contains("not " + requestedDietary))) {
+                score += 4;
+            }
+        }
+        restaurantMap.set(restaurant, score);
+    }
+    total = restaurantMap.values().sum();
+    selected = Math.floor(Math.random() * total);
+    prevScore = 0;
+    for (i = 0; i < restaurants.length; i++) {
+        prevScore = restaurantMap.get(restaurants[i-1]);
+        curScore = restaurantMap.get(restaurants[i]);
+        if (prevScore <= selected && selected < prevScore + curScore) {
+            return restaurants[i];
+        }
+        prevScore = prevScore + curScore;
+    }
 }
