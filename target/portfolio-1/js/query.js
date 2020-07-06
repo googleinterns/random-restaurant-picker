@@ -56,19 +56,35 @@ function query() {
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + 'location=' + lat + ',' + long + '&radius=' + radius + '&type=' + type + '&keyword=' + keyword + '&key=' + apiKey;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
+    saveSearch(url, radius, keyword);
     fetch(proxyurl + url)
         .then(response => response.json())
         .then(response => searchResults = response)
-        .then(() => console.log(searchResults))
+        .then(() => {
+            console.log(searchResults);
+        })
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
 
 function onSignIn(googleUser) {
   let id_token = googleUser.getAuthResponse().id_token;
+  let profile = googleUser.getBasicProfile();
   fetch(`/login?id_token=${id_token}`).then(response => response.json()).then((data) => {
-      console.log(data)
-      console.log(data.id);
-      });
+      localStorage.setItem("user", data.id); 
+      localStorage.setItem("loggedIn", true);
+      addUserContent(profile.getName(), profile.getImageUrl());
+      toggleAccountMenu();
+    }); 
+}
+
+function addUserContent(name, image){
+    document.getElementById("user-name").innerText = name;
+    document.getElementById("profile-pic").src = image;
+}
+
+function toggleAccountMenu() {
+    document.getElementById("account-menu").classList.toggle('show');
+    document.getElementById("sign-in").classList.toggle('hide');
 }
 
 function signOut() {
@@ -76,4 +92,38 @@ function signOut() {
   auth2.signOut().then(function () {
     console.log('User signed out.');
   });
+  localStorage.setItem("user", 0);
+  toggleAccountMenu();
+}
+
+function saveSearch(url, radius, keyword){
+    let userID = 0;
+    if(localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&url=${url}`, {
+        method: 'POST'
+    });
+}
+
+function getSearches(){
+    let userID = 0;
+    if(localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then(data => console.log(data));
+}
+
+function toggleShow() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    let dropdown = document.getElementById("myDropdown");
+      if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+      }
+  }
 }

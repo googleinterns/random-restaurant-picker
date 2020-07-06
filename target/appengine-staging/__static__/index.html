@@ -20,7 +20,18 @@
 </head>
 
 <body>
-    <div class="sign-in g-signin2" data-onsuccess="onSignIn"></div>
+    <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
+    <div class="dropdown" id="account-menu">
+        <button onclick="toggleShow()" class="dropbtn">
+            <img id="profile-pic" src="https://www.qries.com/images/banner_logo.png">
+            <h3 id="user-name">name</h3>
+        </button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#">Account</a>
+            <a href="#">History</a>
+            <a onclick="signOut()">Sign Out</a>
+        </div>
+    </div>
     <div class="p-t-80" style="text-align:center">
         <h>Random Restaurant Picker</h>
     </div>
