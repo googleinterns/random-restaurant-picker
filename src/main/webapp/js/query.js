@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const apiKey = 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+const apiKey = 'AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw';
 let searchResults;
 let queryArr;
 
@@ -35,10 +35,7 @@ function query() {
         .then(response => response.json())
         .then((response) => {
             console.log(response);
-            queryArr = response.results;
-            console.log(queryArr);
-            let restaurantResults = queryArr;
-            console.log(restaurantResults);
+            let restaurantResults = response.results;
             weightedRestaurant = weightRestaurants(restaurantResults);
             console.log(weightedRestaurant);
         })
@@ -51,7 +48,7 @@ function query() {
 
 // retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
 function getLocation() {
-    location = document.getElementById("location-container");
+    let location = document.getElementById("location-container");
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
@@ -60,31 +57,33 @@ function getLocation() {
         };
 
         console.log(pos);
-        location = pos;
-      }, function() {
-        // Geolocation service failed
-        pos = {lat: 0, lng: 0};
-        console.log(pos);
-        location = pos;
-      });
+        let address = convertLocation(pos);
+        console.log(address);
+        location.innerText = address;
+        });
     } else {
     // Browser doesn't support Geolocation
     pos = {lat: -34.397, lng: 150.644};
-    console.log(pos);
-    location = pos;
+    let address = convertLocation(pos);
+    console.log(address);
+    location.innerText = address;
   }
 }
 
 // convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
 // address in the location-container spot (so it was in the spot as the sydney australia address)
 function convertLocation(location) {
-    const url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&key=' + apiKey;
+    let lat = location.lat;
+    let long = location.lng;
+    const url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&result_type=street_address&key=' + apiKey;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
     fetch(proxyurl + url)
         .then(response => response.json())
-        .then(response => location = response)
-        .then(() => console.log(location))
+        .then(response => {
+            console.log(response.results[0].formatted_address);
+            return response.results[0].formatted_address;
+        })
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
 
@@ -158,9 +157,9 @@ function weightRestaurants(restaurants) {
 
     let restaurantMap = new Map(); 
     for (restaurant in restaurants) {
-        score = 1;
-        priceLevel = restaurant.get("price_level");
-        ratingLevel = restaurant.get("rating");
+        let score = 1;
+        let priceLevel = restaurant.get("price_level");
+        let ratingLevel = restaurant.get("rating");
         if (requestedPrice == 0 || requestedPrice == priceLevel) {
             score += 4;
         } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
