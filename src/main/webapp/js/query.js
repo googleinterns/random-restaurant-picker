@@ -115,7 +115,7 @@ function weightRestaurants(restaurants) {
 
     restaurantMap = new Map(); 
     for (restaurant in restaurants) {
-        score = 0;
+        score = 1;
         priceLevel = restaurant.get("price_level");
         ratingLevel = restaurant.get("rating");
         if (requestedPrice == 0 || requestedPrice == priceLevel) {
