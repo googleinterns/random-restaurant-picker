@@ -4,10 +4,13 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
     <title>Random Restaurant Picker</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
 
     <!-- Form -->
     <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
@@ -17,6 +20,7 @@
 </head>
 
 <body>
+    <div class="sign-in g-signin2" data-onsuccess="onSignIn"></div>
     <div class="p-t-80" style="text-align:center">
         <h>Random Restaurant Picker</h>
     </div>
