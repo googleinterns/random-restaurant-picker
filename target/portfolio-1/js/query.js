@@ -12,53 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const apiKey = 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
-let searchResults;
-
-function chooseRandomRestaurant() {
-    const restaurants = [
-        "Panera Bread",
-        "Qdoba",
-        "Los Tacos No 1",
-        "The Modern",
-        "Piccola Cucina",
-        "Superiority Burger",
-        "Cote",
-        "Marea"
-    ]
-    const selectedRestaurant = restaurants[Math.floor(Math.random() * restaurants.length)];
-    const resultsText = document.getElementById("selected-restaurant");
-    resultsText.innerText = selectedRestaurant;
-}
-
-function loadPage() {
-    window.location.replace("results.html");
-}
-
-function test() {
-    let obj;
-    let url = 'https://jsonplaceholder.typicode.com/posts/1';
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => obj = data)
-        .then(() => console.log(obj))
-}
+let queryArr;
 
 function query() {
-    const lat = -33.8670522;
-    const long = 151.1957362;
-    // const lat = 39.109635;
-    // const long = -108.542347;
-    const radius = document.getElementById('distance').value;
-    const type = 'restaurant';
-    const keyword = document.getElementById('searchTerms').value;
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + 'location=' + lat + ',' + long + '&radius=' + radius + '&type=' + type + '&keyword=' + keyword + '&key=' + apiKey;
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
-    fetch(proxyurl + url)
+    const errorEl = document.getElementById("error");
+    errorEl.classList.add('hidden');
+    fetch(`/query`, { method: 'GET' })
         .then(response => response.json())
-        .then(response => searchResults = response)
-        .then(() => console.log(searchResults))
-        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+        .then((response) => {
+            if (response.status === "OK") {
+                queryArr = response.results;
+                errorEl.classList.remove('error-banner');
+                errorEl.classList.remove('hidden');
+                errorEl.classList.add('success-banner');
+                errorEl.innerText = "Success!";
+                // test(JSON.stringify(response));
+            } else if (response.status === "INVALID_REQUEST")
+                throw 'Invalid request'
+            else if (response.status === "ZERO_RESULTS")
+                throw 'No results'
+            else
+                throw 'Unforeseen error'
+        })
+        .catch((error) => {
+            errorEl.classList.remove('success-banner');
+            errorEl.classList.remove('hidden');
+            errorEl.classList.add('error-banner');
+            errorEl.innerText = error;
+        });
 }
+
+$('#randomize-form').submit(function(e) {
+    e.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function(response) {
+            query();
+        }
+    });
+});

@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
 /home/ryan/Desktop/random-restaurant-picker/src/main/java/com/google/sps/data/SearchItem.java
 /home/ryan/Desktop/random-restaurant-picker/src/main/java/com/google/sps/servlets/FetchImageServlet.java
 /home/ryan/Desktop/random-restaurant-picker/src/main/java/com/google/sps/data/UserFeedback.java
@@ -11,3 +13,10 @@
 /home/ryan/Desktop/random-restaurant-picker/src/main/java/com/google/sps/servlets/QueryServlet.java
 /home/ryan/Desktop/random-restaurant-picker/src/main/java/com/google/sps/data/User.java
 /home/ryan/Desktop/random-restaurant-picker/src/main/java/com/google/sps/data/Photo.java
+=======
+/Users/jason/Documents/School/Freshman summer/STEP/Work/Random Restaurant Picker/reroll/src/main/java/com/google/sps/data/Comment.java
+/Users/jason/Documents/School/Freshman summer/STEP/Work/Random Restaurant Picker/reroll/src/main/java/com/google/sps/servlets/PlacesAPI.java
+>>>>>>> ce61e69... places API servlet, new buttons, new success banner
+=======
+/Users/jason/Documents/School/Freshman summer/STEP/Work/Random Restaurant Picker/reroll/src/main/java/com/google/sps/servlets/Query.java
+>>>>>>> c7cda68... backend uses proper GET and POST
