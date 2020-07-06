@@ -191,15 +191,17 @@ input {
   box-shadow: none;
   width: 100%;
   font-size: 14px;
-  font-family: inherit;
+  font-family: "Comfortaa";
 }
 
 /* input group 1 */
 /* end input group 1 */
 .input-group {
+  font-family: "Comfortaa";
   position: relative;
   margin-bottom: 32px;
   border-bottom: 1px solid #e5e5e5;
+  padding: 5px;
 }
 
 .input-icon {
@@ -254,6 +256,7 @@ input {
    #SELECT2
    ========================================================================== */
 .select--no-search .select2-search {
+  border: none;
   display: none !important;
 }
 
@@ -273,7 +276,6 @@ input {
   padding-left: 0;
   color: #808080;
   font-size: 16px;
-  font-family: inherit;
   font-weight: 500;
 }
 
@@ -302,7 +304,6 @@ input {
 }
 
 .rs-select2 .select2-container .select2-selection--single .select2-selection__arrow:after {
-  font-family: "Material-Design-Iconic-Font";
   content: '\f2f9';
   font-size: 18px;
   color: #ccc;
@@ -365,11 +366,6 @@ input {
   display: table;
 }
 
-.card-2 .card-heading {
-  background: url("../images/bg-heading-02.jpg") top left/cover no-repeat;
-  width: 29.1%;
-  display: table-cell;
-}
 
 .card-2 .card-body {
   display: table-cell;
@@ -385,7 +381,7 @@ input {
     width: 100%;
     display: block;
     padding-top: 300px;
-    background-position: left center;
+    /* background-position: left center; */
   }
   .card-2 .card-body {
     display: block;
