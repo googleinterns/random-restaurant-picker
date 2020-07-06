@@ -192,7 +192,7 @@ function weightRestaurants(restaurants) {
         }
         restaurantMap.set(restaurant, score);
     }
-    total = restaurantMap.values().sum();
+    total = restaurantMap.values().reduce((a,b) => a + b, 0);
     selected = Math.floor(Math.random() * total);
     prevScore = 0;
     for (i = 0; i < restaurants.length; i++) {
