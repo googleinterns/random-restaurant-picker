@@ -86,6 +86,21 @@ p1 {
     color: white;
 }
 
+.location {
+    border: 1px solid black;
+    font-size: 16px;
+    font-weight: normal;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    padding: 5px 8px;
+}
+
+.location:hover {
+    background-color: black;
+    border-color: white;
+    color: white;
+}
+
 #sign-in{
     position: fixed;
     right: 30px;
