@@ -107,10 +107,23 @@ function convertLocation(location) {
 
 function onSignIn(googleUser) {
   let id_token = googleUser.getAuthResponse().id_token;
+  let profile = googleUser.getBasicProfile();
   fetch(`/login?id_token=${id_token}`).then(response => response.json()).then((data) => {
       localStorage.setItem("user", data.id); 
       localStorage.setItem("loggedIn", true);
-    });
+      addUserContent(profile.getName(), profile.getImageUrl());
+      toggleAccountMenu();
+    }); 
+}
+
+function addUserContent(name, image){
+    document.getElementById("user-name").innerText = name;
+    document.getElementById("profile-pic").src = image;
+}
+
+function toggleAccountMenu() {
+    document.getElementById("account-menu").classList.toggle('show');
+    document.getElementById("sign-in").classList.toggle('hide');
 }
 
 function signOut() {
@@ -119,6 +132,7 @@ function signOut() {
     console.log('User signed out.');
   });
   localStorage.setItem("user", 0);
+  toggleAccountMenu();
 }
 
 function saveSearch(url, radius, keyword){
@@ -131,11 +145,25 @@ function saveSearch(url, radius, keyword){
     });
 }
 
-function getSearch(){
+function getSearches(){
     let userID = 0;
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then(data => console.log(data));
+}
+
+function toggleShow() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    let dropdown = document.getElementById("myDropdown");
+      if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+      }
+  }
 }
 }
