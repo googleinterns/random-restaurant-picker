@@ -56,10 +56,13 @@ function query() {
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + 'location=' + lat + ',' + long + '&radius=' + radius + '&type=' + type + '&keyword=' + keyword + '&key=' + apiKey;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
+    saveSearch(url, radius, keyword);
     fetch(proxyurl + url)
         .then(response => response.json())
         .then(response => searchResults = response)
-        .then(() => console.log(searchResults))
+        .then(() => {
+            console.log(searchResults);
+        })
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
 
@@ -115,5 +118,24 @@ function signOut() {
   auth2.signOut().then(function () {
     console.log('User signed out.');
   });
+  localStorage.setItem("user", 0);
+}
+
+function saveSearch(url, radius, keyword){
+    let userID = 0;
+    if(localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&url=${url}`, {
+        method: 'POST'
+    });
+}
+
+function getSearch(){
+    let userID = 0;
+    if(localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then(data => console.log(data));
 }
 }
