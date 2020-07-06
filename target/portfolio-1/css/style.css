@@ -52,10 +52,10 @@ p {
     padding: 10px;
 }
 
-<<<<<<< HEAD
 .hidden {
     visibility: hidden;
-=======
+}
+
 p1 {
     font-size: 20px;
 }
@@ -92,7 +92,6 @@ p1 {
     background-color: black;
     border-color: white;
     color: white;
->>>>>>> prototype
 }
 
 .location {

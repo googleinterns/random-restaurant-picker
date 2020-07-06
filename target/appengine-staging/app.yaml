@@ -47,15 +47,7 @@ handlers:
   script: unused
   login: optional
   secure: optional
-- url: /list-comments
-  script: unused
-  login: optional
-  secure: optional
-- url: /delete-comment
-  script: unused
-  login: optional
-  secure: optional
-- url: /new-comment
+- url: /query
   script: unused
   login: optional
   secure: optional

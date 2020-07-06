@@ -11,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-let queryArr;
-
 function tryQuery() {
     let lat = localStorage.getItem("lat");
     let lon = localStorage.getItem("lng");
@@ -28,6 +26,7 @@ function tryQuery() {
         .then((response) => {
             if (response.status === "OK") {
                 queryArr = response.results;
+                console.log(queryArr);
                 errorEl.classList.remove('error-banner');
                 errorEl.classList.remove('hidden');
                 errorEl.classList.add('success-banner');
@@ -80,7 +79,6 @@ function getLocation() {
             location.innerText = address;
         });
     }
-    console.log(pos.lat);
 }
 
 // convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
