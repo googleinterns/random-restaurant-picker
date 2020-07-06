@@ -1,3 +1,7 @@
+/* ==========================================================================
+   GENERAL
+   ========================================================================== */
+
 * {
     box-sizing: border-box;
 }
@@ -47,36 +51,6 @@ p {
     padding: 10px;
 }
 
-.btn {
-    align-content: center;
-    background-color: white;
-    border: 5px solid black;
-    border-radius: 10px;
-    color: black;
-    cursor: pointer;
-    font-family: "Comfortaa";
-    font-size: 50px;
-    font-weight: bold;
-    margin-top: 100px;
-    padding: 20px 30px;
-}
-
-.random:hover {
-    background-color: black;
-    border-color: white;
-    color: white;
-}
-
-.reroll {
-    border: 2px solid black;
-    font-size: 16px;
-    font-weight: normal;
-    margin-top: 0px;
-    padding: 10px 16px;
-}
-
-.reroll:hover {
-    background-color: black;
-    border-color: white;
-    color: white;
+.hidden {
+    visibility: hidden;
 }
