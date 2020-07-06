@@ -7,6 +7,9 @@
     <title>Random Restaurant Picker</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw&callback=initMap">
+    </script>
     <script src="scripts/script.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -21,6 +24,8 @@
             <button class="btn reroll" onclick="roll()">Roll Again</button>
         </p>
     </div>
+    <div id="map" style="float:left;width:70%;height:100%"></div>
+    <div id="directionsPanel" style="float:right;width:30%;height:100%"></div>  
     <script src="js/query.js"></script>
 </body>
 
