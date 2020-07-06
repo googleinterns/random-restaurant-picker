@@ -254,6 +254,7 @@ input {
    #SELECT2
    ========================================================================== */
 .select--no-search .select2-search {
+  border: none;
   display: none !important;
 }
 
@@ -366,7 +367,6 @@ input {
 }
 
 .card-2 .card-heading {
-  background: url("../images/bg-heading-02.jpg") top left/cover no-repeat;
   width: 29.1%;
   display: table-cell;
 }

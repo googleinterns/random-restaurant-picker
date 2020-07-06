@@ -61,4 +61,116 @@ function query() {
         .then(response => searchResults = response)
         .then(() => console.log(searchResults))
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+
+    saveSearch(url, radius, keyword);
+    fetch(proxyurl + url)
+        .then(response => response.json())
+        .then(response => searchResults = response)
+        .then(() => {
+            console.log(searchResults);
+        })
+        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
+
+
+// retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
+function getLocation() {
+    location = document.getElementById("location-container");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+
+      console.log(pos);
+      location = pos;
+    }, function() {
+        // Geolocation service failed
+      pos = {lat: 0, lng: 0};
+      console.log(pos);
+      location = pos;
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    pos = {lat: -34.397, lng: 150.644};
+    console.log(pos);
+    location = pos;
+  }
+}
+
+// convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
+// address in the location-container spot (so it was in the spot as the sydney australia address)
+function convertLocation(location) {
+    const url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&key=' + apiKey;
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+    fetch(proxyurl + url)
+        .then(response => response.json())
+        .then(response => location = response)
+        .then(() => console.log(location))
+        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+
+function onSignIn(googleUser) {
+  let id_token = googleUser.getAuthResponse().id_token;
+  let profile = googleUser.getBasicProfile();
+  fetch(`/login?id_token=${id_token}`).then(response => response.json()).then((data) => {
+      localStorage.setItem("user", data.id); 
+      localStorage.setItem("loggedIn", true);
+      addUserContent(profile.getName(), profile.getImageUrl());
+      toggleAccountMenu();
+    }); 
+}
+
+function addUserContent(name, image){
+    document.getElementById("user-name").innerText = name;
+    document.getElementById("profile-pic").src = image;
+}
+
+function toggleAccountMenu() {
+    document.getElementById("account-menu").classList.toggle('show');
+    document.getElementById("sign-in").classList.toggle('hide');
+}
+
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+  localStorage.setItem("user", 0);
+  toggleAccountMenu();
+}
+
+function saveSearch(url, radius, keyword){
+    let userID = 0;
+    if(localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&url=${url}`, {
+        method: 'POST'
+    });
+}
+
+function getSearches(){
+    let userID = 0;
+    if(localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then(data => console.log(data));
+}
+
+function toggleShow() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    let dropdown = document.getElementById("myDropdown");
+      if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+      }
+  }
+}
+}
+
