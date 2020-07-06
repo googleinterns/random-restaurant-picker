@@ -84,7 +84,6 @@ function getLocation() {
 function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
-
     return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then(response => response.json())
         .then(response => {
@@ -210,5 +209,41 @@ function weightRestaurants(restaurants) {
         }
         prevScore = prevScore + curScore;
     }
+}
+
+//Directions to the selected restaurant
+function initMap() {
+  var directionsRenderer = new google.maps.DirectionsRenderer();
+  var directionsService = new google.maps.DirectionsService();
+  var map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 12,
+    center: { lat: localStorage.getItem("lat"), lng: localStorage.getItem("lng")}
+  });
+  directionsRenderer.setMap(map);
+  directionsRenderer.setPanel(document.getElementById("right-panel"));
+
+  var control = document.getElementById("floating-panel");
+  control.style.display = "block";
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+  calculateAndDisplayRoute(directionsService, directionsRenderer);
+}
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+  var start = localStorage.getItem("lat") + "," + localStorage.getItem("lng");
+  var end = ChIJxyfktH-uPIgRDyedLlD53R0;
+  directionsService.route(
+    {
+      origin: start,
+      destination: end,
+      travelMode: "DRIVING"
+    },
+    function(response, status) {
+      if (status === "OK") {
+        directionsRenderer.setDirections(response);
+      } else {
+        window.alert("Directions request failed due to " + status);
+      }
+    }
+  );
 }
 
