@@ -1,12 +1,4 @@
-<<<<<<< HEAD
-/Users/jason/Documents/School/Freshman summer/STEP/Work/Random Restaurant Picker/reroll/src/main/java/com/google/sps/data/Comment.java
-/Users/jason/Documents/School/Freshman summer/STEP/Work/Random Restaurant Picker/reroll/src/main/java/com/google/sps/servlets/PlacesAPI.java
-=======
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Search.java
-/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/NewCommentServlet.java
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/LoginServlet.java
-/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/DeleteCommentServlet.java
-/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/ListCommentsServlet.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/PlacesAPI.java
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/SearchServlet.java
-/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Comment.java
->>>>>>> prototype

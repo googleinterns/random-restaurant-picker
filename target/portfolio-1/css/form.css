@@ -370,14 +370,11 @@ input {
   display: table;
 }
 
-<<<<<<< HEAD
-=======
 .card-2 .card-heading {
   width: 29.1%;
   display: table-cell;
 }
 
->>>>>>> prototype
 .card-2 .card-body {
   display: table-cell;
   padding: 30px 75px;

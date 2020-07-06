@@ -7,12 +7,8 @@
     <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
     <title>Random Restaurant Picker</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<<<<<<< HEAD
-=======
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="js/query.js"></script>
->>>>>>> prototype
     <!-- Form -->
     <link href="third-party/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
     <link href="third-party/select2/select2.min.css" rel="stylesheet" media="all">
@@ -21,14 +17,10 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="css/button.css" rel="stylesheet">
     <link href="css/form.css" rel="stylesheet">
-    <link href="css/message.css" rel="stylesheet">
+    <link href="css/banner.css" rel="stylesheet">
 </head>
 
 <body>
-    <div class="p-t-80" style="text-align:center">
-        <h>Random Restaurant Picker</h>
-    </div>
-    <div class="page-wrapper p-t-40 font-robo">
     <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
     <div class="dropdown" id="account-menu">
         <button onclick="toggleShow()" class="dropbtn">
@@ -41,25 +33,20 @@
             <a onclick="signOut()">Sign Out</a>
         </div>
     </div>
-    
+    <div class="p-t-80" style="text-align:center">
+        <h>Random Restaurant Picker</h>
+    </div>
     <div class="page-wrapper p-t-40">
         <div class="wrapper wrapper--w960">
             <div class="card card-2">
                 <div class="card-body">
                     <h2 style="margin-bottom:0px">Your location:</h2>
                     </br>
-<<<<<<< HEAD
-                    <p id="location">Pirrama Rd, Pyrmont NSW 2009, Australia</p>
+                    <p id="location-container">Pirrama Rd, Pyrmont NSW 2009, Australia</p>
                     </br>
                     <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
                     </br></br></br>
                     <form id="randomize-form" method="POST" onsubmit="tryQuery(); return false">
-=======
-                    <button class="btn location" onclick="getLocation()">Allow location access</button>
-                    <p id="location-container">Pirrama Rd, Pyrmont NSW 2009, Australia</p>
-                    </br></br>
-                    <form id="randomize-form" method="POST">
->>>>>>> prototype
                         <div class="input-group">
                             <input class="input--style-2" type="text" placeholder="Cuisine preference(s)" id="searchTerms">
                         </div>
@@ -83,13 +70,8 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-<<<<<<< HEAD
                                         <select name="category">
                                             <option value="">Category...</option>
-=======
-                                        <select id="type">
-                                            <option disabled="disabled" selected="selected">Type</option>
->>>>>>> prototype
                                             <option>No preference</option>
                                             <option>Dine-in</option>
                                             <option>Fast Food</option>
@@ -103,15 +85,6 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-<<<<<<< HEAD
-                                        <select name="price">
-                                            <option value="">Price...</option>
-                                            <option>No preference</option>
-                                            <option>$</option>
-                                            <option>$$</option>
-                                            <option>$$$</option>
-                                            <option>$$$$</option>
-=======
                                         <select id="price">
                                             <option disabled="disabled" selected="selected">Price</option>
                                             <option value=0>No preference</option>
@@ -119,7 +92,6 @@
                                             <option value=2>$$</option>
                                             <option value=3>$$$</option>
                                             <option value=4>$$$$</option>
->>>>>>> prototype
                                         </select>
                                         <div class="select-dropdown"></div>
                                     </div>
@@ -128,16 +100,7 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <div class="rs-select2 js-select-simple select--no-search">
-<<<<<<< HEAD
-                                        <select name="rating">
-                                            <option value="">Rating...</option>
-                                            <option>☆</option>
-                                            <option>☆☆</option>
-                                            <option>☆☆☆</option>
-                                            <option>☆☆☆☆</option>
-                                            <option>☆☆☆☆☆</option>
-=======
-                                        <select id="rating">
+                                        <select id="rating" name="rating">
                                             <option disabled="disabled" selected="selected">Rating</option>
                                             <option value=0>No preference</option>
                                             <option value=1>☆</option>
@@ -145,7 +108,6 @@
                                             <option value=3>☆☆☆</option>
                                             <option value=4>☆☆☆☆</option>
                                             <option value=5>☆☆☆☆☆</option>
->>>>>>> prototype
                                         </select>
                                         <div class="select-dropdown"></div>
                                     </div>
@@ -154,13 +116,8 @@
                         </div>
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
-<<<<<<< HEAD
-                                <select name="dietary-options">
-                                    <option value="">Dietary options...</option>
-=======
-                                <select id="dietary">
+                                <select id="dietary" name="dietary-options">
                                     <option disabled="disabled" selected="selected">Dietary options</option>
->>>>>>> prototype
                                     <option>Nothing specific</option>
                                     <option>Vegetarian</option>
                                     <option>Vegan</option>
@@ -171,18 +128,11 @@
                                 <div class="select-dropdown"></div>
                             </div>
                         </div>
-<<<<<<< HEAD
                         <div class="success-banner hidden" id="error"></div>
                         <div style="text-align:center">
                             <button class="btn style4" type="submit">Randomize</button>
                         </div>
                     </form>
-=======
-                    </form>
-                    <div align="middle">
-                        <button class="btn random" onclick="query()">Randomize</button>
-                    </div>
->>>>>>> prototype
                 </div>
             </div>
         </div>
