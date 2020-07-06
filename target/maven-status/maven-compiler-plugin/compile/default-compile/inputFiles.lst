@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Search.java
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/NewCommentServlet.java
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/LoginServlet.java
@@ -6,12 +5,3 @@
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/ListCommentsServlet.java
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/SearchServlet.java
 /home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Comment.java
-=======
-/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/SearchServlet.java
-/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/data/Search.java
-/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/ListCommentsServlet.java
-/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/NewCommentServlet.java
-/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/LoginServlet.java
-/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/data/Comment.java
-/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/DeleteCommentServlet.java
->>>>>>> 78fd14223638d6d1e41537e9669bc1ea178656a8

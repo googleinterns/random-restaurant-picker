@@ -34,6 +34,7 @@ function query() {
     fetch(proxyurl + url)
         .then(response => response.json())
         .then((response) => {
+            console.log(response);
             queryArr = response.results;
             console.log(queryArr);
             let restaurantResults = queryArr;
@@ -150,12 +151,12 @@ window.onclick = function(event) {
 }
 
 function weightRestaurants(restaurants) {
-    requestedPrice = document.getElementById('price');
-    requestedRating = document.getElementById('rating');
-    requestedType = document.getElementById('type');
-    requestedDietary = document.getElementById('dietary');
+    let requestedPrice = document.getElementById('price');
+    let requestedRating = document.getElementById('rating');
+    let requestedType = document.getElementById('type');
+    let requestedDietary = document.getElementById('dietary');
 
-    restaurantMap = new Map(); 
+    let restaurantMap = new Map(); 
     for (restaurant in restaurants) {
         score = 1;
         priceLevel = restaurant.get("price_level");
@@ -192,12 +193,12 @@ function weightRestaurants(restaurants) {
         }
         restaurantMap.set(restaurant, score);
     }
-    total = restaurantMap.values().reduce((a,b) => a + b, 0);
-    selected = Math.floor(Math.random() * total);
-    prevScore = 0;
+    let total = restaurantMap.values().reduce((a,b) => a + b, 0);
+    let selected = Math.floor(Math.random() * total);
+    let prevScore = 0;
     for (i = 0; i < restaurants.length; i++) {
         prevScore = restaurantMap.get(restaurants[i-1]);
-        curScore = restaurantMap.get(restaurants[i]);
+        let curScore = restaurantMap.get(restaurants[i]);
         if (prevScore <= selected && selected < prevScore + curScore) {
             return restaurants[i];
         }

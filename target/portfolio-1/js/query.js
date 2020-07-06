@@ -30,11 +30,11 @@ function query() {
     const keyword = document.getElementById('searchTerms').value;
     const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + 'location=' + lat + ',' + long + '&radius=' + radius + '&type=' + type + '&keyword=' + keyword + '&key=' + apiKey;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
-<<<<<<< HEAD
     saveSearch(url, radius, keyword);
     fetch(proxyurl + url)
         .then(response => response.json())
         .then((response) => {
+            console.log(response);
             queryArr = response.results;
             console.log(queryArr);
             let restaurantResults = queryArr;
@@ -85,67 +85,8 @@ function convertLocation(location) {
         .then(response => response.json())
         .then(response => location = response)
         .then(() => console.log(location))
-=======
-
-    fetch(proxyurl + url)
-        .then(response => response.json())
-        .then(response => searchResults = response)
-        .then(() => console.log(searchResults))
-        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
-
-    saveSearch(url, radius, keyword);
-    fetch(proxyurl + url)
-        .then(response => response.json())
-        .then(response => searchResults = response)
-        .then(() => {
-            let restaurantResults = searchResults["results"];
-            weightedRestaurant = weightRestaurants(restaurantResults);
-            console.log(weightedRestaurant)
-        })
-        //console.log(searchResults))
-
->>>>>>> 78fd14223638d6d1e41537e9669bc1ea178656a8
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
-
-
-// retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
-function getLocation() {
-    location = document.getElementById("location-container");
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-        };
-
-      console.log(pos);
-      location = pos;
-    }, function() {
-        // Geolocation service failed
-      pos = {lat: 0, lng: 0};
-      console.log(pos);
-      location = pos;
-    });
-  } else {
-    // Browser doesn't support Geolocation
-    pos = {lat: -34.397, lng: 150.644};
-    console.log(pos);
-    location = pos;
-  }
-}
-
-// convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
-// address in the location-container spot (so it was in the spot as the sydney australia address)
-function convertLocation(location) {
-    const url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&key=' + apiKey;
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
-    fetch(proxyurl + url)
-        .then(response => response.json())
-        .then(response => location = response)
-        .then(() => console.log(location))
-        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 
 function onSignIn(googleUser) {
   let id_token = googleUser.getAuthResponse().id_token;
@@ -208,18 +149,14 @@ window.onclick = function(event) {
       }
   }
 }
-<<<<<<< HEAD
-=======
-}
->>>>>>> 78fd14223638d6d1e41537e9669bc1ea178656a8
 
 function weightRestaurants(restaurants) {
-    requestedPrice = document.getElementById('price');
-    requestedRating = document.getElementById('rating');
-    requestedType = document.getElementById('type');
-    requestedDietary = document.getElementById('dietary');
+    let requestedPrice = document.getElementById('price');
+    let requestedRating = document.getElementById('rating');
+    let requestedType = document.getElementById('type');
+    let requestedDietary = document.getElementById('dietary');
 
-    restaurantMap = new Map(); 
+    let restaurantMap = new Map(); 
     for (restaurant in restaurants) {
         score = 1;
         priceLevel = restaurant.get("price_level");
@@ -256,12 +193,12 @@ function weightRestaurants(restaurants) {
         }
         restaurantMap.set(restaurant, score);
     }
-    total = restaurantMap.values().sum();
-    selected = Math.floor(Math.random() * total);
-    prevScore = 0;
+    let total = restaurantMap.values().reduce((a,b) => a + b, 0);
+    let selected = Math.floor(Math.random() * total);
+    let prevScore = 0;
     for (i = 0; i < restaurants.length; i++) {
         prevScore = restaurantMap.get(restaurants[i-1]);
-        curScore = restaurantMap.get(restaurants[i]);
+        let curScore = restaurantMap.get(restaurants[i]);
         if (prevScore <= selected && selected < prevScore + curScore) {
             return restaurants[i];
         }
