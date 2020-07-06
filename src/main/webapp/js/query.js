@@ -21,8 +21,8 @@ function loadPage() {
 }
 
 function query() {
-    const lat = -33.8670522;
-    const long = 151.1957362;
+    let lat = localStorage.getItem("lat");
+    let long = localStorage.getItem("lng");
     // const lat = 39.109635;
     // const long = -108.542347;
     const radius = document.getElementById('distance').value;
@@ -51,23 +51,28 @@ function getLocation() {
     let location = document.getElementById("location-container");
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
+            let pos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
-        };
-
-        console.log(pos);
-        let address = convertLocation(pos);
-        console.log(address);
-        location.innerText = address;
+            };
+            localStorage.setItem("lat", pos.lat);
+            localStorage.setItem("lng", pos.lng);
+            convertLocation(pos).then((address)=>{
+                console.log(address);
+                location.innerText = address;
+            });
         });
     } else {
     // Browser doesn't support Geolocation
-    pos = {lat: -34.397, lng: 150.644};
-    let address = convertLocation(pos);
-    console.log(address);
-    location.innerText = address;
-  }
+        let pos = {lat: -34.397, lng: 150.644};
+        localStorage.setItem("lat", pos.lat);
+        localStorage.setItem("lng", pos.lng);
+        convertLocation(pos).then((address)=>{
+            console.log(address);
+            location.innerText = address;
+        });
+    }
+    console.log(pos.lat);
 }
 
 // convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
@@ -78,7 +83,7 @@ function convertLocation(location) {
     const url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&result_type=street_address&key=' + apiKey;
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
-    fetch(proxyurl + url)
+    return fetch(proxyurl + url)
         .then(response => response.json())
         .then(response => {
             console.log(response.results[0].formatted_address);
@@ -149,57 +154,4 @@ window.onclick = function(event) {
   }
 }
 
-function weightRestaurants(restaurants) {
-    let requestedPrice = document.getElementById('price').value;
-    let requestedRating = document.getElementById('rating').value;
-    let requestedType = document.getElementById('type').innerText;
-
-    let restaurantMap = new Map();
-    let total = 0; 
-    for (restaurant in restaurants) {
-        let score = 1;
-        let priceLevel = restaurant.price_level;
-        let ratingLevel = restaurant.rating;
-        if (requestedPrice == 0 || requestedPrice == priceLevel) {
-            score += 4;
-        } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
-            score += 3;
-        } else if (Math.abs(requestedPrice-priceLevel) <= 2) {
-            score += 2;
-        }
-
-        console.log(requestedRating);
-        if (requestedRating == 0 || requestedRating == ratingLevel) {
-            score += 4;
-        } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
-            score += 3;
-        } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
-            score += 2;
-        } else if (Math.abs(requestedRating.ratingLevel) <= 3) {
-            score += 1;
-        }
-        console.log(score);
-
-        // not sure below is helpful/accurate - might want to eliminate b/c will prob get taken care of w $$$
-        if (requestedType == "No preference" || 
-        (requestedType == "Fast Food" && restaurant.types.contains("meal_takeaway")) || 
-        (requestedType == "Dine-in" && !restaurant.types.contains("meal_takeaway"))) {
-            score += 2;
-        }
-
-        restaurantMap.set(restaurant, score);
-        total += score;
-    }
-    console.log(restaurantMap);
-    let selected = Math.floor(Math.random() * total);
-    let prevScore = 0;
-    for (i = 0; i < restaurants.length; i++) {
-        prevScore = restaurantMap.get(restaurants[i-1]);
-        let curScore = restaurantMap.get(restaurants[i]);
-        if (prevScore <= selected && selected < prevScore + curScore) {
-            return restaurants[i];
-        }
-        prevScore = prevScore + curScore;
-    }
-}
 
