@@ -150,9 +150,9 @@ window.onclick = function(event) {
 }
 
 function weightRestaurants(restaurants) {
-    let requestedPrice = document.getElementById('price');
-    let requestedRating = document.getElementById('rating');
-    let requestedType = document.getElementById('type');
+    let requestedPrice = document.getElementById('price').value;
+    let requestedRating = document.getElementById('rating').value;
+    let requestedType = document.getElementById('type').innerText;
 
     let restaurantMap = new Map();
     let total = 0; 
@@ -168,6 +168,7 @@ function weightRestaurants(restaurants) {
             score += 2;
         }
 
+        console.log(requestedRating);
         if (requestedRating == 0 || requestedRating == ratingLevel) {
             score += 4;
         } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
@@ -177,6 +178,7 @@ function weightRestaurants(restaurants) {
         } else if (Math.abs(requestedRating.ratingLevel) <= 3) {
             score += 1;
         }
+        console.log(score);
 
         // not sure below is helpful/accurate - might want to eliminate b/c will prob get taken care of w $$$
         if (requestedType == "No preference" || 
@@ -188,6 +190,7 @@ function weightRestaurants(restaurants) {
         restaurantMap.set(restaurant, score);
         total += score;
     }
+    console.log(restaurantMap);
     let selected = Math.floor(Math.random() * total);
     let prevScore = 0;
     for (i = 0; i < restaurants.length; i++) {
