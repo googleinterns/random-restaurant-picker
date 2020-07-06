@@ -39,6 +39,7 @@ public class PlacesAPI extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html");
         String lat = request.getParameter("lat");
         String lon = request.getParameter("lon");
         String radius = request.getParameter("radius");

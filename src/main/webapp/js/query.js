@@ -14,13 +14,14 @@
 let queryArr;
 
 function tryQuery() {
-    const lat = -33.8670522;
-    const lon = 151.1957362;
+    let lat = localStorage.getItem("lat");
+    let lon = localStorage.getItem("lng");
     const radius = document.getElementById('distance').value;
     const type = 'restaurant';
     const searchTerms = document.getElementById('searchTerms').value;
 
     const errorEl = document.getElementById("error");
+    saveSearch(lat, lon, radius, searchTerms);
     errorEl.classList.add('hidden');
     fetch(`/query?lat=${lat}&lon=${lon}&radius=${radius}&type=${type}&searchTerms=${searchTerms}`, { method: 'GET' })
         .then(response => response.json())
@@ -45,36 +46,13 @@ function tryQuery() {
             errorEl.innerText = error;
         });
 }
+
 const apiKey = 'AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw';
 let queryArr;
 
 function loadPage() {
     window.location.replace("results.html");
 }
-
-function query() {
-    let lat = localStorage.getItem("lat");
-    let long = localStorage.getItem("lng");
-    // const lat = 39.109635;
-    // const long = -108.542347;
-    const radius = document.getElementById('distance').value;
-    const type = 'restaurant';
-    const keyword = document.getElementById('searchTerms').value;
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + 'location=' + lat + ',' + long + '&radius=' + radius + '&type=' + type + '&keyword=' + keyword + '&key=' + apiKey;
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    saveSearch(url, radius, keyword);
-    fetch(proxyurl + url)
-        .then(response => response.json())
-        .then((response) => {
-            let restaurantResults = response.results;
-            weightedRestaurant = weightRestaurants(restaurantResults);
-            console.log(weightedRestaurant);
-        })
-        .catch((error) => {
-            console.log("Can’t access " + url + " response. Blocked by browser?")
-        });
-}
-
 
 // retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
 function getLocation() {
@@ -152,12 +130,12 @@ function signOut() {
   toggleAccountMenu();
 }
 
-function saveSearch(url, radius, keyword){
+function saveSearch(lat, lng, radius, keyword){
     let userID = 0;
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&url=${url}`, {
+    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&lat=${lat}&lng=${lng}`, {
         method: 'POST'
     });
 }
