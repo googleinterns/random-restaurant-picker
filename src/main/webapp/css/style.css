@@ -215,6 +215,11 @@ option {
 }
 
 p2 {
+    font-size: 30px; 
+    font-weight:bold;
+}
+
+p3 {
     font-size: 20px;
     font-weight:100;
 }
