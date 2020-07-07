@@ -7,6 +7,7 @@
     <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
     <title>Random Restaurant Picker</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="js/query.js"></script>
     <!-- Form -->
@@ -47,12 +48,12 @@
                     </br></br></br>
                     <form id="randomize-form" action="/query" method="POST">
                         <div class="input-group">
-                            <input class="input--style-2" type="text" placeholder="Cuisine preference(s)" id="searchTerms">
+                            <input class="input--style-2" type="text" placeholder="Cuisine preference(s)" id="searchTerms" autocomplete="off" name="searchTerms">
                         </div>
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <input class="input--style-2" type="text" placeholder="Max distance (meters)" name="radius">
+                                    <input class="input--style-2" type="text" placeholder="Max distance (meters)" name="radius" id="radius" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-2">
