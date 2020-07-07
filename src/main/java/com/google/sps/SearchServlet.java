@@ -59,10 +59,11 @@ public class SearchServlet extends HttpServlet {
       String date = (String) entity.getProperty("date");
       String keywords = (String) entity.getProperty("keywords");
       String radius = (String) entity.getProperty("radius");
-      String url = (String) entity.getProperty("url");
+      String lat = (String) entity.getProperty("lat");
+      String lng = (String) entity.getProperty("lng");
       long id = entity.getKey().getId();
 
-      Search search = new Search(userID, date, keywords, url, radius, id);
+      Search search = new Search(userID, date, keywords, lat, lng, radius, id);
       searches.add(search);
     }
     Gson gson = new Gson();
@@ -74,7 +75,8 @@ public class SearchServlet extends HttpServlet {
     String user = request.getParameter("user");
     String radius = request.getParameter("radius");
     String keywords = request.getParameter("keywords");
-    String url = request.getParameter("url");
+    String lat = request.getParameter("lat");
+    String lng = request.getParameter("lng");
     long timestamp = System.currentTimeMillis();
 
     SimpleDateFormat formatter = new SimpleDateFormat("MMM d, 'at' HH:mm");
@@ -89,7 +91,8 @@ public class SearchServlet extends HttpServlet {
     searchEntity.setProperty("date", formattedDate);
     searchEntity.setProperty("keywords", keywords);
     searchEntity.setProperty("timestamp", timestamp);
-    searchEntity.setProperty("url", url);
+    searchEntity.setProperty("lat", lat);
+    searchEntity.setProperty("lng", lng);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(searchEntity);
