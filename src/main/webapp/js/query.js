@@ -14,15 +14,16 @@
 function query() {
     let lat = localStorage.getItem("lat");
     let lon = localStorage.getItem("lng");
-    const radius = document.getElementById('distance').value;
-    const type = 'restaurant';
+    const radius = $('#radius').val();
     const searchTerms = document.getElementById('searchTerms').value;
     const errorEl = document.getElementById("error");
     saveSearch(lat, lon, radius, searchTerms);
     errorEl.classList.add('hidden');
+    console.log("Made it 1");
     fetch(`/query`, { method: 'GET' })
         .then(response => response.json())
         .then((response) => {
+            console.log(response);
             if (response.status === "OK") {
                 let queryArr = response.results;
                 console.log(queryArr);
@@ -31,12 +32,15 @@ function query() {
                 errorEl.classList.add('success-banner');
                 errorEl.innerText = "Success!";
                 // test(JSON.stringify(response));
-            } else if (response.status === "INVALID_REQUEST")
+            } else if (response.status === "INVALID_REQUEST"){
                 throw 'Invalid request'
-            else if (response.status === "ZERO_RESULTS")
+            }
+            else if (response.status === "ZERO_RESULTS"){
                 throw 'No results'
-            else
+            }
+            else{
                 throw 'Unforeseen error'
+            }
         })
         .catch((error) => {
             errorEl.classList.remove('success-banner');
@@ -48,13 +52,15 @@ function query() {
 
 $('#randomize-form').submit(function(e) {
     e.preventDefault();
-    var form = $(this);
-    var url = form.attr('action');
+    let url = $(this).attr('action');
+    let lat = localStorage.getItem("lat");
+    let lng = localStorage.getItem("lng");
+    let datum = $(this).serialize()+`&lat=${lat}&lng=${lng}`;
 
     $.ajax({
         type: "POST",
         url: url,
-        data: form.serialize(),
+        data: datum,
         success: function(response) {
             query();
         }

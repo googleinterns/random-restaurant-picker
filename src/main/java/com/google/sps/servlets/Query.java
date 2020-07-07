@@ -43,8 +43,8 @@ public class Query extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String lat = "-33.8670522";
-        String lon = "151.1957362";
+        String lat = request.getParameter("lat");
+        String lon = request.getParameter("lng");
         String radius = request.getParameter("radius");
         String type = "restaurant";
         String searchTerms = request.getParameter("searchTerms");
@@ -59,5 +59,6 @@ public class Query extends HttpServlet {
         JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         resultsJson = jsonObj.toString();
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 }
