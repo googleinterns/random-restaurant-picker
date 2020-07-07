@@ -15,10 +15,10 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="css/button.css" rel="stylesheet">
     <link href="css/form.css" rel="stylesheet">
-    <link href="css/message.css" rel="stylesheet">
+    <link href="css/banner.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="query()">
     <div class="p-t-80" style="text-align:center">
         <h>Random Restaurant Picker</h>
     </div>
@@ -32,9 +32,9 @@
                     </br>
                     <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
                     </br></br></br>
-                    <form id="randomize-form" method="POST" onsubmit="tryQuery(); return false">
+                    <form id="randomize-form" action="/query" method="POST">
                         <div class="input-group">
-                            <input class="input--style-2" type="text" placeholder="Search terms" id="searchTerms">
+                            <input class="input--style-2" type="text" placeholder="Search terms" name="searchTerms">
                         </div>
                         <div class="row row-space">
                             <!-- <div class="col-2">
@@ -45,7 +45,7 @@
                             </div> -->
                             <div class="col-2">
                                 <div class="input-group">
-                                    <input class="input--style-2" type="text" placeholder="Distance (meters)" id="distance">
+                                    <input class="input--style-2" type="text" placeholder="Max distance (meters)" name="radius">
                                 </div>
                             </div>
                             <div class="col-2">

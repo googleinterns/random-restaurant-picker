@@ -14,16 +14,10 @@
 
 let queryArr;
 
-function tryQuery() {
-    const lat = -33.8670522;
-    const lon = 151.1957362;
-    const radius = document.getElementById('distance').value;
-    const type = 'restaurant';
-    const searchTerms = document.getElementById('searchTerms').value;
-
+function query() {
     const errorEl = document.getElementById("error");
     errorEl.classList.add('hidden');
-    fetch(`/query?lat=${lat}&lon=${lon}&radius=${radius}&type=${type}&searchTerms=${searchTerms}`, { method: 'GET' })
+    fetch(`/query`, { method: 'GET' })
         .then(response => response.json())
         .then((response) => {
             if (response.status === "OK") {
@@ -32,6 +26,7 @@ function tryQuery() {
                 errorEl.classList.remove('hidden');
                 errorEl.classList.add('success-banner');
                 errorEl.innerText = "Success!";
+                // test(JSON.stringify(response));
             } else if (response.status === "INVALID_REQUEST")
                 throw 'Invalid request'
             else if (response.status === "ZERO_RESULTS")
@@ -45,4 +40,12 @@ function tryQuery() {
             errorEl.classList.add('error-banner');
             errorEl.innerText = error;
         });
+}
+
+function get() {
+    fetch(`/query`, { method: 'GET' })
+    .then(response => response.json())
+    .then((response) => {
+        console.log(response);
+    });
 }
