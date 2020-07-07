@@ -229,6 +229,7 @@ function feedbackWindow() {
       })
     var popup = document.getElementById("formPopup");
     popup.classList.toggle("show");
+}
 
 //Directions to the selected restaurant
 function initMap() {
@@ -262,4 +263,48 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     }
   );
 }
+
+function weighRestaurants(restaurants) {
+    let requestedPrice = document.getElementById('price').value;
+    let requestedRating = document.getElementById('rating').value;
+
+    HashMap<String, Integer> restaurantMap;
+        let total = 0; 
+        for (restaurant in restaurants) {
+            let score = 1;
+            let priceLevel = restaurant.price_level;
+            let ratingLevel = restaurant.rating;
+            if (requestedPrice == 0 || requestedPrice == priceLevel) {
+                score += 4;
+            } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
+                score += 3;
+            } else if (Math.abs(requestedPrice-priceLevel) <= 2) {
+                score += 2;
+            }
+
+            if (requestedRating == 0 || requestedRating == ratingLevel) {
+                score += 4;
+            } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
+                score += 3;
+            } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
+                score += 2;
+            } else if (Math.abs(requestedRating-ratingLevel) <= 3) {
+                score += 1;
+            }
+
+            restaurantMap.set(restaurant, score);
+            total += score;
+        }
+        let selected = Math.floor(Math.random() * total);
+        let curTotalScore = 0;
+        // finds the correct restaurant by adding the next score of a restaurant to the 
+        for (i = 0; i < restaurants.length; i++) {
+            curTotalScore = restaurantMap.get(restaurants[i-1]);
+            let curScore = restaurantMap.get(restaurants[i]);
+            if (curTotalScore <= selected && selected < curTotalScore + curScore) {
+                return restaurants[i];
+            }
+            curTotalScore += curScore;
+        }
 }
+
