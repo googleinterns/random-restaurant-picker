@@ -152,7 +152,38 @@ function getSearches(){
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then(data => console.log(data));
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        const searchesEl = document.getElementById('cards');
+        searches.forEach((search) => {
+            searchesEl.appendChild(createSearchElement(search));
+        });
+    });
+}
+
+function createSearchElement(search) {
+    const cardElement = document.createElement('card-object');
+    cardElement.className = 'card';
+
+    const nameElement = document.createElement('p2');
+    nameElement.innerText = search.name;
+
+    const paramElement = document.createElement('p3');
+    const tempParamElement = "Parameters: ";
+    for (items in search.keywords) {
+        tempParamElement += items;
+        tempParamElement += ", ";
+    }
+    tempParamElement += radius;
+    paramElement.innerText = tempParamElement;
+
+    const feedbackElement = document.createElement('p3');
+    // needs to create feedback element, submit feedback button if no feedback,
+    // and submit w/ these parameters again button
+    const tempFeedbackElement = "Feedback: ";
+    const buttons = null;
+    feedbackElement.innerText, buttons = getFeedback(tempFeedbackElement, buttons);
+
+
 }
 
 function toggleShow() {
@@ -169,60 +200,39 @@ window.onclick = function(event) {
   }
 }
 
-function weightRestaurants(restaurants) {
-    let requestedPrice = document.getElementById('price');
-    let requestedRating = document.getElementById('rating');
-    let requestedType = document.getElementById('type');
-    let requestedDietary = document.getElementById('dietary');
-
-    let restaurantMap = new Map();
-    for (restaurant in restaurants) {
-        let score = 1;
-        let priceLevel = restaurant.get("price_level");
-        let ratingLevel = restaurant.get("rating");
-        if (requestedPrice == 0 || requestedPrice == priceLevel) {
-            score += 4;
-        } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
-            score += 3;
-        } else if (Math.abs(requestedPrice-priceLevel) <= 2) {
-            score += 2;
-        }
-
-        if (requestedRating == 0 || requestedRating == ratingLevel) {
-            score += 4;
-        } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
-            score += 3;
-        } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
-            score += 2;
-        } else if (Math.abs(requestedRating.ratingLevel) <= 3) {
-            score += 1;
-        }
-
-        // not sure below is helpful/accurate - might want to eliminate b/c will prob get taken care of w $$$
-        if (requestedType == "No preference" ||
-        (requestedType == "Fast Food" && restaurant.get("types").contains("meal_takeaway")) ||
-        (requestedType == "Dine-in" && !restaurant.get("types").contains("meal_takeaway"))) {
-            score += 2;
-        }
-
-        if (restaurant.get("reviews").get("text").contains(requestedDietary)) {
-            if (!(restaurant.get("reviews").get("text").contains("no " + requestedDietary)) || !(restaurant.get("reviews").get("text").contains("not " + requestedDietary))) {
-                score += 4;
-            }
-        }
-        restaurantMap.set(restaurant, score);
+function getFeedback(tempFeedbackElement, buttons) {
+    if (search.feedback = null) {
+        tempFeedbackElement += "You haven't submitted feedback yet";
+        buttons = true;
+    } else {
+        tempFeedbackElement += search.feedback;
+        buttons = false;
     }
-    let total = restaurantMap.values().reduce((a,b) => a + b, 0);
-    let selected = Math.floor(Math.random() * total);
-    let prevScore = 0;
-    for (i = 0; i < restaurants.length; i++) {
-        prevScore = restaurantMap.get(restaurants[i-1]);
-        let curScore = restaurantMap.get(restaurants[i]);
-        if (prevScore <= selected && selected < prevScore + curScore) {
-            return restaurants[i];
-        }
-        prevScore = prevScore + curScore;
+    return tempFeedbackElement, buttons;
+}
+
+function createBreak() {
+    return document.createElement('/br');
+}
+
+function createSearchesButtons(buttons) {
+    if (!buttons) {
+        feedbackButton = document.createElement('feedback button');
+        feedbackButton.innerText = "Submit Feedback";
+        feedbackButton.addEventListener('click', () => {
+            feedbackWindow();
+        });
+        const popupText = document.createElement('span');
+        popupText.className = 'popuptext';
+        popupText.id = 'searchPopup';
+
     }
+    // should essentially do 'reroll' with these parameters
+    searchButton = document.createElement('search button');
+    searchButton.innerText = "Search with These Parameters Again";
+    searchButton.addEventListener('click', () => {
+        searchAgain();
+    });
 }
 
 //Directions to the selected restaurant
