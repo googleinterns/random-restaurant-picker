@@ -42,10 +42,17 @@ function query() {
         });
 }
 
-function get() {
-    fetch(`/query`, { method: 'GET' })
-    .then(response => response.json())
-    .then((response) => {
-        console.log(response);
+$('#randomize-form').submit(function(e) {
+    e.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function(response) {
+            query();
+        }
     });
-}
+});

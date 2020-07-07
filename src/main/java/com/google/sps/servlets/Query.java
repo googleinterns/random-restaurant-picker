@@ -59,6 +59,5 @@ public class Query extends HttpServlet {
         JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         resultsJson = jsonObj.toString();
-        response.sendRedirect("/index.html");
     }
 }
