@@ -11,40 +11,59 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+function query() {
+    let lat = localStorage.getItem("lat");
+    let lon = localStorage.getItem("lng");
+    const radius = document.getElementById('distance').value;
+    const type = 'restaurant';
+    const searchTerms = document.getElementById('searchTerms').value;
+    const errorEl = document.getElementById("error");
+    saveSearch(lat, lon, radius, searchTerms);
+    errorEl.classList.add('hidden');
+    fetch(`/query`, { method: 'GET' })
+        .then(response => response.json())
+        .then((response) => {
+            if (response.status === "OK") {
+                let queryArr = response.results;
+                console.log(queryArr);
+                errorEl.classList.remove('error-banner');
+                errorEl.classList.remove('hidden');
+                errorEl.classList.add('success-banner');
+                errorEl.innerText = "Success!";
+                // test(JSON.stringify(response));
+            } else if (response.status === "INVALID_REQUEST")
+                throw 'Invalid request'
+            else if (response.status === "ZERO_RESULTS")
+                throw 'No results'
+            else
+                throw 'Unforeseen error'
+        })
+        .catch((error) => {
+            errorEl.classList.remove('success-banner');
+            errorEl.classList.remove('hidden');
+            errorEl.classList.add('error-banner');
+            errorEl.innerText = error;
+        });
+}
 
-const apiKey = 'AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw';
-let searchResults;
-let queryArr;
+$('#randomize-form').submit(function(e) {
+    e.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function(response) {
+            query();
+        }
+    });
+});
 
 function loadPage() {
     window.location.replace("results.html");
 }
-
-function query() {
-    let lat = localStorage.getItem("lat");
-    let long = localStorage.getItem("lng");
-    // const lat = 39.109635;
-    // const long = -108.542347;
-    const radius = document.getElementById('distance').value;
-    const type = 'restaurant';
-    const keyword = document.getElementById('searchTerms').value;
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + 'location=' + lat + ',' + long + '&radius=' + radius + '&type=' + type + '&keyword=' + keyword + '&key=' + apiKey;
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    saveSearch(url, radius, keyword);
-    fetch(proxyurl + url)
-        .then(response => response.json())
-        .then((response) => {
-            console.log(response);
-            let restaurantResults = response.results;
-            weightedRestaurant = weightRestaurants(restaurantResults);
-            console.log(weightedRestaurant);
-        })
-        .catch((error) => {
-            console.log(error);
-            console.log("Can’t access " + url + " response. Blocked by browser?")
-        });
-}
-
 
 // retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
 function getLocation() {
@@ -72,7 +91,6 @@ function getLocation() {
             location.innerText = address;
         });
     }
-    console.log(pos.lat);
 }
 
 // convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
@@ -80,10 +98,7 @@ function getLocation() {
 function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
-    const url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&result_type=street_address&key=' + apiKey;
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
-    return fetch(proxyurl + url)
+    return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then(response => response.json())
         .then(response => {
             console.log(response.results[0].formatted_address);
@@ -122,12 +137,12 @@ function signOut() {
   toggleAccountMenu();
 }
 
-function saveSearch(url, radius, keyword){
+function saveSearch(lat, lng, radius, keyword){
     let userID = 0;
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&url=${url}`, {
+    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&lat=${lat}&lng=${lng}`, {
         method: 'POST'
     });
 }
@@ -137,7 +152,38 @@ function getSearches(){
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then(data => console.log(data));
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        const searchesEl = document.getElementById('cards');
+        searches.forEach((search) => {
+            searchesEl.appendChild(createSearchElement(search));
+        });
+    });
+}
+
+function createSearchElement(search) {
+    const cardElement = document.createElement('card-object');
+    cardElement.className = 'card';
+    
+    const nameElement = document.createElement('p2');
+    nameElement.innerText = search.name;
+
+    const paramElement = document.createElement('p3');
+    const tempParamElement = "Parameters: ";
+    for (items in search.keywords) {
+        tempParamElement += items;
+        tempParamElement += ", ";
+    }
+    tempParamElement += radius;
+    paramElement.innerText = tempParamElement;
+
+    const feedbackElement = document.createElement('p3');
+    // needs to create feedback element, submit feedback button if no feedback, 
+    // and submit w/ these parameters again button
+    const tempFeedbackElement = "Feedback: ";
+    const buttons = null;
+    feedbackElement.innerText, buttons = getFeedback(tempFeedbackElement, buttons);
+    //still working on adding buttons here
+
 }
 
 function toggleShow() {
@@ -154,58 +200,126 @@ window.onclick = function(event) {
   }
 }
 
-function weightRestaurants(restaurants) {
+function getFeedback(tempFeedbackElement, buttons) {
+    if (search.feedback = null) {
+        tempFeedbackElement += "You haven't submitted feedback yet";
+        buttons = true;
+    } else {
+        tempFeedbackElement += search.feedback;
+        buttons = false;
+    }
+    return tempFeedbackElement, buttons;
+}
+
+function createBreak() {
+    return document.createElement('/br');
+}
+
+function createSearchesButtons(buttons) {
+    if (!buttons) {
+        feedbackButton = document.createElement('feedback button');
+        feedbackButton.innerText = "Submit Feedback";
+        feedbackButton.addEventListener('click', () => {
+            feedbackWindow();
+        });
+        const popupText = document.createElement('span');
+        popupText.className = 'popuptext';
+        popupText.id = 'searchPopup';
+
+    }
+    // should essentially do 'reroll' with these parameters
+    searchButton = document.createElement('search button');
+    searchButton.innerText = "Search with These Parameters Again";
+    searchButton.addEventListener('click', () => {
+        searchAgain();
+    });
+}
+
+
+function feedbackWindow() {
+    fetch("/form.html")
+      .then((response) => response.text())
+      .then((data) => {
+          feedbackButton.innerHTML = data;
+      })
+    var popup = document.getElementById("formPopup");
+    popup.classList.toggle("show");
+}
+
+//Directions to the selected restaurant
+function initMap() {
+  var directionsRenderer = new google.maps.DirectionsRenderer();
+  var directionsService = new google.maps.DirectionsService();
+  let lat = localStorage.getItem("lat")
+  let lng = localStorage.getItem("lng")
+  var map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 16,
+    center: { lat: parseFloat(lat), lng: parseFloat(lng)}
+  });
+  directionsRenderer.setMap(map);
+  directionsRenderer.setPanel(document.getElementById("directionsPanel"));
+  calculateAndDisplayRoute(directionsService, directionsRenderer);
+}
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+  let start = localStorage.getItem("lat") + "," + localStorage.getItem("lng");
+  directionsService.route(
+    {
+      origin: start,
+      destination: "1745 Plymouth Rd, Ann Arbor, MI 48105",
+      travelMode: "DRIVING"
+    },
+    function(response, status) {
+      if (status === "OK") {
+        directionsRenderer.setDirections(response);
+      } else {
+        window.alert("Directions request failed due to " + status);
+      }
+    }
+  );
+}
+
+function weighRestaurants(restaurants) {
     let requestedPrice = document.getElementById('price').value;
     let requestedRating = document.getElementById('rating').value;
-    let requestedType = document.getElementById('type').innerText;
 
-    let restaurantMap = new Map();
-    let total = 0; 
-    for (restaurant in restaurants) {
-        let score = 1;
-        let priceLevel = restaurant.price_level;
-        let ratingLevel = restaurant.rating;
-        if (requestedPrice == 0 || requestedPrice == priceLevel) {
-            score += 4;
-        } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
-            score += 3;
-        } else if (Math.abs(requestedPrice-priceLevel) <= 2) {
-            score += 2;
-        }
+    HashMap<String, Integer> restaurantMap;
+        let total = 0; 
+        for (restaurant in restaurants) {
+            let score = 1;
+            let priceLevel = restaurant.price_level;
+            let ratingLevel = restaurant.rating;
+            if (requestedPrice == 0 || requestedPrice == priceLevel) {
+                score += 4;
+            } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
+                score += 3;
+            } else if (Math.abs(requestedPrice-priceLevel) <= 2) {
+                score += 2;
+            }
 
-        console.log(requestedRating);
-        if (requestedRating == 0 || requestedRating == ratingLevel) {
-            score += 4;
-        } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
-            score += 3;
-        } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
-            score += 2;
-        } else if (Math.abs(requestedRating.ratingLevel) <= 3) {
-            score += 1;
-        }
-        console.log(score);
+            if (requestedRating == 0 || requestedRating == ratingLevel) {
+                score += 4;
+            } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
+                score += 3;
+            } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
+                score += 2;
+            } else if (Math.abs(requestedRating-ratingLevel) <= 3) {
+                score += 1;
+            }
 
-        // not sure below is helpful/accurate - might want to eliminate b/c will prob get taken care of w $$$
-        if (requestedType == "No preference" || 
-        (requestedType == "Fast Food" && restaurant.types.contains("meal_takeaway")) || 
-        (requestedType == "Dine-in" && !restaurant.types.contains("meal_takeaway"))) {
-            score += 2;
+            restaurantMap.set(restaurant, score);
+            total += score;
         }
-
-        restaurantMap.set(restaurant, score);
-        total += score;
-    }
-    console.log(restaurantMap);
-    let selected = Math.floor(Math.random() * total);
-    let prevScore = 0;
-    for (i = 0; i < restaurants.length; i++) {
-        prevScore = restaurantMap.get(restaurants[i-1]);
-        let curScore = restaurantMap.get(restaurants[i]);
-        if (prevScore <= selected && selected < prevScore + curScore) {
-            console.log(restaurants[i]);
-            return restaurants[i];
+        let selected = Math.floor(Math.random() * total);
+        let curTotalScore = 0;
+        // finds the correct restaurant by adding the next score of a restaurant to the 
+        for (i = 0; i < restaurants.length; i++) {
+            curTotalScore = restaurantMap.get(restaurants[i-1]);
+            let curScore = restaurantMap.get(restaurants[i]);
+            if (curTotalScore <= selected && selected < curTotalScore + curScore) {
+                return restaurants[i];
+            }
+            curTotalScore += curScore;
         }
-        prevScore = prevScore + curScore;
-    }
 }
 
