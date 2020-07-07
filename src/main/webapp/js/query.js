@@ -167,7 +167,7 @@ function createSearchElement(search) {
     const tempFeedbackElement = "Feedback: ";
     const buttons = null;
     feedbackElement.innerText, buttons = getFeedback(tempFeedbackElement, buttons);
-
+    //still working on adding buttons here
 
 }
 
@@ -221,5 +221,11 @@ function createSearchesButtons(buttons) {
 }
 
 function feedbackWindow() {
-
+    fetch("/form.html")
+      .then((response) => response.text())
+      .then((data) => {
+          feedbackButton.innerHTML = data;
+      })
+    var popup = document.getElementById("formPopup");
+    popup.classList.toggle("show");
 }
