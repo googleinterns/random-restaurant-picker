@@ -211,3 +211,36 @@ function weightRestaurants(restaurants) {
     }
 }
 
+//Directions to the selected restaurant
+function initMap() {
+  var directionsRenderer = new google.maps.DirectionsRenderer();
+  var directionsService = new google.maps.DirectionsService();
+  let lat = localStorage.getItem("lat")
+  let lng = localStorage.getItem("lng")
+  var map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 16,
+    center: { lat: parseFloat(lat), lng: parseFloat(lng)}
+  });
+  directionsRenderer.setMap(map);
+  directionsRenderer.setPanel(document.getElementById("directionsPanel"));
+  calculateAndDisplayRoute(directionsService, directionsRenderer);
+}
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+  let start = localStorage.getItem("lat") + "," + localStorage.getItem("lng");
+  directionsService.route(
+    {
+      origin: start,
+      destination: "1745 Plymouth Rd, Ann Arbor, MI 48105",
+      travelMode: "DRIVING"
+    },
+    function(response, status) {
+      if (status === "OK") {
+        directionsRenderer.setDirections(response);
+      } else {
+        window.alert("Directions request failed due to " + status);
+      }
+    }
+  );
+}
+
