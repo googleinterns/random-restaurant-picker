@@ -19,7 +19,6 @@
     <link href="css/form.css" rel="stylesheet">
     <link href="css/banner.css" rel="stylesheet">
 </head>
-
 <body>
     <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
     <div class="dropdown" id="account-menu">
@@ -46,25 +45,14 @@
                     </br>
                     <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
                     </br></br></br>
-                    <form id="randomize-form" method="POST" onsubmit="tryQuery(); return false">
+                    <form id="randomize-form" action="/query" method="POST">
                         <div class="input-group">
                             <input class="input--style-2" type="text" placeholder="Cuisine preference(s)" id="searchTerms">
                         </div>
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
-                                        <select id="distance">
-                                            <!-- Can we change distance to miles instead of meteres? -->
-                                            <option disabled="disabled" selected="selected">Max Distance (m)</option>
-                                            <option>No preference</option>
-                                            <option>5000</option>
-                                            <option>10000</option>
-                                            <option>15000</option>
-                                            <option>20000</option>
-                                        </select>
-                                        <div class="select-dropdown"></div>
-                                    </div>
+                                    <input class="input--style-2" type="text" placeholder="Max distance (meters)" name="radius">
                                 </div>
                             </div>
                             <div class="col-2">
