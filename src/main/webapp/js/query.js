@@ -46,6 +46,21 @@ function query() {
         });
 }
 
+$('#randomize-form').submit(function(e) {
+    e.preventDefault();
+    var form = $(this);
+    var url = form.attr('action');
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: form.serialize(),
+        success: function(response) {
+            query();
+        }
+    });
+});
+
 function loadPage() {
     window.location.replace("results.html");
 }
@@ -96,11 +111,11 @@ function onSignIn(googleUser) {
   let id_token = googleUser.getAuthResponse().id_token;
   let profile = googleUser.getBasicProfile();
   fetch(`/login?id_token=${id_token}`).then(response => response.json()).then((data) => {
-      localStorage.setItem("user", data.id); 
+      localStorage.setItem("user", data.id);
       localStorage.setItem("loggedIn", true);
       addUserContent(profile.getName(), profile.getImageUrl());
       toggleAccountMenu();
-    }); 
+    });
 }
 
 function addUserContent(name, image){
@@ -160,7 +175,7 @@ function weightRestaurants(restaurants) {
     let requestedType = document.getElementById('type');
     let requestedDietary = document.getElementById('dietary');
 
-    let restaurantMap = new Map(); 
+    let restaurantMap = new Map();
     for (restaurant in restaurants) {
         let score = 1;
         let priceLevel = restaurant.get("price_level");
@@ -184,8 +199,8 @@ function weightRestaurants(restaurants) {
         }
 
         // not sure below is helpful/accurate - might want to eliminate b/c will prob get taken care of w $$$
-        if (requestedType == "No preference" || 
-        (requestedType == "Fast Food" && restaurant.get("types").contains("meal_takeaway")) || 
+        if (requestedType == "No preference" ||
+        (requestedType == "Fast Food" && restaurant.get("types").contains("meal_takeaway")) ||
         (requestedType == "Dine-in" && !restaurant.get("types").contains("meal_takeaway"))) {
             score += 2;
         }
