@@ -47,7 +47,7 @@ public class SearchServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String user = request.getParameter("user");
     Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
-    Query query = new Query("savedSearch").setFilter(propertyFilter).addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query("savedSearch").setFilter(propertyFilter).addSort("timestamp",  SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
