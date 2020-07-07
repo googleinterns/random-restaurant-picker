@@ -11,40 +11,45 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-const apiKey = 'AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw';
-let searchResults;
+function query() {
+    let lat = localStorage.getItem("lat");
+    let lon = localStorage.getItem("lng");
+    const radius = document.getElementById('distance').value;
+    const type = 'restaurant';
+    const searchTerms = document.getElementById('searchTerms').value;
+    const errorEl = document.getElementById("error");
+    saveSearch(lat, lon, radius, searchTerms);
+    errorEl.classList.add('hidden');
+    fetch(`/query`, { method: 'GET' })
+        .then(response => response.json())
+        .then((response) => {
+            if (response.status === "OK") {
+                queryArr = response.results;
+                console.log(queryArr);
+                errorEl.classList.remove('error-banner');
+                errorEl.classList.remove('hidden');
+                errorEl.classList.add('success-banner');
+                errorEl.innerText = "Success!";
+                // test(JSON.stringify(response));
+            } else if (response.status === "INVALID_REQUEST")
+                throw 'Invalid request'
+            else if (response.status === "ZERO_RESULTS")
+                throw 'No results'
+            else
+                throw 'Unforeseen error'
+        })
+        .catch((error) => {
+            errorEl.classList.remove('success-banner');
+            errorEl.classList.remove('hidden');
+            errorEl.classList.add('error-banner');
+            errorEl.innerText = error;
+        });
+}
 let queryArr;
 
 function loadPage() {
     window.location.replace("results.html");
 }
-
-function query() {
-    let lat = localStorage.getItem("lat");
-    let long = localStorage.getItem("lng");
-    // const lat = 39.109635;
-    // const long = -108.542347;
-    const radius = document.getElementById('distance').value;
-    const type = 'restaurant';
-    const keyword = document.getElementById('searchTerms').value;
-    const url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + 'location=' + lat + ',' + long + '&radius=' + radius + '&type=' + type + '&keyword=' + keyword + '&key=' + apiKey;
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    saveSearch(url, radius, keyword);
-    fetch(proxyurl + url)
-        .then(response => response.json())
-        .then((response) => {
-            console.log(response);
-            let restaurantResults = response.results;
-            weightedRestaurant = weightRestaurants(restaurantResults);
-            console.log(weightedRestaurant);
-        })
-        .catch((error) => {
-            console.log(error);
-            console.log("Can’t access " + url + " response. Blocked by browser?")
-        });
-}
-
 
 // retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
 function getLocation() {
@@ -72,7 +77,6 @@ function getLocation() {
             location.innerText = address;
         });
     }
-    console.log(pos.lat);
 }
 
 // convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
@@ -80,10 +84,8 @@ function getLocation() {
 function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
-    const url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long + '&result_type=street_address&key=' + apiKey;
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
-    return fetch(proxyurl + url)
+    return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then(response => response.json())
         .then(response => {
             console.log(response.results[0].formatted_address);
@@ -122,12 +124,12 @@ function signOut() {
   toggleAccountMenu();
 }
 
-function saveSearch(url, radius, keyword){
+function saveSearch(lat, lng, radius, keyword){
     let userID = 0;
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&url=${url}`, {
+    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&lat=${lat}&lng=${lng}`, {
         method: 'POST'
     });
 }
