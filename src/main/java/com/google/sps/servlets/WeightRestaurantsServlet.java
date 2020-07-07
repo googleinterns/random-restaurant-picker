@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class weightRestaurantsServlet extends HttpServlet {
+public class WeightRestaurantsServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.sendRedirect("/results.html");
@@ -54,7 +54,7 @@ public class weightRestaurantsServlet extends HttpServlet {
                 score += 2;
             }
 
-            restaurantMap.set(restaurant, score);
+            restaurantMap.put(restaurant, score);
             total += score;
         }
         int selected = (int) Math.floor(Math.random() * total);
