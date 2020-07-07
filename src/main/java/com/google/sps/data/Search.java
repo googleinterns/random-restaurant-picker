@@ -20,15 +20,17 @@ public class Search {
     private String user;
     private String date;
     private String keywords;
-    private String url;
+    private String lat;
+    private String lng;
     private String radius;
     private long id;
 
-    public Search(String user, String date, String keywords, String url, String radius, long id){
+    public Search(String user, String date, String keywords, String lat, String lng, String radius, long id){
         this.user = user;
         this.date = date;
         this.keywords = keywords;
-        this.url = url;
+        this.lat = lat;
+        this.lng = lng;
         this.radius = radius;
         this.id = id;
     }
