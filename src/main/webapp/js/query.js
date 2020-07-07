@@ -25,7 +25,7 @@ function tryQuery() {
         .then(response => response.json())
         .then((response) => {
             if (response.status === "OK") {
-                queryArr = response.results;
+                let queryArr = response.results;
                 console.log(queryArr);
                 errorEl.classList.remove('error-banner');
                 errorEl.classList.remove('hidden');
@@ -45,7 +45,6 @@ function tryQuery() {
             errorEl.innerText = error;
         });
 }
-let queryArr;
 
 function loadPage() {
     window.location.replace("results.html");
