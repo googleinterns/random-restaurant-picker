@@ -137,7 +137,38 @@ function getSearches(){
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then(data => console.log(data));
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        const searchesEl = document.getElementById('cards');
+        searches.forEach((search) => {
+            searchesEl.appendChild(createSearchElement(search));
+        });
+    });
+}
+
+function createSearchElement(search) {
+    const cardElement = document.createElement('card-object');
+    cardElement.className = 'card';
+    
+    const nameElement = document.createElement('p2');
+    nameElement.innerText = search.name;
+
+    const paramElement = document.createElement('p3');
+    const tempParamElement = "Parameters: ";
+    for (items in search.keywords) {
+        tempParamElement += items;
+        tempParamElement += ", ";
+    }
+    tempParamElement += radius;
+    paramElement.innerText = tempParamElement;
+
+    const feedbackElement = document.createElement('p3');
+    // needs to create feedback element, submit feedback button if no feedback, 
+    // and submit w/ these parameters again button
+    const tempFeedbackElement = "Feedback: ";
+    const buttons = null;
+    feedbackElement.innerText, buttons = getFeedback(tempFeedbackElement, buttons);
+
+
 }
 
 function toggleShow() {
@@ -154,4 +185,41 @@ window.onclick = function(event) {
   }
 }
 
+function getFeedback(tempFeedbackElement, buttons) {
+    if (search.feedback = null) {
+        tempFeedbackElement += "You haven't submitted feedback yet";
+        buttons = true;
+    } else {
+        tempFeedbackElement += search.feedback;
+        buttons = false;
+    }
+    return tempFeedbackElement, buttons;
+}
 
+function createBreak() {
+    return document.createElement('/br');
+}
+
+function createSearchesButtons(buttons) {
+    if (!buttons) {
+        feedbackButton = document.createElement('feedback button');
+        feedbackButton.innerText = "Submit Feedback";
+        feedbackButton.addEventListener('click', () => {
+            feedbackWindow();
+        });
+        const popupText = document.createElement('span');
+        popupText.className = 'popuptext';
+        popupText.id = 'searchPopup';
+
+    }
+    // should essentially do 'reroll' with these parameters
+    searchButton = document.createElement('search button');
+    searchButton.innerText = "Search with These Parameters Again";
+    searchButton.addEventListener('click', () => {
+        searchAgain();
+    });
+}
+
+function feedbackWindow() {
+
+}
