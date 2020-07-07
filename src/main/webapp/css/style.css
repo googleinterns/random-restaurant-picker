@@ -218,3 +218,7 @@ p2 {
     font-size: 20px;
     font-weight:100;
 }
+
+#map {
+  height: 100%;
+}

@@ -29,7 +29,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 @WebServlet("/convert")
-public class PlacesAPI extends HttpServlet {
+public class ConvertLocationServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
