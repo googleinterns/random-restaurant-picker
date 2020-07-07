@@ -31,6 +31,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
 import java.text.SimpleDateFormat;  
 import java.util.Date;
@@ -46,7 +47,7 @@ public class SearchServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String user = request.getParameter("user");
     Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
-    Query query = new Query("savedSearch").setFilter(propertyFilter);
+    Query query = new Query("savedSearch").setFilter(propertyFilter).addSort("timestamp",  SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
