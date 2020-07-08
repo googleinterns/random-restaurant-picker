@@ -41,45 +41,46 @@ import java.util.Optional;
 @WebServlet("/query")
 public class Query extends HttpServlet {
 
-    private String resultsJson;
+    private JsonArray resultsJson;
+    private String finalResult;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println(resultsJson);
-        response.getWriter().println(resultsJson);
+        System.out.println(finalResult);
+        response.getWriter().println(finalResult);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestedPrice = request.getParameter("price");
+        String requestedRating = request.getParameter("rating");
         String lat = request.getParameter("lat");
         String lon = request.getParameter("lng");
         String radius = request.getParameter("radius");
         String searchTerms = request.getParameter("searchTerms");
         String apiKey = "AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw";
         if (searchTerms.contains("bakery") || searchTerms.contains("Bakery")) {
-            resultsJson += findRestaurants(lat, lon, radius, "bakery", searchTerms, apiKey); 
+            resultsJson.add(findRestaurants(lat, lon, radius, "bakery", searchTerms, apiKey)); 
         } else if (searchTerms.contains("cafe") || searchTerms.contains("Cafe")) {
-            resultsJson += findRestaurants(lat, lon, radius, "cafe", searchTerms, apiKey);
+            resultsJson.add(findRestaurants(lat, lon, radius, "cafe", searchTerms, apiKey));
         } else if (searchTerms.contains("bar") || searchTerms.contains("Bar") || searchTerms.contains("drink") || searchTerms.contains("Drink")) {
-            resultsJson += findRestaurants(lat, lon, radius, "bar", searchTerms, apiKey);
+            resultsJson.add(findRestaurants(lat, lon, radius, "bar", searchTerms, apiKey));
         } else if (searchTerms.contains("order") || searchTerms.contains("Order")) {
-            resultsJson += findRestaurants(lat, lon, radius, "meal_delivery", searchTerms, apiKey);
-            resultsJson += findRestaurants(lat, lon, radius, "meal_takeaway", searchTerms, apiKey);
+            resultsJson.add(findRestaurants(lat, lon, radius, "meal_delivery", searchTerms, apiKey));
+            resultsJson.add(findRestaurants(lat, lon, radius, "meal_takeaway", searchTerms, apiKey));
         }
-        resultsJson += findRestaurants(lat, lon, radius, "food", searchTerms, apiKey);
-        resultsJson += findRestaurants(lat, lon, radius, "restaurant", searchTerms, apiKey);
+        resultsJson.add(findRestaurants(lat, lon, radius, "food", searchTerms, apiKey));
+        resultsJson.add(findRestaurants(lat, lon, radius, "restaurant", searchTerms, apiKey));
 
-        JsonObject result = chooseRestaurant(jsonObj.get(resultsJson), Double.parseDouble(requestedPrice), Double.parseDouble(requestedRating));
+        JsonObject result = chooseRestaurant(resultsJson, Double.parseDouble(requestedPrice), Double.parseDouble(requestedRating));
         result.addProperty("status", "OK");
-        resultsJson = result.toString();
+        finalResult = result.toString();
 
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
-    public String findRestaurants(String lat, String lon, String radius, String type, String searchTerms, String apiKey) {
+    private JsonElement findRestaurants(String lat, String lon, String radius, String type, String searchTerms, String apiKey) throws IOException {
         String sURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
-        String requestedPrice = request.getParameter("price");
-        String requestedRating = request.getParameter("rating");
 
         URL url = new URL(sURL);
         URLConnection requestURL = url.openConnection();
@@ -88,9 +89,7 @@ public class Query extends HttpServlet {
         JsonParser jp = new JsonParser();
         JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-
-        String newResultsJson = jsonObj.toString();
-        return newResultsJson;
+        return jsonObj.get("results");
     }
 
     private JsonObject chooseRestaurant(JsonElement restaurants, Double price, Double rating){
