@@ -52,6 +52,7 @@ public class Query extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("hello");
         String requestedPrice = request.getParameter("price");
         String requestedRating = request.getParameter("rating");
         String lat = request.getParameter("lat");
@@ -71,10 +72,13 @@ public class Query extends HttpServlet {
         }
         resultsJson.add(findRestaurants(lat, lon, radius, "food", searchTerms, apiKey));
         resultsJson.add(findRestaurants(lat, lon, radius, "restaurant", searchTerms, apiKey));
+        System.out.println("all results: " + resultsJson);
 
         JsonObject result = chooseRestaurant(resultsJson, Double.parseDouble(requestedPrice), Double.parseDouble(requestedRating));
+        System.out.println("result: " + result);
         result.addProperty("status", "OK");
         finalResult = result.toString();
+        System.out.println("final result: " + finalResult);
 
         response.setStatus(HttpServletResponse.SC_OK);
     }
@@ -89,10 +93,11 @@ public class Query extends HttpServlet {
         JsonParser jp = new JsonParser();
         JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
         JsonObject jsonObj = jsonElement.getAsJsonObject();
+        System.out.println("json " + jsonObj.get("results"));
         return jsonObj.get("results");
     }
 
-    private JsonObject chooseRestaurant(JsonElement restaurants, Double price, Double rating){
+    private JsonObject chooseRestaurant(JsonArray restaurants, Double price, Double rating){
         Map<String, Integer> restaurantScores = new HashMap<>();
         Collection<JsonObject> restaurantCollection = new Gson().fromJson(restaurants, new TypeToken<Collection<JsonObject>>(){}.getType());
         int score;
