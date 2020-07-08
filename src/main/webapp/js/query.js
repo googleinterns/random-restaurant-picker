@@ -97,8 +97,6 @@ function getLocation() {
     }
 }
 
-// convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
-// address in the location-container spot (so it was in the spot as the sydney australia address)
 function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
@@ -282,4 +280,3 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     }
   );
 }
-
