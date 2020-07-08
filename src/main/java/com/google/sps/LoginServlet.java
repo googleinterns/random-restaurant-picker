@@ -46,7 +46,6 @@ public class LoginServlet extends HttpServlet {
 
         // Print user identifier
         String userId = payload.getSubject();
-        System.out.println("User ID: " + userId);
 
         // Get profile information from payload
         json.put("id", userId);
