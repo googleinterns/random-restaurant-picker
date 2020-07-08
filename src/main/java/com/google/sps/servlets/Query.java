@@ -46,9 +46,24 @@ public class Query extends HttpServlet {
         String lat = request.getParameter("lat");
         String lon = request.getParameter("lng");
         String radius = request.getParameter("radius");
-        String type = "restaurant";
         String searchTerms = request.getParameter("searchTerms");
         String apiKey = "AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw";
+        if (searchTerms.contains("bakery") || searchTerms.contains("Bakery")) {
+            resultsJson += findRestaurants(lat, lon, radius, "bakery", searchTerms, apiKey); 
+        } else if (searchTerms.contains("cafe") || searchTerms.contains("Cafe")) {
+            resultsJson += findRestaurants(lat, lon, radius, "cafe", searchTerms, apiKey);
+        } else if (searchTerms.contains("bar") || searchTerms.contains("Bar") || searchTerms.contains("drink") || searchTerms.contains("Drink")) {
+            resultsJson += findRestaurants(lat, lon, radius, "bar", searchTerms, apiKey);
+        } else if (searchTerms.contains("order") || searchTerms.contains("Order")) {
+            resultsJson += findRestaurants(lat, lon, radius, "meal_delivery", searchTerms, apiKey);
+            resultsJson += findRestaurants(lat, lon, radius, "meal_takeaway", searchTerms, apiKey);
+        }
+        resultsJson += findRestaurants(lat, lon, radius, "food", searchTerms, apiKey);
+        resultsJson += findRestaurants(lat, lon, radius, "restaurant", searchTerms, apiKey);
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    public String findRestaurants(String lat, String lon, String radius, String type, String searchTerms, String apiKey) {
         String sURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
 
         URL url = new URL(sURL);
@@ -58,7 +73,7 @@ public class Query extends HttpServlet {
         JsonParser jp = new JsonParser();
         JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-        resultsJson = jsonObj.toString();
-        response.setStatus(HttpServletResponse.SC_OK);
+        String newResultsJson = jsonObj.toString();
+        return newResultsJson;
     }
 }

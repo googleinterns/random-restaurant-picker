@@ -99,8 +99,6 @@ function getLocation() {
     }
 }
 
-// convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
-// address in the location-container spot (so it was in the spot as the sydney australia address)
 function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
@@ -305,11 +303,11 @@ function weighRestaurants(restaurants) {
 
             if (requestedRating == 0 || requestedRating == ratingLevel) {
                 score += 4;
-            } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
+            } else if (Math.abs(requestedRating-ratingLevel) <= .5) {
                 score += 3;
-            } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
+            } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
                 score += 2;
-            } else if (Math.abs(requestedRating-ratingLevel) <= 3) {
+            } else if (Math.abs(requestedRating-ratingLevel) <= 1.5) {
                 score += 1;
             }
 
@@ -318,7 +316,8 @@ function weighRestaurants(restaurants) {
         }
         let selected = Math.floor(Math.random() * total);
         let curTotalScore = 0;
-        // finds the correct restaurant by adding the next score of a restaurant to the 
+        // finds the correct restaurant by adding the next score of a restaurant to the current total; when the
+        // randomly selected score falls within the current range, that is the score that is selected
         for (i = 0; i < restaurants.length; i++) {
             curTotalScore = restaurantMap.get(restaurants[i-1]);
             let curScore = restaurantMap.get(restaurants[i]);
