@@ -167,6 +167,7 @@ function createSearchElement(search) {
     cardElement.className = 'card';
 
     const nameElement = document.createElement('p2');
+    // need to create a name attribute of search - linked to name of returned restaurant
     nameElement.innerText = search.name;
 
     const paramElement = document.createElement('p3');
@@ -183,9 +184,20 @@ function createSearchElement(search) {
     // and submit w/ these parameters again button
     const tempFeedbackElement = "Feedback: ";
     const buttons = null;
-    feedbackElement.innerText, buttons = getFeedback(tempFeedbackElement, buttons);
-    //still working on adding buttons here
-
+    feedbackElement.innerText, buttons = getFeedback(tempFeedbackElement, buttons, search);
+    feedbackButton = null;
+    searchButton = null;
+    const centerButtons = document.createElement('div1');
+    if (buttons) {
+        searchButton = createSearchesButtons(buttons, search);
+    } else {
+        searchButton, feedbackButton = createSearchesButtons(buttons, search);
+    }
+    if (feedbackButton == null) {
+        centerButtons.innerHTML = searchButton;
+    } else {
+        centerButtons.innerHTML = searchButton + feedbackButton;
+    }
 }
 
 function toggleShow() {
@@ -202,7 +214,8 @@ window.onclick = function(event) {
   }
 }
 
-function getFeedback(tempFeedbackElement, buttons) {
+function getFeedback(tempFeedbackElement, buttons, search) {
+    // need to create new feedback element attached to search; displays feedback if already provided
     if (search.feedback = null) {
         tempFeedbackElement += "You haven't submitted feedback yet";
         buttons = true;
@@ -217,12 +230,13 @@ function createBreak() {
     return document.createElement('/br');
 }
 
-function createSearchesButtons(buttons) {
+function createSearchesButtons(buttons, search) {
+    feedbackButton = null;
     if (!buttons) {
         feedbackButton = document.createElement('feedback button');
         feedbackButton.innerText = "Submit Feedback";
         feedbackButton.addEventListener('click', () => {
-            feedbackWindow();
+            feedbackWindow(feedbackButton);
         });
         const popupText = document.createElement('span');
         popupText.className = 'popuptext';
@@ -233,12 +247,21 @@ function createSearchesButtons(buttons) {
     searchButton = document.createElement('search button');
     searchButton.innerText = "Search with These Parameters Again";
     searchButton.addEventListener('click', () => {
-        searchAgain();
+        searchAgain(search);
     });
+    if (feedbackButton == null) {
+        return searchButton;
+    } else {
+        return searchButton, feedbackButton;
+    }
 }
 
+// needs to essentially perform a reroll
+function searchAgain(search) {
 
-function feedbackWindow() {
+}
+
+function feedbackWindow(feedbackButton) {
     fetch("/form.html")
       .then((response) => response.text())
       .then((data) => {
