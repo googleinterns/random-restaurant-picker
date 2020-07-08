@@ -19,13 +19,11 @@ function query() {
     const errorEl = document.getElementById("error");
     saveSearch(lat, lon, radius, searchTerms);
     errorEl.classList.add('hidden');
-    console.log("Made it 1");
     fetch(`/query`, { method: 'GET' })
         .then(response => response.json())
         .then((response) => {
-            console.log(response);
             if (response.status === "OK") {
-                let queryArr = response.results;
+                let queryArr = response;
                 console.log(queryArr);
                 errorEl.classList.remove('error-banner');
                 errorEl.classList.remove('hidden');
@@ -283,49 +281,5 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
       }
     }
   );
-}
-
-function weighRestaurants(restaurants) {
-    let requestedPrice = document.getElementById('price').value;
-    let requestedRating = document.getElementById('rating').value;
-
-    HashMap<String, Integer> restaurantMap;
-        let total = 0; 
-        for (restaurant in restaurants) {
-            let score = 1;
-            let priceLevel = restaurant.price_level;
-            let ratingLevel = restaurant.rating;
-            if (requestedPrice == 0 || requestedPrice == priceLevel) {
-                score += 4;
-            } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
-                score += 3;
-            } else if (Math.abs(requestedPrice-priceLevel) <= 2) {
-                score += 2;
-            }
-
-            if (requestedRating == 0 || requestedRating == ratingLevel) {
-                score += 4;
-            } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
-                score += 3;
-            } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
-                score += 2;
-            } else if (Math.abs(requestedRating-ratingLevel) <= 3) {
-                score += 1;
-            }
-
-            restaurantMap.set(restaurant, score);
-            total += score;
-        }
-        let selected = Math.floor(Math.random() * total);
-        let curTotalScore = 0;
-        // finds the correct restaurant by adding the next score of a restaurant to the 
-        for (i = 0; i < restaurants.length; i++) {
-            curTotalScore = restaurantMap.get(restaurants[i-1]);
-            let curScore = restaurantMap.get(restaurants[i]);
-            if (curTotalScore <= selected && selected < curTotalScore + curScore) {
-                return restaurants[i];
-            }
-            curTotalScore += curScore;
-        }
 }
 
