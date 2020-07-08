@@ -17,26 +17,30 @@
     <link href="css/form.css" rel="stylesheet" media="all">
 </head>
 
-<body>
+<body onload="getSearches()">
+    <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
+    <div class="dropdown" id="account-menu">
+        <button onclick="toggleShow()" class="dropbtn">
+            <img id="profile-pic" src="">
+            <h3 id="user-name">name</h3>
+        </button>
+        <div id="myDropdown" class="dropdown-content">
+            <a onclick="backToHome()">Home</a>
+            <a onclick="toAccount()">Account</a>
+            <a onclick="toSearches()">History</a>
+            <a onclick="signOut()">Sign Out</a>
+        </div>
+    </div>
     <div class="p-t-80" style="text-align:center">
         <h style="font-size:40px">Past Searches</h>
     
     <div class="page-wrapper p-t-40">
         <div class="wrapper wrapper--w960">
+            <!-- need to fix this in query.js -->
             <div class="card card-2">
                 <div class="card-body" style="text-align:left">
                     <div id="cards">
-                        <p2 style="font-size: 30px; font-weight:bold">Restaurant Name</p2>
-                        </br>
-                        <p2>Inputted parameters: &nbsp<p2>Example</p2></p2>
-                        </br>
-                        <p2>Feedback: &nbsp<p2>Example</p2></p2>
-                        </br>
-                        <div align="middle">
-                        <p2>Button Options</p2>
-                        </div>
                     </div>
-                    
                 </div>
             </div>
         </div>

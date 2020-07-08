@@ -303,3 +303,15 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     }
   );
 }
+
+function backToHome() {
+    window.location.replace("index.html");
+}
+
+function toAccount() {
+    window.location.replace("account-info.html");
+}
+
+function toSearches() {
+    window.location.replace("past-searches.html");
+}
