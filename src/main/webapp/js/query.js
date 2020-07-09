@@ -36,6 +36,7 @@ function query(queryStr) {
     fetch(`/query?${queryStr}`, { method: "POST"})
         .then((response) => response.json())
         .then((response) => {
+            console.log(response);
             if (response.status === "OK") {
                 let name = response.pick.name;
                 let rating = response.pick.rating + ' ★';

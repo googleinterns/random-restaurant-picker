@@ -37,25 +37,29 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Random;
 
 @WebServlet("/query")
 public class QueryServlet extends HttpServlet {
 
     private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
     private final Gson gson = new GsonBuilder().create();
-    private User user;
 
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
+        User user = (User) session.getAttribute("user");
         if(response == null)
             servletResponse.getWriter().println(gson.toJson(new Response("NO_RESULTS", null)));
         else if (response.getStatus().equals("OK"))
-            response.pick();
+            chooseRestaurant(response, user.priceLevel());
         servletResponse.getWriter().println(gson.toJson(response));
     }
 
@@ -67,9 +71,16 @@ public class QueryServlet extends HttpServlet {
         String radius = servletRequest.getParameter("radius");
         String type = "restaurant";
         String searchTerms = servletRequest.getParameter("searchTerms");
-        String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
+        searchTerms = searchTerms.replaceAll("\\s", "+");
 
-        URLConnection conn = new URL(urlStr).openConnection();
+        //Adds the diet options to the search: causes the search to return multiple types
+        String dietaryOptions = servletRequest.getParameter("dietary-options");
+        if(!dietaryOptions.equals("Nothing specific"))
+            searchTerms = searchTerms + "+" + dietaryOptions;
+
+        String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
+        URL url = new URL(urlStr);
+        URLConnection conn = url.openConnection();
         conn.connect();
 
         JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
@@ -78,11 +89,44 @@ public class QueryServlet extends HttpServlet {
 
         HttpSession session = servletRequest.getSession(true);
         if (response.getStatus().equals("OK"))
-            response.pick();
+            chooseRestaurant(response, servletRequest.getParameter("priceLevel"));
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
         servletResponse.getWriter().println(gson.toJson(response));
         //TODO: make this a separate class or function, doesn't need a servlet to handle storing
         servletRequest.getRequestDispatcher("/searches").include(servletRequest, servletResponse);
+    }
+
+    private void chooseRestaurant(Response response, int requestedPrice){
+        if(response.results().size() == 0){
+            response.setStatus("ZERO_RESULTS");
+            return;
+        }
+        HashMap<String, Integer> restaurantScores = new HashMap<>();
+        int score; 
+        int total = 0;
+        for(Restaurant restaurant : response.results()){
+            score = 1;
+            if(requestedPrice == 0 || requestedPrice == restaurant.price())
+                score += 50;
+            else if(Math.abs(requestedPrice - restaurant.getPrice()) <= 1)
+                score += 25;
+            else if(Math.abs(requestedPrice - restaurant.getPrice()) <= 2)
+                score += 12;
+            else if(Math.abs(requestedPrice - restaurant.getPrice()) <= 3)
+                score += 6;
+            restaurantScores.put(restaurant.name(), score);
+            total += score;
+        }
+        int selectedNum = new Random().nextInt(total);
+        int value = 0;
+        for(String key : restaurantScores.keySet()){
+            value += restaurantScores.get(key);
+            if(selectedNum <= value){
+                response.setPick(response.results().stream().filter(p -> p.name().equals(key)).findFirst().orElse(null));
+                response.results().remove(response.getPick());
+                return;
+            }
+        }
     }
 }

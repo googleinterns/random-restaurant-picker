@@ -1,5 +1,10 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 /home/ryan/Desktop/random-restaurant-picker/src/main/java/com/google/sps/data/SearchItem.java
 /home/ryan/Desktop/random-restaurant-picker/src/main/java/com/google/sps/servlets/FetchImageServlet.java
 /home/ryan/Desktop/random-restaurant-picker/src/main/java/com/google/sps/data/UserFeedback.java
@@ -20,3 +25,42 @@
 =======
 /Users/jason/Documents/School/Freshman summer/STEP/Work/Random Restaurant Picker/reroll/src/main/java/com/google/sps/servlets/Query.java
 >>>>>>> c7cda68... backend uses proper GET and POST
+=======
+/Users/jason/Documents/School/Freshman summer/STEP/Work/random-restaurant-picker/src/main/java/com/google/sps/data/Response.java
+/Users/jason/Documents/School/Freshman summer/STEP/Work/random-restaurant-picker/src/main/java/com/google/sps/servlets/ConvertLocationServlet.java
+/Users/jason/Documents/School/Freshman summer/STEP/Work/random-restaurant-picker/src/main/java/com/google/sps/servlets/Query.java
+/Users/jason/Documents/School/Freshman summer/STEP/Work/random-restaurant-picker/src/main/java/com/google/sps/data/User.java
+/Users/jason/Documents/School/Freshman summer/STEP/Work/random-restaurant-picker/src/main/java/com/google/sps/data/Restaurant.java
+>>>>>>> cd39a20... class-based back end, results page, better form UI
+=======
+=======
+>>>>>>> dd94609... update query function
+=======
+>>>>>>> 1cf424a... Account header remains
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Search.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/Query.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/ConvertLocationServlet.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Restaurant.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/SearchServlet.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/User.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/LoginServlet.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Response.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Feedback.java
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 075473a... Combine with authentication and datastore feature
+=======
+>>>>>>> dd94609... update query function
+=======
+>>>>>>> 1cf424a... Account header remains
+=======
+/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/Query.java
+/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/data/Restaurant.java
+/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/data/Search.java
+/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/data/Feedback.java
+/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/LoginServlet.java
+/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/data/Response.java
+/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/ConvertLocationServlet.java
+/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/data/User.java
+/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/SearchServlet.java
+>>>>>>> cd22cc8... target files problem
