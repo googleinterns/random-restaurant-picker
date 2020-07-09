@@ -39,8 +39,8 @@ import java.util.ArrayList;
 @WebServlet("/query")
 public class Query extends HttpServlet {
 
-    private String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
-    private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
+    private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private Response response;
     private User user;
 

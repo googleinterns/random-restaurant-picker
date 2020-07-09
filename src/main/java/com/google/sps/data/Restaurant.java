@@ -29,7 +29,7 @@ public final class Restaurant {
     // private final String icon;
     // private final String id;
     // private final OpeningHours opening_hours;
-    // // private final Photo[] photos;
+    // private final Photo[] photos;
     // private final String place_id;
     // private final PlusCode plus_code;
     // private final int price_level;

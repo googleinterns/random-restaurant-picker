@@ -39,6 +39,10 @@ handlers:
   script: unused
   login: optional
   secure: optional
+- url: /convert
+  script: unused
+  login: optional
+  secure: optional
 - url: /query
   script: unused
   login: optional

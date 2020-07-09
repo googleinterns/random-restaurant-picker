@@ -21,9 +21,6 @@ function query() {
         .then((response) => {
             responseJson = response; // Debug
             if (response.status === "OK") {
-                errorEl.classList.remove('error-banner');
-                errorEl.classList.remove('hidden');
-                errorEl.classList.add('success-banner');
                 errorEl.innerText = response.pick;
                 resultsPage(response.pick);
             } else if (response.status === "INVALID_REQUEST")
@@ -43,18 +40,79 @@ function query() {
         });
 }
 
-$('#randomize-form').submit(function(e) {
+// retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
+function getLocation() {
+    let location = document.getElementById("location-container");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            let pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+            };
+            localStorage.setItem("lat", pos.lat);
+            localStorage.setItem("lng", pos.lng);
+            convertLocation(pos).then((address)=>{
+                console.log(address);
+                location.innerText = address;
+            });
+        });
+    } else {
+    // Browser doesn't support Geolocation
+        let pos = {lat: -34.397, lng: 150.644};
+        localStorage.setItem("lat", pos.lat);
+        localStorage.setItem("lng", pos.lng);
+        convertLocation(pos).then((address)=>{
+            console.log(address);
+            location.innerText = address;
+        });
+    }
+}
+
+// convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
+// address in the location-container spot (so it was in the spot as the sydney australia address)
+function convertLocation(location) {
+    let lat = location.lat;
+    let long = location.lng;
+    return fetch(`/convert?lat=${lat}&lng=${long}`)
+        .then(response => response.json())
+        .then(response => {
+            console.log(response.results[0].formatted_address);
+            return response.results[0].formatted_address;
+        })
+        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+}
+
+$('#randomize-form').submit(function(event) {
     const errorEl = document.getElementById("error");
     errorEl.classList.add('hidden');
 
-    e.preventDefault();
-    var form = $(this);
-    var url = form.attr('action');
+    event.preventDefault();
+    let url = form.attr('action');
+    let lat = localStorage.getItem("lat");
+    let lng = localStorage.getItem("lng");
+    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}`;
 
     $.ajax({
         type: "POST",
         url: url,
-        data: form.serialize(),
+        data: queryStr,
+        success: function(response) {
+            query();
+        }
+    });
+});
+
+$('#randomize-form').submit(function(e) {
+    e.preventDefault();
+    let url = $(this).attr('action');
+    let lat = localStorage.getItem("lat");
+    let lng = localStorage.getItem("lng");
+    let datum = $(this).serialize()+`&lat=${lat}&lng=${lng}`;
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: datum,
         success: function(response) {
             query();
         }
