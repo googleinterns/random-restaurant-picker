@@ -26,8 +26,9 @@ function query() {
         .then((response) => {
             responseJson = response; // Debug
             if (response.status === "OK") {
-                errorEl.innerText = response.pick;
-                resultsPage(response.pick);
+                let choice = response.pick;
+                errorEl.innerText = choice;
+                resultsPage(choice);
             } else if (response.status === "INVALID_REQUEST")
                 throw 'Invalid request';
             else if (response.status === "ZERO_RESULTS")
@@ -148,7 +149,7 @@ function convertLocation(location) {
 }
 
 /*
-    FUNCTION TO HANDLE USER'S SIGNING IN
+    FUNCTIONS TO HANDLE USERS SIGNING IN
 */
 function onSignIn(googleUser) {
   let id_token = googleUser.getAuthResponse().id_token;

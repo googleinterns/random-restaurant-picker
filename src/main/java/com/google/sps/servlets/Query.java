@@ -72,5 +72,6 @@ public class Query extends HttpServlet {
         int priceLevel = Integer.parseInt(servletRequest.getParameter("priceLevel"));
         user = new User(priceLevel);
         System.out.println(user);
+        System.out.println(response.status());
     }
 }
