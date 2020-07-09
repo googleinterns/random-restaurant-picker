@@ -20,10 +20,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import com.google.sps.data.Response;
+import com.google.sps.data.Restaurant;
+import com.google.sps.data.User;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -34,30 +39,38 @@ import java.util.ArrayList;
 @WebServlet("/query")
 public class Query extends HttpServlet {
 
-    private String resultsJson;
+    private String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
+    private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    private Response response;
+    private User user;
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.getWriter().println(resultsJson);
+    public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
+        if (response.status().equals("OK"))
+            response.pick();
+        servletResponse.getWriter().println(gson.toJson(response));
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         String lat = "-33.8670522";
         String lon = "151.1957362";
-        String radius = request.getParameter("radius");
+        String radius = servletRequest.getParameter("radius");
         String type = "restaurant";
-        String searchTerms = request.getParameter("searchTerms");
-        String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
-        String sURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
+        String searchTerms = servletRequest.getParameter("searchTerms");
+        String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
 
-        URL url = new URL(sURL);
+        URL url = new URL(urlStr);
         URLConnection requestURL = url.openConnection();
         requestURL.connect();
 
         JsonParser jp = new JsonParser();
         JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-        resultsJson = jsonObj.toString();
+        JsonObject responseJson = jsonElement.getAsJsonObject();
+        response = gson.fromJson(responseJson, Response.class);
+
+        int priceLevel = Integer.parseInt(servletRequest.getParameter("priceLevel"));
+        user = new User(priceLevel);
+        System.out.println(user);
     }
 }

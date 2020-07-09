@@ -12,27 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-let queryArr;
+let responseJson;
 
 function query() {
     const errorEl = document.getElementById("error");
-    errorEl.classList.add('hidden');
     fetch(`/query`, { method: 'GET' })
         .then(response => response.json())
         .then((response) => {
+            responseJson = response; // Debug
             if (response.status === "OK") {
-                queryArr = response.results;
                 errorEl.classList.remove('error-banner');
                 errorEl.classList.remove('hidden');
                 errorEl.classList.add('success-banner');
-                errorEl.innerText = "Success!";
-                // test(JSON.stringify(response));
+                errorEl.innerText = response.pick;
+                resultsPage(response.pick);
             } else if (response.status === "INVALID_REQUEST")
-                throw 'Invalid request'
+                throw 'Invalid request';
             else if (response.status === "ZERO_RESULTS")
-                throw 'No results'
+                throw 'No results';
+            else if (response.status === "NO_REROLLS")
+                throw 'No re-rolls left';
             else
-                throw 'Unforeseen error'
+                throw 'Unforeseen error';
         })
         .catch((error) => {
             errorEl.classList.remove('success-banner');
@@ -43,6 +44,9 @@ function query() {
 }
 
 $('#randomize-form').submit(function(e) {
+    const errorEl = document.getElementById("error");
+    errorEl.classList.add('hidden');
+
     e.preventDefault();
     var form = $(this);
     var url = form.attr('action');
@@ -56,3 +60,42 @@ $('#randomize-form').submit(function(e) {
         }
     });
 });
+
+$("input, textarea").blur(function() {
+    if ($(this).val() != "") {
+        $(this).addClass("active");
+    } else {
+        $(this).removeClass("active");
+    }
+})
+
+function resultsPage(pick) {
+    fetch(`../results.html`)
+        .then(html => html.text())
+        .then((html) => {
+            document.getElementsByTagName('body')[0].innerHTML = html;
+            const pickEl = document.getElementById("pick");
+            pickEl.innerText = pick;
+        });
+}
+
+function reroll() {
+    const pickEl = document.getElementById("pick");
+    fetch(`/query`, { method: 'GET' })
+        .then(response => response.json())
+        .then((response) => {
+            if (response.status === "OK") {
+                pickEl.innerText = response.pick;
+            } else if (response.status === "INVALID_REQUEST")
+                throw 'Invalid request';
+            else if (response.status === "ZERO_RESULTS")
+                throw 'No results';
+            else if (response.status === "NO_REROLLS")
+                throw 'No re-rolls left';
+            else
+                throw 'Unforeseen error';
+        })
+        .catch((error) => {
+            pickEl.innerText = error;
+        });
+}
