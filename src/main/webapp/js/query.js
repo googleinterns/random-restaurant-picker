@@ -163,8 +163,10 @@ function getSearches(){
 }
 
 function createSearchElement(search) {
-    const cardElement = document.createElement('card-object');
-    cardElement.className = 'card';
+    const newCardEl = document.createElement('div');
+    newCardEl.className = 'card card-2';
+    const newCardBody = document.createElement('div');
+    newCardBody.className = 'card-body';
 
     const nameElement = document.createElement('p2');
     // need to create a name attribute of search - linked to name of returned restaurant
@@ -180,8 +182,6 @@ function createSearchElement(search) {
     paramElement.innerText = tempParamElement;
 
     const feedbackElement = document.createElement('p3');
-    // needs to create feedback element, submit feedback button if no feedback,
-    // and submit w/ these parameters again button
     const tempFeedbackElement = "Feedback: ";
     const buttons = null;
     feedbackElement.innerText, buttons = getFeedback(tempFeedbackElement, buttons, search);
@@ -198,6 +198,9 @@ function createSearchElement(search) {
     } else {
         centerButtons.innerHTML = searchButton + feedbackButton;
     }
+
+    newCardBody.innerHTML = nameElement + paramElement + feedbackElement + centerButtons;
+    newCardEl.innerHTML = newCardBody;
 }
 
 function toggleShow() {

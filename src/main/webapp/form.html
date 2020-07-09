@@ -20,7 +20,7 @@
 
 <body>
     <span class="popuptext" id="formPopup">
-        <form id="searches-form">
+        <form id="searches-form" action="/feedback" method="POST">
             <div class="input-group">
                 <div class="rs-select2 js-select-simple select--no-search">
                     <select id="rating" name="restaurant-rating">
@@ -49,6 +49,7 @@
             <div class="input-group">
                 <input class="input--style-2" type="text" placeholder="Notes" name="notes" id="notes" autocomplete="off">
             </div>
+            <input type="submit"/>
         </form>
     </span>
 </body>
