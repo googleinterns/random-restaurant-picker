@@ -1,5 +1,9 @@
-/Users/jason/Documents/School/Freshman summer/STEP/Work/random-restaurant-picker/src/main/java/com/google/sps/data/Response.java
-/Users/jason/Documents/School/Freshman summer/STEP/Work/random-restaurant-picker/src/main/java/com/google/sps/servlets/ConvertLocationServlet.java
-/Users/jason/Documents/School/Freshman summer/STEP/Work/random-restaurant-picker/src/main/java/com/google/sps/servlets/Query.java
-/Users/jason/Documents/School/Freshman summer/STEP/Work/random-restaurant-picker/src/main/java/com/google/sps/data/User.java
-/Users/jason/Documents/School/Freshman summer/STEP/Work/random-restaurant-picker/src/main/java/com/google/sps/data/Restaurant.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Search.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/Query.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/ConvertLocationServlet.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Restaurant.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/SearchServlet.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/User.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/servlets/LoginServlet.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Response.java
+/home/ryangudal/random-restaurant-picker/src/main/java/com/google/sps/data/Feedback.java

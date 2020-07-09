@@ -53,8 +53,8 @@ public class Query extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
-        String lat = "-33.8670522";
-        String lon = "151.1957362";
+        String lat = servletRequest.getParameter("lat");
+        String lon = servletRequest.getParameter("lng");
         String radius = servletRequest.getParameter("radius");
         String type = "restaurant";
         String searchTerms = servletRequest.getParameter("searchTerms");
