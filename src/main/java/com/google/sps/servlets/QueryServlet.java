@@ -43,11 +43,7 @@ import java.util.ArrayList;
 
 @WebServlet("/query")
 public class QueryServlet extends HttpServlet {
-
-<<<<<<< HEAD
-=======
     private final String apiKey = AccessSecret.accessSecretVersion();
->>>>>>> Create a class that accesses secretmanager
     private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private Response response;
     private User user;
