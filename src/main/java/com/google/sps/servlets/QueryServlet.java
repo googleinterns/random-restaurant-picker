@@ -42,7 +42,6 @@ import java.util.ArrayList;
 @WebServlet("/query")
 public class QueryServlet extends HttpServlet {
 
-    private final String apiKey = AccessSecret.accessSecretVersion();
     private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private Response response;
     private User user;
@@ -58,6 +57,8 @@ public class QueryServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
+        AccessSecret secret = new AccessSecret();
+        String apiKey = secret.getKey();
         String lat = servletRequest.getParameter("lat");
         String lon = servletRequest.getParameter("lng");
         String radius = servletRequest.getParameter("radius");
