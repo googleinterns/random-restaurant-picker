@@ -44,10 +44,10 @@ import java.util.Optional;
 public class FeedbackServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int restaurantRating = request.getParameter('restaurant-rating');
-        int rrpRating = request.getParameter('rrp-rating');
-        String notes = request.getParameter('notes');
-        Feedback feedback = new Feedback(restaurantRating. rrpRating, notes);
+        int restaurantRating = request.getParameter("restaurant-rating");
+        int rrpRating = request.getParameter("rrp-rating");
+        String notes = request.getParameter("notes");
+        Feedback feedback = new Feedback(restaurantRating, rrpRating, notes);
         
     }
 }

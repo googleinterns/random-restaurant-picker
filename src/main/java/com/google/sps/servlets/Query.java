@@ -46,53 +46,53 @@ import java.util.Optional;
 @WebServlet("/query")
 public class Query extends HttpServlet {
 
-<<<<<<< HEAD
-    private JsonArray resultsJson;
-    private String finalResult;
+// <<<<<<< HEAD
+//     private JsonArray resultsJson;
+//     private String finalResult;
 
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println(finalResult);
-        response.getWriter().println(finalResult);
-    }
+//     @Override
+//     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//         System.out.println(finalResult);
+//         response.getWriter().println(finalResult);
+//     }
 
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("hello");
-        String requestedPrice = request.getParameter("price");
-        String requestedRating = request.getParameter("rating");
-        String lat = request.getParameter("lat");
-        String lon = request.getParameter("lng");
-        String radius = request.getParameter("radius");
-        String searchTerms = request.getParameter("searchTerms");
-        String apiKey = "AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw";
-        if (searchTerms.contains("bakery") || searchTerms.contains("Bakery")) {
-            resultsJson.add(findRestaurants(lat, lon, radius, "bakery", searchTerms, apiKey)); 
-        } else if (searchTerms.contains("cafe") || searchTerms.contains("Cafe")) {
-            resultsJson.add(findRestaurants(lat, lon, radius, "cafe", searchTerms, apiKey));
-        } else if (searchTerms.contains("bar") || searchTerms.contains("Bar") || searchTerms.contains("drink") || searchTerms.contains("Drink")) {
-            resultsJson.add(findRestaurants(lat, lon, radius, "bar", searchTerms, apiKey));
-        } else if (searchTerms.contains("order") || searchTerms.contains("Order")) {
-            resultsJson.add(findRestaurants(lat, lon, radius, "meal_delivery", searchTerms, apiKey));
-            resultsJson.add(findRestaurants(lat, lon, radius, "meal_takeaway", searchTerms, apiKey));
-        }
-        resultsJson.add(findRestaurants(lat, lon, radius, "food", searchTerms, apiKey));
-        resultsJson.add(findRestaurants(lat, lon, radius, "restaurant", searchTerms, apiKey));
-        System.out.println("all results: " + resultsJson);
+//     @Override
+//     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//         System.out.println("hello");
+//         String requestedPrice = request.getParameter("price");
+//         String requestedRating = request.getParameter("rating");
+//         String lat = request.getParameter("lat");
+//         String lon = request.getParameter("lng");
+//         String radius = request.getParameter("radius");
+//         String searchTerms = request.getParameter("searchTerms");
+//         String apiKey = "AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw";
+//         if (searchTerms.contains("bakery") || searchTerms.contains("Bakery")) {
+//             resultsJson.add(findRestaurants(lat, lon, radius, "bakery", searchTerms, apiKey)); 
+//         } else if (searchTerms.contains("cafe") || searchTerms.contains("Cafe")) {
+//             resultsJson.add(findRestaurants(lat, lon, radius, "cafe", searchTerms, apiKey));
+//         } else if (searchTerms.contains("bar") || searchTerms.contains("Bar") || searchTerms.contains("drink") || searchTerms.contains("Drink")) {
+//             resultsJson.add(findRestaurants(lat, lon, radius, "bar", searchTerms, apiKey));
+//         } else if (searchTerms.contains("order") || searchTerms.contains("Order")) {
+//             resultsJson.add(findRestaurants(lat, lon, radius, "meal_delivery", searchTerms, apiKey));
+//             resultsJson.add(findRestaurants(lat, lon, radius, "meal_takeaway", searchTerms, apiKey));
+//         }
+//         resultsJson.add(findRestaurants(lat, lon, radius, "food", searchTerms, apiKey));
+//         resultsJson.add(findRestaurants(lat, lon, radius, "restaurant", searchTerms, apiKey));
+//         System.out.println("all results: " + resultsJson);
 
-        JsonObject result = chooseRestaurant(resultsJson, Double.parseDouble(requestedPrice), Double.parseDouble(requestedRating));
-        System.out.println("result: " + result);
-        result.addProperty("status", "OK");
-        finalResult = result.toString();
+//         JsonObject result = chooseRestaurant(resultsJson, Double.parseDouble(requestedPrice), Double.parseDouble(requestedRating));
+//         System.out.println("result: " + result);
+//         result.addProperty("status", "OK");
+//         finalResult = result.toString();
         
-        System.out.println("final result: " + finalResult);
+//         System.out.println("final result: " + finalResult);
 
-        response.setStatus(HttpServletResponse.SC_OK);
-    }
+//         response.setStatus(HttpServletResponse.SC_OK);
+//     }
 
-    private JsonElement findRestaurants(String lat, String lon, String radius, String type, String searchTerms, String apiKey) throws IOException {
-        String sURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
-=======
+//     private JsonElement findRestaurants(String lat, String lon, String radius, String type, String searchTerms, String apiKey) throws IOException {
+//         String sURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
+// =======
     private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
     private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private Response response;
