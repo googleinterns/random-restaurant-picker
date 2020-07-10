@@ -110,7 +110,6 @@ p {
     visibility: hidden;
 }
 
-<<<<<<< HEAD
 p1 {
     font-size: 20px;
 }
@@ -289,7 +288,8 @@ div1 {
 
 card-body {
     text-align: left;
-=======
+}
+
 /* ==========================================================================
    TRANSITIONS
    ========================================================================== */
@@ -301,7 +301,6 @@ body {
 body.fade-out {
     opacity: 0;
     transition: none;
->>>>>>> resultsPage
 }
 
 #sign-in{

@@ -35,7 +35,6 @@
 /* ==========================================================================
    FORM
    ========================================================================== */
-<<<<<<< HEAD
 /**
  * A very simple reset that sits on top of Normalize.css.
  */
@@ -84,7 +83,8 @@ button {
   outline: none;
   background: none;
   border: none;
-=======
+}
+
 input {
     outline: none;
     margin: 0;
@@ -95,7 +95,6 @@ input {
     width: 100%;
     font-size: 14px;
     font-family: inherit;
->>>>>>> resultsPage
 }
 
 .input-group {
@@ -267,14 +266,13 @@ input {
 /* ==========================================================================
    DATE PICKER
    ========================================================================== */
-<<<<<<< HEAD
 .select--no-search .select2-search {
   border: none;
   display: none !important;
-=======
+}
+
 td.active {
     background-color: #2c6ed5;
->>>>>>> resultsPage
 }
 
 input[type="date"i] {
@@ -358,7 +356,6 @@ input[type="date"i] {
     }
 }
 
-<<<<<<< HEAD
 .card-2 {
   -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
@@ -380,14 +377,14 @@ input[type="date"i] {
   display: table-cell;
   padding: 30px 75px;
   padding-bottom: 40px;
-=======
+}
+
 .wrapper {
     margin: 0 auto;
 }
 
 .wrapper--w960 {
     max-width: 960px;
->>>>>>> resultsPage
 }
 
 /* ==========================================================================

@@ -1,55 +1,34 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
-    <title>Random Restaurant Picker</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="js/query.js"></script>
-    <!-- Form -->
-    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
-    <link href="css/form.css" rel="stylesheet" media="all">
-</head>
-
-<body>
-    <span class="popuptext" id="formPopup">
-        <form id="searches-form" action="/feedback" method="POST">
-            <div class="input-group">
-                <div class="rs-select2 js-select-simple select--no-search">
-                    <select id="restaurant-rating" name="restaurant-rating">
-                        <option disabled="disabled" selected="selected">How was the restaurant?</option>
-                        <option value=0>No preference</option>
-                        <option value=1>It was terrible!</option>
-                        <option value=2>Not my favorite</option>
-                        <option value=3>It was alright</option>
-                        <option value=4>Pretty good</option>
-                        <option value=5>I loved it!</option>
-                    </select>
-                    <div class="select-dropdown"></div>
-                </div>
-            </div>
-            <div class="input-group">
-                <div class="rs-select2 js-select-simple select--no-search">
-                    <select id="rrp-rating" name="rrp-rating">
-                        <option disabled="disabled" selected="selected">How well did the selected restaurant meet your parameters?</option>
-                        <option value=0>It didn't meet any of them</option>
-                        <option value=1>It met one or two</option>
-                        <option value=2>It met all of them</option>
-                    </select>
-                    <div class="select-dropdown"></div>
-                </div>
-            </div>
-            <div class="input-group">
-                <input class="input--style-2" type="text" placeholder="Notes" name="notes" id="notes" autocomplete="off">
-            </div>
-            <input type="submit"/>
-        </form>
-    </span>
+<span class="popuptext" id="formPopup">
+   <form id="searches-form" action="/feedback" method="POST">
+      <div class="input-group">
+         <div class="rs-select2 js-select-simple select--no-search">
+            <select id="restaurant-rating" name="restaurant-rating">
+               <option disabled="disabled" selected="selected">How was the restaurant?</option>
+               <option value=0>No preference</option>
+               <option value=1>It was terrible!</option>
+               <option value=2>Not my favorite</option>
+               <option value=3>It was alright</option>
+               <option value=4>Pretty good</option>
+               <option value=5>I loved it!</option>
+            </select>
+            <div class="select-dropdown"></div>
+         </div>
+      </div>
+      <div class="input-group">
+         <div class="rs-select2 js-select-simple select--no-search">
+            <select id="rrp-rating" name="rrp-rating">
+               <option disabled="disabled" selected="selected">How well did the selected restaurant meet your parameters?</option>
+               <option value=0>It didn't meet any of them</option>
+               <option value=1>It met one or two</option>
+               <option value=2>It met all of them</option>
+            </select>
+            <div class="select-dropdown"></div>
+         </div>
+      </div>
+      <div class="input-group">
+         <input class="input--style-2" type="text" placeholder="Notes" name="notes" id="notes" autocomplete="off">
+      </div>
+      <input type="submit"/>
+   </form>
+</span>
 </body>

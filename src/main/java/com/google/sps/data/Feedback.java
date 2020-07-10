@@ -26,4 +26,16 @@ public class Feedback {
         this.rrpRating = rrpRating;
         this.notes = notes;
     }
+
+    public String restaurantRating() {
+        return restaurantRating;
+    }
+
+    public String rrpRating() {
+        return rrpRating;
+    }
+
+    public String notes() {
+        return notes;
+    }
 }

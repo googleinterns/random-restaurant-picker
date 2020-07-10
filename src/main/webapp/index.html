@@ -9,10 +9,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-<<<<<<< HEAD
-=======
-    <script src="js/query.js"></script>
->>>>>>> 819c2722edf8e3b73d99497f734358c7164d6dc4
     <!-- Form -->
     <link href="third-party/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
     <link href="third-party/select2/select2.min.css" rel="stylesheet" media="all">
@@ -24,7 +20,6 @@
     <link href="css/banner.css" rel="stylesheet">
 </head>
 <body>
-<<<<<<< HEAD
     <header>
         <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
         <div class="dropdown" id="account-menu">
@@ -33,8 +28,9 @@
                 <h3 id="user-name">name</h3>
             </button>
             <div id="myDropdown" class="dropdown-content">
-                <a href="#">Account</a>
-                <a href="#">History</a>
+                <a onclick="backToHome()">Home</a>
+                <a onclick="toAccount()">Account</a>
+                <a onclick="toSearches()">History</a>
                 <a onclick="signOut()">Sign Out</a>
             </div>
         </div>
@@ -86,47 +82,6 @@
                                         <input type="radio" id="price4" name="priceLevel" value="4">
                                         <label for="price4">$$$$</label>
                                     </div>
-=======
-    <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-    <div class="dropdown" id="account-menu">
-        <button onclick="toggleShow()" class="dropbtn">
-            <img id="profile-pic" src="">
-            <h3 id="user-name">name</h3>
-        </button>
-        <div id="myDropdown" class="dropdown-content">
-            <a onclick="backToHome()">Home</a>
-            <a onclick="toAccount()">Account</a>
-            <a onclick="toSearches()">History</a>
-            <a onclick="signOut()">Sign Out</a>
-        </div>
-    </div>
-
-    <div class="p-t-80" style="text-align:center">
-        <h>Random Restaurant Picker</h>
-    </div>
-    <div class="page-wrapper p-t-40">
-        <div class="wrapper wrapper--w960">
-            <div class="card card-2">
-                <div class="card-body">
-                    <h2 style="margin-bottom:0px">Your location:</h2>
-                    </br>
-                    <p id="location-container">Pirrama Rd, Pyrmont NSW 2009, Australia</p>
-                    </br>
-                    <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
-                    </br></br></br>
-                    <form id="randomize-form" action="/query" method="POST">
-                        <div class="input-group">
-                            <input class="input--style-2" type="text" name="searchTerms" id="searchTerms">
-                            <label for="searchTerms">Search terms</label>
-                            <div class="border"></div>
-                        </div>
-                        <div class="row row-space">
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <input class="input--style-2" type="text" name="radius" id="radius">
-                                    <label for="radius">Max distance (meters)</label>
-                                    <div class="border"></div>
->>>>>>> 819c2722edf8e3b73d99497f734358c7164d6dc4
                                 </div>
                             </div>
                             <div class="input-group">
@@ -154,25 +109,9 @@
                                     <div class="select-dropdown"></div>
                                 </div>
                             </div>
-<<<<<<< HEAD
                             <div class="success-banner hidden" id="error"></div>
                             <div style="text-align:center">
                                 <button class="btn style4" type="submit">Randomize</button>
-=======
-                        </div>
-                        <div class="input-group">
-                            <div class="rs-select2 js-select-simple select--no-search">
-                                <select id="dietary" name="dietary-options">
-                                    <option disabled="disabled" selected="selected">Dietary options</option>
-                                    <option>Nothing specific</option>
-                                    <option>Vegetarian</option>
-                                    <option>Vegan</option>
-                                    <option>Kosher</option>
-                                    <option>Halal</option>
-                                    <option>Gluten-free</option>
-                                </select>
-                                <div class="select-dropdown"></div>
->>>>>>> 819c2722edf8e3b73d99497f734358c7164d6dc4
                             </div>
                         </form>
                     </div>

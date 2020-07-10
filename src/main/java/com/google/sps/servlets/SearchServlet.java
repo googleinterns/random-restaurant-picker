@@ -48,7 +48,7 @@ public class SearchServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String user = request.getParameter("user");
     Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
-    Query query = new Query("savedSearch").setFilter(propertyFilter).addSort("timestamp",  SortDirection.DESCENDING);
+    Query query = new Query("savedSearch").setFilter(propertyFilter).addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -65,8 +65,9 @@ public class SearchServlet extends HttpServlet {
       long id = entity.getKey().getId();
       Feedback feedback = (Feedback) entity.getProperty("feedback");
       String restaurantName = (String) entity.getProperty("restaurantName");
-
+      System.out.println(restaurantName);
       Search search = new Search(userID, date, keywords, lat, lng, radius, id, feedback, restaurantName);
+      System.out.println(search);
       searches.add(search);
     }
     Gson gson = new Gson();
@@ -97,7 +98,8 @@ public class SearchServlet extends HttpServlet {
     searchEntity.setProperty("timestamp", timestamp);
     searchEntity.setProperty("lat", lat);
     searchEntity.setProperty("lng", lng);
-    searchEntity.setProperty("feedback", null);
+    Feedback feedback = new Feedback("null", "null", "null");
+    searchEntity.setProperty("feedback", feedback);
     searchEntity.setProperty("restaurantName", restaurantName);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
