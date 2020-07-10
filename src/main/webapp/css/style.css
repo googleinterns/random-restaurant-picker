@@ -95,6 +95,7 @@ body {
 h {
     align-content: center;
     color: black;
+    font-family: "Comfortaa";
     font-size: 70px;
     font-weight: bold;
     text-align: center;
@@ -109,6 +110,186 @@ p {
     visibility: hidden;
 }
 
+<<<<<<< HEAD
+p1 {
+    font-size: 20px;
+}
+
+.btn {
+    align-content: center;
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 10px;
+    color: black;
+    cursor: pointer;
+    font-family: "Comfortaa";
+    font-size: 50px;
+    font-weight: bold;
+    margin-top: 100px;
+    padding: 20px 30px;
+}
+
+.random:hover {
+    background-color: black;
+    border-color: white;
+    color: white;
+}
+
+.reroll {
+    border: 2px solid black;
+    font-size: 16px;
+    font-weight: normal;
+    margin-top: 0px;
+    padding: 10px 16px;
+}
+
+.reroll:hover {
+    background-color: black;
+    border-color: white;
+    color: white;
+}
+
+.location {
+    border: 1px solid black;
+    font-size: 16px;
+    font-weight: normal;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    padding: 5px 8px;
+}
+
+.location:hover {
+    background-color: black;
+    border-color: white;
+    color: white;
+}
+
+#sign-in{
+    position: fixed;
+    right: 30px;
+    top: 30px;
+}
+
+.dropbtn {
+  background-color: white;
+  color: darkgray;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 40px;
+  width: 200px;
+}
+
+.dropbtn > * {
+  pointer-events: none;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: lightgray;
+}
+
+.dropdown {
+    position: fixed;
+    display: none;
+    right: 30px;
+    top: 30px;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+#profile-pic{
+    border-radius: 50%;
+    height: 36px;
+    width: 36px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+#user-name{
+  padding: 16px;
+  font-size: 16px;
+}
+
+select {
+    background-color: white;
+    border-radius: 8px;
+    font-family: "Comfortaa";
+    padding: 5px;
+}
+
+select:hover {
+    cursor: pointer;
+}
+
+option {
+    font-family: "Comfortaa";
+}
+
+.card-object {
+    align-content: left;
+    font-family: "Comfortaa";
+    margin: 20px;
+    padding: 10px;
+}
+
+.sign-in{
+    position: fixed;
+    right: 20px;
+    top: 20px;
+}
+
+p2 {
+    font-size: 30px; 
+    font-weight:bold;
+}
+
+p3 {
+    font-size: 20px;
+    font-weight:100;
+}
+
+#map {
+  height: 100%;
+}
+
+div1 {
+    text-align: center;
+}
+
+card-body {
+    text-align: left;
+=======
 /* ==========================================================================
    TRANSITIONS
    ========================================================================== */
@@ -120,6 +301,7 @@ body {
 body.fade-out {
     opacity: 0;
     transition: none;
+>>>>>>> resultsPage
 }
 
 #sign-in{

@@ -34,6 +34,11 @@
       <version>1.9.59</version>
     </dependency>
     <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.oauth-client</groupId>
       <artifactId>google-oauth-client</artifactId>
       <version>1.30.4</version>
@@ -58,7 +63,7 @@
       <artifactId>google-api-client-appengine</artifactId>
       <version>1.30.4</version>
     </dependency>
-        <dependency>
+    <dependency>
       <groupId>com.googlecode.json-simple</groupId>
       <artifactId>json-simple</artifactId>
       <version>1.1.1</version>

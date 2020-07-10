@@ -25,8 +25,9 @@ public class Search {
     private String radius;
     private long id;
     private Feedback feedback;
+    private String name;
 
-    public Search(String user, String date, String keywords, String lat, String lng, String radius, long id){
+    public Search(String user, String date, String keywords, String lat, String lng, String radius, long id, Feedback feedback, String name){
         this.user = user;
         this.date = date;
         this.keywords = keywords;
@@ -34,6 +35,43 @@ public class Search {
         this.lng = lng;
         this.radius = radius;
         this.id = id;
+        this.name = name;
         this.feedback = feedback;
+    }
+
+    public String user() {
+        return user;
+    }
+
+    public String date() {
+        return date;
+    }
+
+    public String keywords() {
+        return keywords;
+    }
+
+    public String lat() {
+        return lat;
+    }
+
+    public String lng() {
+        return lng;
+    }
+
+    public String radius() {
+        return radius;
+    }
+
+    public long id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public Feedback feedback() {
+        return feedback;
     }
 }

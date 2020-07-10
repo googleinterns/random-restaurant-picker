@@ -26,6 +26,7 @@ import com.google.sps.data.User;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,10 +36,15 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.Collection;
+import com.google.gson.reflect.TypeToken;
+import java.util.Optional;
 
 @WebServlet("/query")
 public class Query extends HttpServlet {
-
     private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
     private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     private Response response;
@@ -72,6 +78,8 @@ public class Query extends HttpServlet {
         int priceLevel = Integer.parseInt(servletRequest.getParameter("priceLevel"));
         user = new User(priceLevel);
         System.out.println(user);
+
         System.out.println(response.status());
+
     }
 }

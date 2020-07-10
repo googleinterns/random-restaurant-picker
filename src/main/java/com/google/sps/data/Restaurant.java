@@ -24,10 +24,11 @@ public final class Restaurant {
     @Expose
     private final double rating;
     @Expose
-    private final String business_status;
+    private final String businessStatus;
     // private final Geometry geometry;
     // private final String icon;
-    // private final String id;
+    @Expose
+    private final String id;
     // private final OpeningHours opening_hours;
     // private final Photo[] photos;
     // private final String place_id;
@@ -39,10 +40,11 @@ public final class Restaurant {
     // private final int user_ratings_total;
     // private final String vicinity;
 
-    public Restaurant(String name, double rating, String business_status) {
+    public Restaurant(String name, double rating, String businessStatus, String id) {
         this.name = name;
         this.rating = rating;
-        this.business_status = business_status;
+        this.businessStatus = businessStatus;
+        this.id = id;
     }
 
     public int weight() {
@@ -57,8 +59,12 @@ public final class Restaurant {
         return rating;
     }
 
-    public String business_status() {
-        return business_status;
+    public String businessStatus() {
+        return businessStatus;
+    }
+
+    public String id() {
+        return id;
     }
 
     public String toString() {

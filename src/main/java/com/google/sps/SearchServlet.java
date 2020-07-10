@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.servlets;
+package com.google.sps;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -39,7 +39,6 @@ import org.json.JSONObject;
 import org.json.JSONException;
 import org.json.HTTP;
 import com.google.sps.data.Search;
-import com.google.sps.data.Feedback;
 
 @WebServlet("/searches")
 public class SearchServlet extends HttpServlet {
@@ -55,6 +54,7 @@ public class SearchServlet extends HttpServlet {
 
     System.out.println("Success");
     List<Search> searches = new ArrayList<>();
+    //results.asIterable(FetchOptions.Builder.withLimit(commentAmount))
     for (Entity entity : results.asIterable()) {
       String userID = (String) entity.getProperty("user");
       String date = (String) entity.getProperty("date");
@@ -62,11 +62,10 @@ public class SearchServlet extends HttpServlet {
       String radius = (String) entity.getProperty("radius");
       String lat = (String) entity.getProperty("lat");
       String lng = (String) entity.getProperty("lng");
+      String name = (String) entity.getProperty("restaurantName");
       long id = entity.getKey().getId();
-      Feedback feedback = (Feedback) entity.getProperty("feedback");
-      String restaurantName = (String) entity.getProperty("restaurantName");
 
-      Search search = new Search(userID, date, keywords, lat, lng, radius, id, feedback, restaurantName);
+      Search search = new Search(userID, date, keywords, lat, lng, radius, id, name);
       searches.add(search);
     }
     Gson gson = new Gson();
@@ -87,7 +86,6 @@ public class SearchServlet extends HttpServlet {
     String formattedDate = formatter.format(date);
     String restaurantName = request.getParameter("restaurantName");
 
-
     //Make an entity
     Entity searchEntity = new Entity("savedSearch");
     searchEntity.setProperty("user", user);
@@ -97,8 +95,8 @@ public class SearchServlet extends HttpServlet {
     searchEntity.setProperty("timestamp", timestamp);
     searchEntity.setProperty("lat", lat);
     searchEntity.setProperty("lng", lng);
-    searchEntity.setProperty("feedback", null);
     searchEntity.setProperty("restaurantName", restaurantName);
+    searchEntity.setProperty("feedback", null);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(searchEntity);
