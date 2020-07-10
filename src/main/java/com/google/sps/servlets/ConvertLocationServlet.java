@@ -40,11 +40,10 @@ public class ConvertLocationServlet extends HttpServlet {
         String sURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&result_type=street_address&key=" + apiKey;
         // Connect to the URL using java's native library
         URL url = new URL(sURL);
-        URLConnection requestURL = url.openConnection();
+        URLConnection conn = url.openConnection();
         requestURL.connect();
 
-        JsonParser jp = new JsonParser();
-        JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
+        JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         response.getWriter().println(jsonObj.toString());
     }

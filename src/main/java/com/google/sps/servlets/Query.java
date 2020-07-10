@@ -46,9 +46,11 @@ public class Query extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
-        if(response.status().equals("OK"))
+        if(response.status().equals("OK")){
             response.pick();
-        servletResponse.getWriter().println(gson.toJson(response));
+            servletResponse.getWriter().println(gson.toJson(response));
+        }
+        servletResponse.getWriter().println("Failed");
     }
 
     @Override
@@ -64,14 +66,11 @@ public class Query extends HttpServlet {
         URLConnection requestURL = url.openConnection();
         requestURL.connect();
 
-        JsonParser jp = new JsonParser();
-        JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
+        JsonElement jsonElement = new JsonParser().parse(new InputStreamReader((InputStream) requestURL.getContent()));
         JsonObject responseJson = jsonElement.getAsJsonObject();
         response = gson.fromJson(responseJson, Response.class);
 
         int priceLevel = Integer.parseInt(servletRequest.getParameter("priceLevel"));
         user = new User(priceLevel);
-        System.out.println(user);
-        System.out.println(response.status());
     }
 }

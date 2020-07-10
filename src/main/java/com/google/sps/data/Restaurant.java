@@ -24,44 +24,31 @@ public final class Restaurant {
     @Expose
     private final double rating;
     @Expose
-    private final String business_status;
-    // private final Geometry geometry;
-    // private final String icon;
-    // private final String id;
-    // private final OpeningHours opening_hours;
-    // private final Photo[] photos;
-    // private final String place_id;
-    // private final PlusCode plus_code;
-    // private final int price_level;
-    // private final String reference;
-    // private final String scope;
-    // private final Type[] types;
-    // private final int user_ratings_total;
-    // private final String vicinity;
+    private final String businessStatus;
 
-    public Restaurant(String name, double rating, String business_status) {
+    public Restaurant(String name, double rating, String businessStatus) {
         this.name = name;
         this.rating = rating;
-        this.business_status = business_status;
+        this.businessStatus = businessStatus;
     }
 
     public int weight() {
-        return weight;
+        return this.weight;
     }
 
     public String name() {
-        return name;
+        return this.name;
     }
 
     public double rating() {
-        return rating;
+        return this.rating;
     }
 
-    public String business_status() {
-        return business_status;
+    public String businessStatus() {
+        return this.businessStatus;
     }
 
     public String toString() {
-        return name;
+        return this.name;
     }
 }

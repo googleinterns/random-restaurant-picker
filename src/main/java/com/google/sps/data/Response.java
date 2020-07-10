@@ -20,6 +20,9 @@ import com.google.sps.data.Restaurant;
 
 import java.lang.NullPointerException;
 import java.util.List;
+import java.util.stream;
+import java.util.stream.Collectors;
+import java.util.Random;
 
 public final class Response {
     @Expose (serialize = true)
@@ -45,17 +48,17 @@ public final class Response {
     public void pick() {
         if (results.size() == 0)
             throw new NullPointerException("results array not initialized");
-        int randIdx = (int) (Math.random() * results.size());
-        pick = results.get(randIdx).name();
-        results.remove(randIdx);
+        Random rd = new Random();
+        int randNum = rd.nextInt(results.size());
+        this.pick = results.get(randNum).name;
+        results.remove(randNum);
         if (results.size() == 0)
             status = "NO_REROLLS";
     }
 
     public String toString() {
-        String str = "";
-        for (Restaurant res : results)
-            str += res.toString();
-        return str;
+        return (this.results).stream()
+        .map(n -> n.toString())
+        .collect(Collectors.joining( "," ) );
     }
 }
