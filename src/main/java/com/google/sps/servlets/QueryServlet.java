@@ -42,6 +42,7 @@ import java.util.ArrayList;
 
 @WebServlet("/query")
 public class QueryServlet extends HttpServlet {
+    private final String apiKey = AccessSecret.accessSecretVersion();
     private final Gson gson = new GsonBuilder().create();
     private Response response;
     private User user;

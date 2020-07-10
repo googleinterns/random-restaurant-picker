@@ -140,9 +140,11 @@ function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
     return fetch(`/convert?lat=${lat}&lng=${long}`)
-        .then((response) => response.json())
-        .then((response) => { return response.results[0].formatted_address; })
-        .catch((error) => console.log(error));
+        .then(response => response.json())
+        .then(response => {
+            return response.results[0].formatted_address;
+        })
+        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
 
 /*=========================
