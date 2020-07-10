@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.Feedback;
+import com.google.sps.data.Search;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +44,10 @@ import java.util.Optional;
 public class FeedbackServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int restaurantRating = request.getParameter('restaurant-rating');
+        int rrpRating = request.getParameter('rrp-rating');
+        String notes = request.getParameter('notes');
+        Feedback feedback = new Feedback(restaurantRating. rrpRating, notes);
         
     }
 }

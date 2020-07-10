@@ -78,6 +78,7 @@ public class Query extends HttpServlet {
         System.out.println("result: " + result);
         result.addProperty("status", "OK");
         finalResult = result.toString();
+        
         System.out.println("final result: " + finalResult);
 
         response.setStatus(HttpServletResponse.SC_OK);

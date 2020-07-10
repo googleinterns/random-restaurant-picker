@@ -174,6 +174,7 @@ function createSearchElement(search) {
 
     const paramElement = document.createElement('p3');
     const tempParamElement = "Parameters: ";
+    // pull from search object
     for (items in search.keywords) {
         tempParamElement += items;
         tempParamElement += ", ";
