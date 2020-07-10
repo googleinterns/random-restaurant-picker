@@ -25,6 +25,7 @@ import java.io.IOException;
 import com.google.sps.data.Response;
 import com.google.sps.data.Restaurant;
 import com.google.sps.data.User;
+import com.google.sps.data.AccessSecret;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -41,8 +42,9 @@ import java.util.ArrayList;
 @WebServlet("/query")
 public class QueryServlet extends HttpServlet {
 
-    private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
-    private final Gson gson = new GsonBuilder().create();
+    private final String apiKey = AccessSecret.accessSecretVersion();
+    private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    private Response response;
     private User user;
 
     @Override
