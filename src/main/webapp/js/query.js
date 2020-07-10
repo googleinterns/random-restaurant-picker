@@ -11,34 +11,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+let responseJson;
+
 function query() {
     let lat = localStorage.getItem("lat");
     let lon = localStorage.getItem("lng");
     const radius = $('#radius').val();
     const searchTerms = document.getElementById('searchTerms').value;
     const errorEl = document.getElementById("error");
-    saveSearch(lat, lon, radius, searchTerms);
     errorEl.classList.add('hidden');
     fetch(`/query`, { method: 'GET' })
         .then(response => response.json())
         .then((response) => {
+            responseJson = response; // Debug
             if (response.status === "OK") {
-                let queryArr = response;
-                console.log(queryArr);
-                errorEl.classList.remove('error-banner');
-                errorEl.classList.remove('hidden');
-                errorEl.classList.add('success-banner');
-                errorEl.innerText = "Success!";
-                // test(JSON.stringify(response));
-            } else if (response.status === "INVALID_REQUEST"){
-                throw 'Invalid request'
-            }
-            else if (response.status === "ZERO_RESULTS"){
-                throw 'No results'
-            }
-            else{
-                throw 'Unforeseen error'
-            }
+                errorEl.innerText = response.pick;
+                resultsPage(response.pick);
+                saveSearch(lat, lon, radius, searchTerms, response.pick);
+            } else if (response.status === "INVALID_REQUEST")
+                throw 'Invalid request';
+            else if (response.status === "ZERO_RESULTS")
+                throw 'No results';
+            else if (response.status === "NO_REROLLS")
+                throw 'No re-rolls left';
+            else
+                throw 'Unforeseen error';
         })
         .catch((error) => {
             errorEl.classList.remove('success-banner');
@@ -46,27 +43,6 @@ function query() {
             errorEl.classList.add('error-banner');
             errorEl.innerText = error;
         });
-}
-
-$('#randomize-form').submit(function(e) {
-    e.preventDefault();
-    let url = $(this).attr('action');
-    let lat = localStorage.getItem("lat");
-    let lng = localStorage.getItem("lng");
-    let datum = $(this).serialize()+`&lat=${lat}&lng=${lng}`;
-
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: datum,
-        success: function(response) {
-            query();
-        }
-    });
-});
-
-function loadPage() {
-    window.location.replace("results.html");
 }
 
 // retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
@@ -97,6 +73,8 @@ function getLocation() {
     }
 }
 
+// convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
+// address in the location-container spot (so it was in the spot as the sydney australia address)
 function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
@@ -139,12 +117,12 @@ function signOut() {
   toggleAccountMenu();
 }
 
-function saveSearch(lat, lng, radius, keyword){
+function saveSearch(lat, lng, radius, keyword, restaurantName){
     let userID = 0;
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&lat=${lat}&lng=${lng}`, {
+    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&lat=${lat}&lng=${lng}&restaurantName=${restaurantName}`, {
         method: 'POST'
     });
 }
@@ -170,12 +148,12 @@ function createSearchElement(search) {
 
     const nameElement = document.createElement('p2');
     // need to create a name attribute of search - linked to name of returned restaurant
-    nameElement.innerText = search.name;
+    nameElement.innerText = search.name();
 
     const paramElement = document.createElement('p3');
     const tempParamElement = "Parameters: ";
     // pull from search object
-    for (items in search.keywords) {
+    for (items in search.keywords()) {
         tempParamElement += items;
         tempParamElement += ", ";
     }
@@ -318,4 +296,64 @@ function toAccount() {
 
 function toSearches() {
     window.location.replace("past-searches.html");
+}
+
+$('#randomize-form').submit(function(event) {
+    const errorEl = document.getElementById("error");
+    errorEl.classList.add('hidden');
+
+    event.preventDefault();
+    let url = form.attr('action');
+    let lat = localStorage.getItem("lat");
+    let lng = localStorage.getItem("lng");
+    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}`;
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: queryStr,
+        success: function(response) {
+            query();
+        }
+    });
+});
+
+$("input, textarea").blur(function() {
+    if ($(this).val() != "") {
+        $(this).addClass("active");
+    } else {
+        $(this).removeClass("active");
+    }
+});
+
+function resultsPage(pick) {
+    fetch(`../results.html`)
+        .then(html => html.text())
+        .then((html) => {
+            document.getElementsByTagName('body')[0].innerHTML = html;
+            const pickEl = document.getElementById("pick");
+            pickEl.innerText = pick;
+        });
+}
+
+function reroll() {
+    const pickEl = document.getElementById("pick");
+    fetch(`/query`, { method: 'GET' })
+        .then(response => response.json())
+        .then((response) => {
+            responseJson = response; // Debug
+            if (response.status === "OK") {
+                pickEl.innerText = response.pick;
+            } else if (response.status === "INVALID_REQUEST")
+                throw 'Invalid request';
+            else if (response.status === "ZERO_RESULTS")
+                throw 'No results';
+            else if (response.status === "NO_REROLLS")
+                throw 'No re-rolls left';
+            else
+                throw 'Unforeseen error';
+        })
+        .catch((error) => {
+            pickEl.innerText = error;
+        });
 }

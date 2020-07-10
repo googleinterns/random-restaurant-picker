@@ -1,0 +1,123 @@
+/* ==========================================================================
+   GENERAL
+   ========================================================================== */
+/* More sensible default box-sizing */
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+/* ==========================================================================
+   SPACING
+   ========================================================================== */
+.p-t-40 {
+    padding-top: 40px;
+}
+
+.p-t-80 {
+    padding-top: 80px;
+}
+
+.p-b-100 {
+    padding-bottom: 100px;
+}
+
+.m-t-80 {
+    margin-top: 80px;
+}
+
+/* ==========================================================================
+   RESET
+   ========================================================================== */
+/* A very simple reset that sits on top of Normalize.css. */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+p,
+pre,
+dl,
+dd,
+ol,
+ul,
+figure,
+hr,
+fieldset,
+legend {
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove trailing margins from nested lists. */
+li>ol,
+li>ul {
+    margin-bottom: 0;
+}
+
+/* Remove default table spacing. */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    align-content: center;
+    background: white;
+    font-family: "Comfortaa";
+}
+
+h {
+    align-content: center;
+    color: black;
+    font-size: 70px;
+    font-weight: bold;
+    text-align: center;
+}
+
+p {
+    align-content: center;
+    padding: 10px;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+/* ==========================================================================
+   TRANSITIONS
+   ========================================================================== */
+body {
+    opacity: 1;
+    transition: 1s opacity;
+}
+
+body.fade-out {
+    opacity: 0;
+    transition: none;
+}
