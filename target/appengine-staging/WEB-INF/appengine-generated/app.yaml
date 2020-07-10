@@ -51,6 +51,10 @@ handlers:
   script: unused
   login: optional
   secure: optional
+- url: /feedback
+  script: unused
+  login: optional
+  secure: optional
 - url: /query
   script: unused
   login: optional
