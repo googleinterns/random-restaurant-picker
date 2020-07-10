@@ -41,7 +41,7 @@ public class ConvertLocationServlet extends HttpServlet {
         // Connect to the URL using java's native library
         URL url = new URL(sURL);
         URLConnection conn = url.openConnection();
-        requestURL.connect();
+        conn.connect();
 
         JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
         JsonObject jsonObj = jsonElement.getAsJsonObject();
