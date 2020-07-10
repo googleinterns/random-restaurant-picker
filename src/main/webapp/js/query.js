@@ -119,7 +119,6 @@ function getLocation() {
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address)=>{
-                console.log(address);
                 location.innerText = address;
             });
         });
@@ -141,7 +140,6 @@ function convertLocation(location) {
     return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then(response => response.json())
         .then(response => {
-            console.log(response.results[0].formatted_address);
             return response.results[0].formatted_address;
         })
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
