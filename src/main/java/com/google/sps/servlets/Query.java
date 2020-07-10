@@ -46,11 +46,9 @@ public class Query extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
-        if(response.status().equals("OK")){
+        if(response.status().equals("OK"))
             response.pick();
-            servletResponse.getWriter().println(gson.toJson(response));
-        }
-        servletResponse.getWriter().println("Failed");
+        servletResponse.getWriter().println(gson.toJson(response));
     }
 
     @Override
