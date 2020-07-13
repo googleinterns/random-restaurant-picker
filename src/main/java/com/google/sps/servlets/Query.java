@@ -61,10 +61,10 @@ public class Query extends HttpServlet {
         String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
 
         URL url = new URL(urlStr);
-        URLConnection requestURL = url.openConnection();
-        requestURL.connect();
+        URLConnection conn = url.openConnection();
+        conn.connect();
 
-        JsonElement jsonElement = new JsonParser().parse(new InputStreamReader((InputStream) requestURL.getContent()));
+        JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
         JsonObject responseJson = jsonElement.getAsJsonObject();
         response = gson.fromJson(responseJson, Response.class);
 

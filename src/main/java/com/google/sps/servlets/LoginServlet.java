@@ -22,8 +22,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.google.gson.Gson;
-import org.json.simple.JSONObject;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.GsonBuilder;
+
 import java.util.Collections;
 import com.google.api.client.extensions.appengine.http.UrlFetchTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -38,27 +42,22 @@ public class LoginServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html");
     response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
-    JSONObject json = new JSONObject();
     String idTokenString = request.getParameter("id_token");
+    boolean notCaught = false;
     try{
         GoogleIdToken idToken = verifier.verify(idTokenString);
         Payload payload = idToken.getPayload();
-
-        // Print user identifier
-        String userId = payload.getSubject();
-
-        // Get profile information from payload
-        json.put("id", userId);
-        json.put("email", payload.getEmail());
-        json.put("emailVerified", Boolean.valueOf(payload.getEmailVerified()));
-        json.put("name", (String) payload.get("name"));
-        json.put("pictureUrl", (String) payload.get("picture"));
-        json.put("locale", (String) payload.get("locale"));
-        json.put("familyName", (String) payload.get("family_name"));
-        json.put("givenName", (String) payload.get("given_name"));
+        notCaught = true;
     } catch(Exception e){
         System.out.println(e.getMessage());
     }
+
+    if(notCaught){
+        String userId = payload.getSubject();
+        JsonObject json = new Gson().toJson(payload);
+        System.out.println(json.toString());
+    }
+
     response.getWriter().println(json);
   }
 }
