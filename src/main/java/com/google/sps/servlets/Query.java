@@ -64,14 +64,11 @@ public class Query extends HttpServlet {
         URLConnection requestURL = url.openConnection();
         requestURL.connect();
 
-        JsonParser jp = new JsonParser();
-        JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
+        JsonElement jsonElement = new JsonParser().parse(new InputStreamReader((InputStream) requestURL.getContent()));
         JsonObject responseJson = jsonElement.getAsJsonObject();
         response = gson.fromJson(responseJson, Response.class);
 
         int priceLevel = Integer.parseInt(servletRequest.getParameter("priceLevel"));
         user = new User(priceLevel);
-        System.out.println(user);
-        System.out.println(response.status());
     }
 }

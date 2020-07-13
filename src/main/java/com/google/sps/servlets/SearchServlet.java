@@ -54,7 +54,6 @@ public class SearchServlet extends HttpServlet {
 
     System.out.println("Success");
     List<Search> searches = new ArrayList<>();
-    //results.asIterable(FetchOptions.Builder.withLimit(commentAmount))
     for (Entity entity : results.asIterable()) {
       String userID = (String) entity.getProperty("user");
       String date = (String) entity.getProperty("date");
@@ -83,7 +82,6 @@ public class SearchServlet extends HttpServlet {
     SimpleDateFormat formatter = new SimpleDateFormat("MMM d, 'at' HH:mm");
     Date date = new Date(System.currentTimeMillis());
     String formattedDate = formatter.format(date);
-
 
     //Make an entity
     Entity searchEntity = new Entity("savedSearch");
