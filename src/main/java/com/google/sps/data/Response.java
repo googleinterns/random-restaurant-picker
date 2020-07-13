@@ -29,7 +29,7 @@ public final class Response implements java.io.Serializable {
     private ArrayList<Restaurant> results;
     private String status;
 
-    public Response(String status, List < Restaurant > results) {
+    public Response(String status, ArrayList <Restaurant> results) {
         this.status = status;
         this.results = results;
     }
