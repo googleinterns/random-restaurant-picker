@@ -35,8 +35,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 @WebServlet("/query")
 public class QueryServlet extends HttpServlet {
@@ -49,8 +52,9 @@ public class QueryServlet extends HttpServlet {
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
-        if (response.status().equals("OK"))
-            response.pick();
+        if(response.status().equals("OK")){
+            chooseRestaurant(response);
+        }
         servletResponse.getWriter().println(gson.toJson(response));
     }
 
@@ -75,5 +79,37 @@ public class QueryServlet extends HttpServlet {
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
 
+    }
+
+    private void chooseRestaurant(Response response, int requestedPrice){
+        if(response.results().size() == 0){
+            response.setStatus("EMPTY");
+            return;
+        }
+        Map<String, int> restaurantScores = new HashMap<>();
+        int score; 
+        int total = 0;
+        for(Restaurant restaurant : response.results()){
+            score = 1;
+            if(requestedPrice == 0 || requestedPrice == restaurant.price())
+                score += 50;
+            else if(Math.abs(requestedPrice - restaurant.price()) <= 1)
+                score += 25;
+            else if(Math.abs(requestedPrice - restaurant.price()) <= 2)
+                score += 12;
+            else if(Math.abs(requestedPrice - restaurant.price()) <= 3)
+                score += 6;
+            restaurantScores.put(restaurant.name(), score);
+            total += score;
+        }
+        int selectedNum = new Random().nextInt(total);
+        int value = 0;
+        for(String key : restaurantScores.keySet()){
+            if(selectedNum <= value)){
+                response.setPick(response.results().stream().filter(p -> p.name().equals(key)).findFirst().orElse(null));
+                response.results().remove(response.getPick());
+                return;
+            }
+        }
     }
 }
