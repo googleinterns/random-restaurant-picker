@@ -29,7 +29,7 @@ public final class Response {
 
     public Response(String status, List<Restaurant> results) {
         this.status = status;
-        this.results = new List<Restaurant>(results);
+        this.results = results;
     }
 
     public String status() {
@@ -40,13 +40,13 @@ public final class Response {
         return results;
     }
 
-    public void pick() {
+    /*public void pick() {
         int randIdx = (int) (Math.random() * results.size());
         pick = results.get(randIdx).name();
         results.remove(randIdx);
         if (results.size() == 0)
             status = "NO_REROLLS";
-    }
+    }*/
 
     public String toString() {
         return (this.results).stream()

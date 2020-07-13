@@ -88,7 +88,7 @@ function reroll() {
         .then((response) => {
             responseJson = response; // Debug
             if (response.status === "OK") {
-                pickEl.innerText = response.pick;
+                pickEl.innerText = response.pick.name;
             } else if (response.status === "INVALID_REQUEST")
                 throw 'Invalid request';
             else if (response.status === "ZERO_RESULTS")

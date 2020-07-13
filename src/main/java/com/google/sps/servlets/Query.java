@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Random;
 
 @WebServlet("/query")
 public class Query extends HttpServlet {
@@ -50,7 +51,7 @@ public class Query extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         if(response.status().equals("OK")){
-            chooseRestaurant(response);
+            chooseRestaurant(response, user.priceLevel());
         }
         servletResponse.getWriter().println(gson.toJson(response));
     }
@@ -81,7 +82,7 @@ public class Query extends HttpServlet {
             response.setStatus("EMPTY");
             return;
         }
-        Map<String, int> restaurantScores = new HashMap<>();
+        HashMap<String, Integer> restaurantScores = new HashMap<>();
         int score; 
         int total = 0;
         for(Restaurant restaurant : response.results()){
@@ -100,7 +101,8 @@ public class Query extends HttpServlet {
         int selectedNum = new Random().nextInt(total);
         int value = 0;
         for(String key : restaurantScores.keySet()){
-            if(selectedNum <= value)){
+            value += restaurantScores.get(key);
+            if(selectedNum <= value){
                 response.setPick(response.results().stream().filter(p -> p.name().equals(key)).findFirst().orElse(null));
                 response.results().remove(response.getPick());
             }
