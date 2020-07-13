@@ -35,10 +35,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
 import java.text.SimpleDateFormat;  
 import java.util.Date;
-import org.json.JSONObject;
-import org.json.JSONException;
-import org.json.HTTP;
-import com.google.sps.data.Search;
+import com.google.sps.data.SearchItem;
 
 @WebServlet("/searches")
 public class SearchServlet extends HttpServlet {
@@ -52,8 +49,7 @@ public class SearchServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    System.out.println("Success");
-    List<Search> searches = new ArrayList<>();
+    List<SearchItem> searches = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       String userID = (String) entity.getProperty("user");
       String date = (String) entity.getProperty("date");
@@ -63,7 +59,7 @@ public class SearchServlet extends HttpServlet {
       String lng = (String) entity.getProperty("lng");
       long id = entity.getKey().getId();
 
-      Search search = new Search(userID, date, keywords, lat, lng, radius, id);
+      SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id);
       searches.add(search);
     }
     Gson gson = new Gson();

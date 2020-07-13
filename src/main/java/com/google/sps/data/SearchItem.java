@@ -26,7 +26,7 @@ public class SearchItem {
     private long id;
     private Feedback feedback;
 
-    public Search(String user, String date, String keywords, String lat, String lng, String radius, long id){
+    public SearchItem(String user, String date, String keywords, String lat, String lng, String radius, long id){
         this.user = user;
         this.date = date;
         this.keywords = keywords;
