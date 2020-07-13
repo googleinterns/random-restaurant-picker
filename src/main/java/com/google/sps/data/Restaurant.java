@@ -19,25 +19,15 @@ public final class Restaurant {
     private final String name;
     private final double rating;
     private final String businessStatus;
-    // private final Geometry geometry;
-    // private final String icon;
-    // private final String id;
-    // private final OpeningHours opening_hours;
-    // private final Photo[] photos;
-    // private final String place_id;
-    // private final PlusCode plus_code;
-    // private final int price_level;
-    // private final String reference;
-    // private final String scope;
-    // private final Type[] types;
-    // private final int user_ratings_total;
-    // private final String vicinity;
+    private final int priceLevel;
 
-    public Restaurant(int weight, String name, double rating, String businessStatus) {
+
+    public Restaurant(int weight, String name, double rating, String businessStatus, int priceLevel) {
         this.weight = weight;
         this.name = name;
         this.rating = rating;
         this.businessStatus = businessStatus;
+        this.priceLevel = priceLevel;
     }
 
     public int weight() {
@@ -58,5 +48,9 @@ public final class Restaurant {
 
     public String toString() {
         return this.name;
+    }
+
+    public String price() {
+        return this.priceLevel;
     }
 }

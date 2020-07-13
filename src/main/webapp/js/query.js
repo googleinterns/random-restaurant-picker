@@ -25,9 +25,8 @@ function query() {
         .then(response => response.json())
         .then((response) => {
             if (response.status === "OK") {
-                let choice = response.pick;
-                errorEl.innerText = choice;
-                resultsPage(choice);
+                errorEl.innerText = response.pick.name;
+                resultsPage(response.pick.name);
             } else if (response.status === "INVALID_REQUEST")
                 throw 'Invalid request';
             else if (response.status === "ZERO_RESULTS")
