@@ -21,7 +21,7 @@ public final class User {
         this.priceLevel = priceLevel;
     }
 
-    public int priceLevel() {
+    public int getPriceLevel() {
         return this.priceLevel;
     }
 

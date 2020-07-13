@@ -24,10 +24,10 @@ import java.util.Random;
 
 public final class Response {
     private String pick = null;
-    private List<Restaurant> results;
+    private List < Restaurant > results;
     private String status;
 
-    public Response(String status, List<Restaurant> results) {
+    public Response(String status, List < Restaurant > results) {
         this.status = status;
         this.results = results;
     }
@@ -36,12 +36,12 @@ public final class Response {
         return status;
     }
 
-    public List<Restaurant> results() {
+    public List < Restaurant > results() {
         return results;
     }
 
     public void pick() {
-        int randIdx = (int) (Math.random() * results.size());
+        int randIdx = (int)(Math.random() * results.size());
         pick = results.get(randIdx).name();
         results.remove(randIdx);
         if (results.size() == 0)
@@ -50,7 +50,7 @@ public final class Response {
 
     public String toString() {
         return (this.results).stream()
-        .map(n -> n.toString())
-        .collect(Collectors.joining( "," ) );
+            .map(n - > n.toString())
+            .collect(Collectors.joining(","));
     }
 }

@@ -34,6 +34,5 @@ public class SearchItem {
         this.lng = lng;
         this.radius = radius;
         this.id = id;
-        this.feedback = feedback;
     }
 }
