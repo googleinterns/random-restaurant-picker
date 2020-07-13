@@ -18,6 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Session;
+
 import java.io.IOException;
 
 import com.google.sps.data.Response;
@@ -41,11 +43,12 @@ public class Query extends HttpServlet {
 
     private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
     private final Gson gson = new GsonBuilder().create();
-    private Response response;
     private User user;
 
     @Override
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
+        HttpSession session = servletRequest.getSession(false);
+        Response response = session.getAttribute("response");
         if (response.status().equals("OK"))
             response.pick();
         servletResponse.getWriter().println(gson.toJson(response));
@@ -66,9 +69,11 @@ public class Query extends HttpServlet {
 
         JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
         JsonObject responseJson = jsonElement.getAsJsonObject();
-        response = gson.fromJson(responseJson, Response.class);
+        Response response = gson.fromJson(responseJson, Response.class);
 
-        int priceLevel = Integer.parseInt(servletRequest.getParameter("priceLevel"));
-        user = new User(priceLevel);
+        HttpSession session = servletRequest.getSession(true);
+        session.setAttribute("response", response);
+        session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
+
     }
 }
