@@ -15,11 +15,10 @@
 package com.google.sps.data;
 
 public final class Restaurant {
-    private int weight = 0;
+    private transient int weight = 0;
     private final String name;
     private final double rating;
-<<<<<<< HEAD
-    private final String business_status;
+    private final String businessStatus;
     // private final Geometry geometry;
     // private final String icon;
     // private final String id;
@@ -33,12 +32,9 @@ public final class Restaurant {
     // private final Type[] types;
     // private final int user_ratings_total;
     // private final String vicinity;
-=======
-    @Expose
-    private final String businessStatus;
->>>>>>> a3141a61e42a4626d649c16d8f871debb28f56d2
 
-    public Restaurant(String name, double rating, String businessStatus) {
+    public Restaurant(int weight, String name, double rating, String businessStatus) {
+        this.weight = weight;
         this.name = name;
         this.rating = rating;
         this.businessStatus = businessStatus;
