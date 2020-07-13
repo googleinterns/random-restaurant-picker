@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Random;
 
 @WebServlet("/query")
 public class QueryServlet extends HttpServlet {
@@ -55,10 +56,16 @@ public class QueryServlet extends HttpServlet {
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
+<<<<<<< HEAD
         if(response == null)
             servletResponse.getWriter().println(gson.toJson(new Response("NO_RESULTS", null)));
         else if (response.getStatus().equals("OK"))
             chooseRestaurant(response);
+=======
+        if(response.status().equals("OK")){
+            chooseRestaurant(response, user.priceLevel());
+        }
+>>>>>>> 8bf0119... Fix variable names and make deployable
         servletResponse.getWriter().println(gson.toJson(response));
     }
 
@@ -94,7 +101,7 @@ public class QueryServlet extends HttpServlet {
             response.setStatus("EMPTY");
             return;
         }
-        Map<String, int> restaurantScores = new HashMap<>();
+        HashMap<String, Integer> restaurantScores = new HashMap<>();
         int score; 
         int total = 0;
         for(Restaurant restaurant : response.getResults()){

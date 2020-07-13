@@ -30,7 +30,7 @@ public final class Response implements java.io.Serializable {
 
     public Response(String status, List<Restaurant> results) {
         this.status = status;
-        this.results = new List<Restaurant>(results);
+        this.results = results;
     }
 
     public String getStatus() {
