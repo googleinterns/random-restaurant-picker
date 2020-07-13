@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 
 import java.util.Collections;
 import com.google.api.client.extensions.appengine.http.UrlFetchTransport;
@@ -43,19 +44,15 @@ public class LoginServlet extends HttpServlet {
     response.setContentType("text/html");
     response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
     String idTokenString = request.getParameter("id_token");
-    boolean notCaught = false;
+    JsonObject json = new JsonObject();
     try{
         GoogleIdToken idToken = verifier.verify(idTokenString);
         Payload payload = idToken.getPayload();
-        notCaught = true;
+        String userId = payload.getSubject();
+        json = new JsonParser().parse(payload.toString()).getAsJsonObject();
+        System.out.println(json.toString());
     } catch(Exception e){
         System.out.println(e.getMessage());
-    }
-
-    if(notCaught){
-        String userId = payload.getSubject();
-        JsonObject json = new Gson().toJson(payload);
-        System.out.println(json.toString());
     }
 
     response.getWriter().println(json);
