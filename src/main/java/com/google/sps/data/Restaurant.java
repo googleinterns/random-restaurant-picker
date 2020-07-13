@@ -14,7 +14,9 @@
 
 package com.google.sps.data;
 
-public final class Restaurant {
+import java.io.Serializable;
+
+public final class Restaurant implements java.io.Serializable {
     private transient int weight = 0;
     private final String name;
     private final double rating;

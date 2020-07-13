@@ -18,7 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Session;
+import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -48,7 +48,7 @@ public class Query extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
-        Response response = session.getAttribute("response");
+        Response response = (Response)session.getAttribute("response");
         if (response.status().equals("OK"))
             response.pick();
         servletResponse.getWriter().println(gson.toJson(response));

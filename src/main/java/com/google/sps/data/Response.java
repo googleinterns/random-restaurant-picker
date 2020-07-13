@@ -21,8 +21,9 @@ import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.Random;
+import java.io.Serializable;
 
-public final class Response {
+public final class Response implements java.io.Serializable {
     private String pick = null;
     private List < Restaurant > results;
     private String status;
@@ -49,8 +50,6 @@ public final class Response {
     }
 
     public String toString() {
-        return (this.results).stream()
-            .map(n - > n.toString())
-            .collect(Collectors.joining(","));
+        return (this.results).stream().map(n -> n.toString()).collect(Collectors.joining(","));
     }
 }
