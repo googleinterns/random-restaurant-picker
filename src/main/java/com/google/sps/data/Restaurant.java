@@ -14,16 +14,10 @@
 
 package com.google.sps.data;
 
-import com.google.gson.annotations.Expose;
-
 public final class Restaurant {
     private int weight = 0;
-
-    @Expose
     private final String name;
-    @Expose
     private final double rating;
-    @Expose
     private final String business_status;
     // private final Geometry geometry;
     // private final String icon;

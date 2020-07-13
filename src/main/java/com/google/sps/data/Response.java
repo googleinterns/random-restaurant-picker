@@ -14,19 +14,14 @@
 
 package com.google.sps.data;
 
-import com.google.gson.annotations.Expose;
-
 import com.google.sps.data.Restaurant;
 
 import java.lang.NullPointerException;
 import java.util.List;
 
 public final class Response {
-    @Expose (serialize = true)
     private String pick = null;
-    @Expose
     private List<Restaurant> results;
-    @Expose
     private String status;
 
     public Response(String status, List<Restaurant> results) {
@@ -43,8 +38,6 @@ public final class Response {
     }
 
     public void pick() {
-        if (results.size() == 0)
-            throw new NullPointerException("results array not initialized");
         int randIdx = (int) (Math.random() * results.size());
         pick = results.get(randIdx).name();
         results.remove(randIdx);
