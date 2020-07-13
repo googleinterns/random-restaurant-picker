@@ -39,22 +39,21 @@ public class LoginServlet extends HttpServlet {
     JacksonFactory jacksonFactory = new JacksonFactory();
     GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory).setAudience(Collections.singletonList("758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com")).build();
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
-    response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
-    String idTokenString = request.getParameter("id_token");
-    JsonObject json = new JsonObject();
-    try{
-        GoogleIdToken idToken = verifier.verify(idTokenString);
-        Payload payload = idToken.getPayload();
-        String userId = payload.getSubject();
-        json = new JsonParser().parse(payload.toString()).getAsJsonObject();
-        System.out.println(json.toString());
-    } catch(Exception e){
-        System.out.println(e.getMessage());
-    }
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html");
+        response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
+        String idTokenString = request.getParameter("id_token");
+        JsonObject json = new JsonObject();
+        try {
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+            Payload payload = idToken.getPayload();
+            String userId = payload.getSubject();
+            json = new JsonParser().parse(payload.toString()).getAsJsonObject();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-    response.getWriter().println(json);
-  }
+        response.getWriter().println(json);
+    }
 }
