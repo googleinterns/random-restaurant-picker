@@ -16,7 +16,7 @@ package com.google.sps.data;
 
 import java.util.ArrayList;
 
-public class Search {
+public class SearchItem {
     private String user;
     private String date;
     private String keywords;
