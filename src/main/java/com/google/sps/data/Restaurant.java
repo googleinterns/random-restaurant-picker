@@ -18,7 +18,6 @@ import com.google.gson.annotations.Expose;
 
 public final class Restaurant {
     private int weight = 0;
-
     @Expose
     private final String name;
     @Expose
