@@ -46,7 +46,6 @@ public class LoginServlet extends HttpServlet {
 
         // Print user identifier
         String userId = payload.getSubject();
-        System.out.println("User ID: " + userId);
 
         // Get profile information from payload
         json.put("id", userId);
@@ -58,7 +57,7 @@ public class LoginServlet extends HttpServlet {
         json.put("familyName", (String) payload.get("family_name"));
         json.put("givenName", (String) payload.get("given_name"));
     } catch(Exception e){
-        System.out.println("Invalid ID token.");
+        System.out.println(e.getMessage());
     }
     response.getWriter().println(json);
   }

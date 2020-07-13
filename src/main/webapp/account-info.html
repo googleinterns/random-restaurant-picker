@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
     <title>Account Info</title>
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
-    <script src="scripts/script.js"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <!-- Form -->
-    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
-    <link href="css/form.css" rel="stylesheet" media="all">
-
+    <link href="third-party/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="third-party/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="third-party/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+    <!-- CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/button.css" rel="stylesheet">
+    <link href="css/form.css" rel="stylesheet">
+    <link href="css/banner.css" rel="stylesheet">
 </head>
 
 <body>
     <header>
-    <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-    <div class="dropdown" id="account-menu">
-        <button onclick="toggleShow()" class="dropbtn">
-            <img id="profile-pic" src="">
-            <h3 id="user-name">name</h3>
-        </button>
-        <div id="myDropdown" class="dropdown-content">
-            <a onclick="backToHome()">Home</a>
-            <a onclick="toAccount()">Account</a>
-            <a onclick="toSearches()">History</a>
-            <a onclick="signOut()">Sign Out</a>
+        <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
+        <div class="dropdown" id="account-menu">
+            <button onclick="toggleShow()" class="dropbtn">
+                <img id="profile-pic" src="">
+                <h3 id="user-name">name</h3>
+            </button>
+            <div id="myDropdown" class="dropdown-content">
+                <a onclick="backToHome()">Home</a>
+                <a onclick="toAccount()">Account</a>
+                <a onclick="toSearches()">History</a>
+                <a onclick="signOut()">Sign Out</a>
+            </div>
         </div>
-    </div>
     </header>
     <div class="p-t-80" style="text-align:center">
         <h style="font-size:40px">Account Information</h>
@@ -64,8 +64,8 @@
     </div>
     
     <!-- Form -->
-    <script src="vendor/select2/select2.min.js"></script>
-    <script src="vendor/datepicker/moment.min.js"></script>
-    <script src="vendor/datepicker/daterangepicker.js"></script>
+    <script src="third-party/select2/select2.min.js"></script>
+    <script src="third-party/datepicker/moment.min.js"></script>
+    <script src="third-party/datepicker/daterangepicker.js"></script>
     <script src="js/form.js"></script>
 </body>

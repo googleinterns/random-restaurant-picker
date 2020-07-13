@@ -46,7 +46,7 @@ import java.util.Optional;
 @WebServlet("/query")
 public class Query extends HttpServlet {
     private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
-    private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    private final Gson gson = new GsonBuilder().create();
     private Response response;
     private User user;
 
@@ -70,8 +70,7 @@ public class Query extends HttpServlet {
         URLConnection requestURL = url.openConnection();
         requestURL.connect();
 
-        JsonParser jp = new JsonParser();
-        JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
+        JsonElement jsonElement = new JsonParser().parse(new InputStreamReader((InputStream) requestURL.getContent()));
         JsonObject responseJson = jsonElement.getAsJsonObject();
         response = gson.fromJson(responseJson, Response.class);
 
@@ -80,6 +79,5 @@ public class Query extends HttpServlet {
         System.out.println(user);
 
         System.out.println(response.status());
-
     }
 }

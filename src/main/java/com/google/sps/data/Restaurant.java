@@ -14,19 +14,13 @@
 
 package com.google.sps.data;
 
-import com.google.gson.annotations.Expose;
-
 public final class Restaurant {
-    private int weight = 0;
-    @Expose
+    private transient int weight = 0;
     private final String name;
-    @Expose
     private final double rating;
-    @Expose
     private final String businessStatus;
     // private final Geometry geometry;
     // private final String icon;
-    @Expose
     private final String id;
     // private final OpeningHours opening_hours;
     // private final Photo[] photos;
@@ -39,23 +33,24 @@ public final class Restaurant {
     // private final int user_ratings_total;
     // private final String vicinity;
 
-    public Restaurant(String name, double rating, String businessStatus, String id) {
+    public Restaurant(String name, int weight, double rating, String businessStatus, String id) {
         this.name = name;
+        this.weight = weight;
         this.rating = rating;
         this.businessStatus = businessStatus;
         this.id = id;
     }
 
     public int weight() {
-        return weight;
+        return this.weight;
     }
 
     public String name() {
-        return name;
+        return this.name;
     }
 
     public double rating() {
-        return rating;
+        return this.rating;
     }
 
     public String businessStatus() {
@@ -67,6 +62,6 @@ public final class Restaurant {
     }
 
     public String toString() {
-        return name;
+        return this.name;
     }
 }

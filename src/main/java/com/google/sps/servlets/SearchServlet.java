@@ -88,7 +88,6 @@ public class SearchServlet extends HttpServlet {
     String formattedDate = formatter.format(date);
     String restaurantName = request.getParameter("restaurantName");
 
-
     //Make an entity
     Entity searchEntity = new Entity("savedSearch");
     searchEntity.setProperty("user", user);

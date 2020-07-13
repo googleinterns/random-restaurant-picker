@@ -24,7 +24,6 @@ function query() {
     fetch(`/query`, { method: 'GET' })
         .then(response => response.json())
         .then((response) => {
-            responseJson = response; // Debug
             if (response.status === "OK") {
                 let choice = response.pick;
                 errorEl.innerText = choice;

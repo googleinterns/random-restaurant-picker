@@ -22,7 +22,7 @@ public final class User {
     }
 
     public int priceLevel() {
-        return priceLevel;
+        return this.priceLevel;
     }
 
     public String toString() {

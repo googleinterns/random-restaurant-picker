@@ -17,8 +17,11 @@ package com.google.sps.data;
 import java.util.ArrayList;
 
 public class Feedback {
+    // the user's rating of the restaurant
     private String restaurantRating;
+    // the user's rating of how closely the selected restaurant matched their inputted parameters
     private String rrpRating;
+    // the user's personal notes on the restaurant 
     private String notes;
 
     public Feedback(String restaurantRating, String rrpRating, String notes){
