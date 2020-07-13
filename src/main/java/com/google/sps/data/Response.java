@@ -30,7 +30,7 @@ public final class Response implements java.io.Serializable {
 
     public Response(String status, List<Restaurant> results) {
         this.status = status;
-        this.results = results;
+        this.results = new List<Restaurant>(results);
     }
 
     public String getStatus() {
@@ -55,7 +55,15 @@ public final class Response implements java.io.Serializable {
         return (this.results).stream().map(n -> n.toString()).collect(Collectors.joining(","));
     }
 
+    public void setPick(Restaurant restaurant){
+        this.pick = restaurant;
+    }
+
     public Restaurant getPick(){
         return this.pick;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
     }
 }
