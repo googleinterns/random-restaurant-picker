@@ -41,18 +41,9 @@ public final class Response {
     }
 
     public void pick() {
-<<<<<<< HEAD
         int randIdx = (int) (Math.random() * results.size());
         pick = results.get(randIdx).name();
         results.remove(randIdx);
-=======
-        if (results.size() == 0)
-            throw new NullPointerException("results array not initialized");
-        Random rd = new Random();
-        int randNum = rd.nextInt(results.size()-1);
-        this.pick = results.get(randNum).name();
-        results.remove(randNum);
->>>>>>> a3141a61e42a4626d649c16d8f871debb28f56d2
         if (results.size() == 0)
             status = "NO_REROLLS";
     }
