@@ -70,7 +70,7 @@ public final class Restaurant implements java.io.Serializable {
         return this.name;
     }
 
-    public String price() {
+    public int price() {
         return this.price_level;
     }
 }

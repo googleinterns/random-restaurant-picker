@@ -30,7 +30,7 @@ public final class Response implements java.io.Serializable {
 
     public Response(String status, List<Restaurant> results) {
         this.status = status;
-        this.results = new List<Restaurant>(results);
+        this.results = results;
     }
 
     public String status() {
@@ -41,12 +41,12 @@ public final class Response implements java.io.Serializable {
         return results;
     }
 
-    public void pick() {
+    /*public void pick() {
         int randIdx = (int) (Math.random() * results.size());
         pick = results.remove(randIdx);
         if (results.size() == 0)
             status = "NO_REROLLS";
-    }
+    }*/
 
     public String toString() {
         return (this.results).stream().map(n -> n.toString()).collect(Collectors.joining(","));
