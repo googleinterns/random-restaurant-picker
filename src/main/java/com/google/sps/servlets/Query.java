@@ -40,7 +40,7 @@ import java.util.ArrayList;
 public class Query extends HttpServlet {
 
     private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
-    private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    private final Gson gson = new GsonBuilder().create();
     private Response response;
     private User user;
 
