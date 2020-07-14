@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @WebServlet("/query")
-public class Query extends HttpServlet {
+public class QueryServlet extends HttpServlet {
 
     private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
     private final Gson gson = new GsonBuilder().create();
@@ -48,7 +48,7 @@ public class Query extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
-        Response response = (Response)session.getAttribute("response");
+        Response response = (Response) session.getAttribute("response");
         if (response.status().equals("OK"))
             response.pick();
         servletResponse.getWriter().println(gson.toJson(response));

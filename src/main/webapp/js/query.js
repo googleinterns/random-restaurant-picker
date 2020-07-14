@@ -26,10 +26,13 @@ function query() {
     fetch(`/query`, { method: "GET" })
         .then((response) => response.json())
         .then((response) => {
+            console.log(response);
             if (response.status === "OK") {
-                let choice = response.pick;
-                errorEl.innerText = choice;
-                resultsPage(choice);
+                let name = response.pick.name;
+                let rating = response.pick.rating + ' ★';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photo_reference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                errorEl.innerText = name;
+                resultsPage(name, rating, photoUrl);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
             else if (response.status === "NO_REROLLS") throw "No re-rolls left";
@@ -45,11 +48,15 @@ function query() {
 
 function reroll() {
     const pickEl = document.getElementById("pick");
+    const ratingEl = document.getElementById("rating");
     fetch(`/query`, { method: "GET" })
         .then((response) => response.json())
         .then((response) => {
             if (response.status === "OK") {
-                pickEl.innerText = response.pick;
+                pickEl.innerText = response.pick.name;
+                ratingEl.innerText = response.pick.rating + ' ★';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photo_reference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                loadImage(photoUrl);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
             else if (response.status === "NO_REROLLS") throw "No re-rolls left";
@@ -105,7 +112,7 @@ function geoLocFallback() {
             if (xhr.status == 403)
                 console.log("Usage limits exceeded");
             if (xhr.status == 400)
-                console.log("API key is invalid");
+                console.log("API key is invalid or JSON parsing error");
             geoLocHardcoded(); // DEBUG
         }
     });
@@ -249,11 +256,22 @@ $("input, textarea").blur(function() {
 
 // TODO: make this seamless and non-jank
 // Switch to results page
-function resultsPage(pick) {
+function resultsPage(name, rating, photoUrl) {
     fetch(`../results.html`)
         .then((html) => html.text())
         .then((html) => {
             document.getElementById("page-container").innerHTML = html;
-            document.getElementById("pick").innerText = pick;
+            document.getElementById("pick").innerText = name;
+            document.getElementById("rating").innerText = rating;
+            loadImage(photoUrl);
         });
+}
+
+function loadImage(photoUrl) {
+    let photoEl = document.getElementById("photo");
+    photoEl.innerHTML = "";
+
+    let img = document.createElement('img');
+    img.src = photoUrl;
+    photoEl.appendChild(img);
 }

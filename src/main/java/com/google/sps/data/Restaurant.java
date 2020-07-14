@@ -14,6 +14,8 @@
 
 package com.google.sps.data;
 
+import com.google.sps.data.Photo;
+
 import java.io.Serializable;
 
 public final class Restaurant implements java.io.Serializable {
@@ -21,11 +23,11 @@ public final class Restaurant implements java.io.Serializable {
     private final String name;
     private final double rating;
     private final String businessStatus;
+    private final Photo[] photos;
     // private final Geometry geometry;
     // private final String icon;
     // private final String id;
     // private final OpeningHours opening_hours;
-    // private final Photo[] photos;
     // private final String place_id;
     // private final PlusCode plus_code;
     // private final int price_level;
@@ -35,10 +37,11 @@ public final class Restaurant implements java.io.Serializable {
     // private final int user_ratings_total;
     // private final String vicinity;
 
-    public Restaurant(String name, double rating, String businessStatus) {
+    public Restaurant(String name, double rating, String businessStatus, Photo[] photos) {
         this.name = name;
         this.rating = rating;
         this.businessStatus = businessStatus;
+        this.photos = photos;
     }
 
     public int weight() {
