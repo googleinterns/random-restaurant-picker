@@ -18,7 +18,6 @@ import com.google.sps.data.Restaurant;
 
 import java.lang.NullPointerException;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.Random;
@@ -26,10 +25,10 @@ import java.io.Serializable;
 
 public final class Response implements java.io.Serializable {
     private String pick = null;
-    private ArrayList<Restaurant> results;
+    private List<Restaurant> results;
     private String status;
 
-    public Response(String status, ArrayList <Restaurant> results) {
+    public Response(String status, List<Restaurant> results) {
         this.status = status;
         this.results = results;
     }
@@ -38,14 +37,13 @@ public final class Response implements java.io.Serializable {
         return status;
     }
 
-    public List < Restaurant > results() {
+    public List<Restaurant> results() {
         return results;
     }
 
     public void pick() {
         int randIdx = (int)(Math.random() * results.size());
-        pick = results.get(randIdx).name();
-        results.remove(randIdx);
+        pick = results.remove(randIdx).name();
         if (results.size() == 0)
             status = "NO_REROLLS";
     }

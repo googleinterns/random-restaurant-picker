@@ -35,8 +35,7 @@ public final class Restaurant implements java.io.Serializable {
     // private final int user_ratings_total;
     // private final String vicinity;
 
-    public Restaurant(int weight, String name, double rating, String businessStatus) {
-        this.weight = weight;
+    public Restaurant(String name, double rating, String businessStatus) {
         this.name = name;
         this.rating = rating;
         this.businessStatus = businessStatus;
@@ -44,6 +43,10 @@ public final class Restaurant implements java.io.Serializable {
 
     public int weight() {
         return this.weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
     public String name() {
