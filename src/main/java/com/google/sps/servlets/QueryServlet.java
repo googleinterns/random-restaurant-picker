@@ -66,8 +66,14 @@ public class QueryServlet extends HttpServlet {
         String radius = servletRequest.getParameter("radius");
         String type = "restaurant";
         String searchTerms = servletRequest.getParameter("searchTerms");
-        String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
+        searchTerms = searchTerms.replaceAll("\\s", "+");
 
+        //Adds the diet options to the search: causes the search to return multiple types
+        String dietaryOptions = servletRequest.getParameter("dietary-options");
+        if(!dietaryOptions.equals("Nothing specific"))
+            searchTerms = searchTerms + "+" + dietaryOptions;
+
+        String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
         URL url = new URL(urlStr);
         URLConnection conn = url.openConnection();
         conn.connect();
@@ -84,7 +90,7 @@ public class QueryServlet extends HttpServlet {
 
     private void chooseRestaurant(Response response, int requestedPrice){
         if(response.results().size() == 0){
-            response.setStatus("EMPTY");
+            response.setStatus("ZERO_RESULTS");
             return;
         }
         HashMap<String, Integer> restaurantScores = new HashMap<>();
