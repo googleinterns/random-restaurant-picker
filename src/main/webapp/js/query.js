@@ -12,206 +12,224 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+/*
+    RESTAURANT QUERY AND RE-ROLL
+ */
+
 function query() {
-  const errorEl = document.getElementById("error");
-  let lat = localStorage.getItem("lat");
-  let lon = localStorage.getItem("lng");
-  const radius = $("#radius").val();
-  const searchTerms = document.getElementById("searchTerms").value;
-  saveSearch(lat, lon, radius, searchTerms);
-  fetch(`/query`, { method: "GET" })
-    .then((response) => response.json())
-    .then((response) => {
-      if (response.status === "OK") {
-        let choice = response.pick;
-        errorEl.innerText = choice;
-        resultsPage(choice);
-      } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
-      else if (response.status === "ZERO_RESULTS") throw "No results";
-      else if (response.status === "NO_REROLLS") throw "No re-rolls left";
-      else throw "Unforeseen error";
-    })
-    .catch((error) => {
-      errorEl.classList.remove("success-banner");
-      errorEl.classList.remove("hidden");
-      errorEl.classList.add("error-banner");
-      errorEl.innerText = error;
-    });
-}
-
-$("#randomize-form").submit(function (event) {
-  const errorEl = document.getElementById("error");
-  errorEl.classList.add("hidden");
-
-  event.preventDefault();
-  let url = $(this).attr("action");
-  let lat = localStorage.getItem("lat");
-  let lng = localStorage.getItem("lng");
-  let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}`;
-
-  $.ajax({
-    type: "POST",
-    url: url,
-    data: queryStr,
-    success: function (response) {
-      query();
-    },
-  });
-});
-
-$("input, textarea").blur(function () {
-  if ($(this).val() != "") {
-    $(this).addClass("active");
-  } else {
-    $(this).removeClass("active");
-  }
-});
-
-function resultsPage(pick) {
-  fetch(`../results.html`)
-    .then((html) => html.text())
-    .then((html) => {
-      document.getElementById("page-container").innerHTML = html;
-      document.getElementById("pick").innerText = pick;
-    });
+    const errorEl = document.getElementById("error");
+    let lat = localStorage.getItem("lat");
+    let lon = localStorage.getItem("lng");
+    const radius = $("#radius").val();
+    const searchTerms = document.getElementById("searchTerms").value;
+    saveSearch(lat, lon, radius, searchTerms);
+    fetch(`/query`, { method: "GET" })
+        .then((response) => response.json())
+        .then((response) => {
+            if (response.status === "OK") {
+                let choice = response.pick;
+                errorEl.innerText = choice;
+                resultsPage(choice);
+            } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
+            else if (response.status === "ZERO_RESULTS") throw "No results";
+            else if (response.status === "NO_REROLLS") throw "No re-rolls left";
+            else throw "Unforeseen error";
+        })
+        .catch((error) => {
+            errorEl.classList.remove("success-banner");
+            errorEl.classList.remove("hidden");
+            errorEl.classList.add("error-banner");
+            errorEl.innerText = error;
+        });
 }
 
 function reroll() {
-  const pickEl = document.getElementById("pick");
-  fetch(`/query`, { method: "GET" })
-    .then((response) => response.json())
-    .then((response) => {
-      if (response.status === "OK") {
-        pickEl.innerText = response.pick;
-      } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
-      else if (response.status === "ZERO_RESULTS") throw "No results";
-      else if (response.status === "NO_REROLLS") throw "No re-rolls left";
-      else throw "Unforeseen error";
-    })
-    .catch((error) => {
-      pickEl.innerText = error;
-    });
+    const pickEl = document.getElementById("pick");
+    fetch(`/query`, { method: "GET" })
+        .then((response) => response.json())
+        .then((response) => {
+            if (response.status === "OK") {
+                pickEl.innerText = response.pick;
+            } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
+            else if (response.status === "ZERO_RESULTS") throw "No results";
+            else if (response.status === "NO_REROLLS") throw "No re-rolls left";
+            else throw "Unforeseen error";
+        })
+        .catch((error) => {
+            pickEl.innerText = error;
+        });
 }
 
+
 /*
-    FUNCTIONS TO GET THE USER'S LOCATION AND TRANSFORM TO AN ADDRESS
+    USER'S LOCATION AND ADDRESS
  */
+
+// Get user location as lat/lng
 function getLocation() {
-  let location = document.getElementById("location-container");
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      let pos = {
+    if (navigator.geolocation) // Does browser support Geolocation?
+    navigator.geolocation.getCurrentPosition(geoLocEnabled, geoLocFallback);
+    else
+        geoLocFallback();
+}
+
+// Geolocation is supported and enabled
+function geoLocEnabled(position) {
+    let locationEl = document.getElementById("location-container");
+    let pos = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-      };
-      localStorage.setItem("lat", pos.lat);
-      localStorage.setItem("lng", pos.lng);
-      convertLocation(pos).then((address) => {
-        console.log(address);
-        location.innerText = address;
-      });
-    });
-  } else {
-    // Browser doesn't support Geolocation
-    let pos = { lat: -34.397, lng: 150.644 };
+    };
     localStorage.setItem("lat", pos.lat);
     localStorage.setItem("lng", pos.lng);
     convertLocation(pos).then((address) => {
-      console.log(address);
-      location.innerText = address;
+        locationEl.innerText = address;
     });
-  }
 }
 
-function convertLocation(location) {
-  let lat = location.lat;
-  let long = location.lng;
-  return fetch(`/convert?lat=${lat}&lng=${long}`)
-    .then((response) => response.json())
-    .then((response) => {
-      console.log(response.results[0].formatted_address);
-      return response.results[0].formatted_address;
-    })
-    .catch(() =>
-      console.log("Can’t access " + url + " response. Blocked by browser?")
-    );
+// Use inaccurate IP-based geolocation instead
+function geoLocFallback() {
+    let locationEl = document.getElementById("location-container");
+    let pos = { lat: 40.730610, lng: -73.935242 };
+    localStorage.setItem("lat", pos.lat);
+    localStorage.setItem("lng", pos.lng);
+    convertLocation(pos).then((address) => {
+        locationEl.innerText = address;
+    });
 }
+
+// Convert lat/lng to human readable address
+function convertLocation(location) {
+    let lat = location.lat;
+    let long = location.lng;
+    return fetch(`/convert?lat=${lat}&lng=${long}`)
+        .then((response) => response.json())
+        .then((response) => {
+            return response.results[0].formatted_address;
+        })
+        .catch((error) => console.log(error));
+}
+
 
 /*
-    FUNCTIONS TO HANDLE USERS SIGNING IN
+    USER SIGN-IN
 */
 function onSignIn(googleUser) {
-  let id_token = googleUser.getAuthResponse().id_token;
-  let profile = googleUser.getBasicProfile();
-  fetch(`/login?id_token=${id_token}`)
-    .then((response) => response.json())
-    .then((data) => {
-      localStorage.setItem("user", data.id);
-      localStorage.setItem("loggedIn", true);
-      addUserContent(profile.getName(), profile.getImageUrl());
-      toggleAccountMenu();
-    });
+    let id_token = googleUser.getAuthResponse().id_token;
+    let profile = googleUser.getBasicProfile();
+    fetch(`/login?id_token=${id_token}`)
+        .then((response) => response.json())
+        .then((data) => {
+            localStorage.setItem("user", data.id);
+            localStorage.setItem("loggedIn", true);
+            addUserContent(profile.getName(), profile.getImageUrl());
+            toggleAccountMenu();
+        });
 }
 
 function addUserContent(name, image) {
-  document.getElementById("user-name").innerText = name;
-  document.getElementById("profile-pic").src = image;
+    document.getElementById("user-name").innerText = name;
+    document.getElementById("profile-pic").src = image;
 }
 
 function toggleAccountMenu() {
-  document.getElementById("account-menu").classList.toggle("show");
-  document.getElementById("sign-in").classList.toggle("hide");
+    document.getElementById("account-menu").classList.toggle("show");
+    document.getElementById("sign-in").classList.toggle("hide");
 }
 
 function signOut() {
-  var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log("User signed out.");
-  });
-  localStorage.setItem("user", 0);
-  toggleAccountMenu();
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function() {
+        console.log("User signed out.");
+    });
+    localStorage.setItem("user", 0);
+    toggleAccountMenu();
 }
 
 function toggleShow() {
-  document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById("myDropdown").classList.toggle("show");
 }
 
-window.onclick = function (event) {
-  if (!event.target.matches(".dropbtn")) {
-    let dropdown = document.getElementById("myDropdown");
-    if (dropdown.classList.contains("show")) {
-      dropdown.classList.remove("show");
+window.onclick = function(event) {
+    if (!event.target.matches(".dropbtn")) {
+        let dropdown = document.getElementById("myDropdown");
+        if (dropdown.classList.contains("show")) {
+            dropdown.classList.remove("show");
+        }
     }
-  }
 };
 
+
 /*
-    FUNCTIONS FOR SAVING SEARCHES
+    SAVING SEARCHES
 */
 function saveSearch(lat, lng, radius, keyword) {
-  let userID = 0;
-  if (localStorage.getItem("loggedIn")) {
-    userID = localStorage.getItem("user");
-  }
-  fetch(
-    `/searches?user=${userID}&radius=${radius}&keywords=${keyword}&lat=${lat}&lng=${lng}`,
-    {
-      method: "POST",
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
     }
-  );
+    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&lat=${lat}&lng=${lng}`, {
+        method: "POST",
+    });
 }
 
 function getSearches() {
-  let userID = 0;
-  if (localStorage.getItem("loggedIn")) {
-    userID = localStorage.getItem("user");
-  }
-  fetch(`/searches?user=${userID}`, { method: "GET" })
-    .then((response) => response.json())
-    .then((searches) => {
-      const searchesEl = document.getElementById("cards");
-      searches.forEach((search) => {
-        searchesEl.appendChild(createSearchElement(search));
-      });
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}`, { method: "GET" })
+        .then((response) => response.json())
+        .then((searches) => {
+            const searchesEl = document.getElementById("cards");
+            searches.forEach((search) => {
+                searchesEl.appendChild(createSearchElement(search));
+            });
+        });
+}
+
+
+/*
+    HTML
+ */
+
+// AJAX POST for form
+$("#randomize-form").submit(function(event) {
+    const errorEl = document.getElementById("error");
+    errorEl.classList.add("hidden");
+
+    event.preventDefault();
+    let url = $(this).attr("action");
+    let lat = localStorage.getItem("lat");
+    let lng = localStorage.getItem("lng");
+    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}`;
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: queryStr,
+        success: function(response) {
+            query();
+        },
     });
+});
+
+// Form underline element
+$("input, textarea").blur(function() {
+    if ($(this).val() != "") {
+        $(this).addClass("active");
+    } else {
+        $(this).removeClass("active");
+    }
+});
+
+// TODO: make this seamless and non-jank
+// Switch to results page
+function resultsPage(pick) {
+    fetch(`../results.html`)
+        .then((html) => html.text())
+        .then((html) => {
+            document.getElementById("page-container").innerHTML = html;
+            document.getElementById("pick").innerText = pick;
+        });
 }
