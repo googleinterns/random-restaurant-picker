@@ -24,7 +24,7 @@ import java.util.Random;
 import java.io.Serializable;
 
 public final class Response implements java.io.Serializable {
-    private String pick = null;
+    private Restaurant pick = null;
     private List<Restaurant> results;
     private String status;
 
@@ -42,8 +42,8 @@ public final class Response implements java.io.Serializable {
     }
 
     public void pick() {
-        int randIdx = (int)(Math.random() * results.size());
-        pick = results.remove(randIdx).name();
+        int randIdx = (int) (Math.random() * results.size());
+        pick = results.remove(randIdx);
         if (results.size() == 0)
             status = "NO_REROLLS";
     }
