@@ -55,9 +55,7 @@ function reroll() {
             else if (response.status === "NO_REROLLS") throw "No re-rolls left";
             else throw "Unforeseen error";
         })
-        .catch((error) => {
-            pickEl.innerText = error;
-        });
+        .catch((error) => { pickEl.innerText = error; });
 }
 
 
@@ -68,7 +66,7 @@ function reroll() {
 // Get user location as lat/lng
 function getLocation() {
     if (navigator.geolocation) // Does browser support Geolocation?
-    navigator.geolocation.getCurrentPosition(geoLocEnabled, geoLocFallback);
+        navigator.geolocation.getCurrentPosition(geoLocEnabled, geoLocFallback);
     else
         geoLocFallback();
 }
@@ -82,13 +80,41 @@ function geoLocEnabled(position) {
     };
     localStorage.setItem("lat", pos.lat);
     localStorage.setItem("lng", pos.lng);
-    convertLocation(pos).then((address) => {
-        locationEl.innerText = address;
-    });
+    convertLocation(pos).then((address) => { locationEl.innerText = address; });
 }
 
 // Use inaccurate IP-based geolocation instead
 function geoLocFallback() {
+    let locationEl = document.getElementById("location-container");
+    $.ajax({
+        type: "POST",
+        url: 'https://www.googleapis.com/geolocation/v1/geolocate?key=' + 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc', // TODO: use safe API key storage!!!
+        data: { considerIp: 'true' },
+        success: function(response) {
+            let pos = {
+                lat: response.location.lat,
+                lng: response.location.lng,
+            };
+            localStorage.setItem("lat", pos.lat);
+            localStorage.setItem("lng", pos.lng);
+            convertLocation(pos).then((address) => { locationEl.innerText = address; });
+        },
+        error: function(xhr) {
+            if (xhr.status == 404)
+                console.log("No results");
+            if (xhr.status == 403)
+                console.log("Usage limits exceeded");
+            if (xhr.status == 400)
+                console.log("API key is invalid");
+            geoLocHardcoded(); // DEBUG
+        }
+    });
+}
+
+// TODO: remove this entirely; fallback should be to leave form blank instead
+// DEBUG USE
+// Use hardcoded lat/lng
+function geoLocHardcoded() {
     let locationEl = document.getElementById("location-container");
     let pos = { lat: 40.730610, lng: -73.935242 };
     localStorage.setItem("lat", pos.lat);
@@ -104,9 +130,7 @@ function convertLocation(location) {
     let long = location.lng;
     return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then((response) => response.json())
-        .then((response) => {
-            return response.results[0].formatted_address;
-        })
+        .then((response) => { return response.results[0].formatted_address; })
         .catch((error) => console.log(error));
 }
 
@@ -152,9 +176,9 @@ function toggleShow() {
 
 window.onclick = function(event) {
     if (!event.target.matches(".dropbtn")) {
-        let dropdown = document.getElementById("myDropdown");
-        if (dropdown.classList.contains("show")) {
-            dropdown.classList.remove("show");
+        let dropdownEl = document.getElementById("myDropdown");
+        if (dropdownEl.classList.contains("show")) {
+            dropdownEl.classList.remove("show");
         }
     }
 };
@@ -210,7 +234,7 @@ $("#randomize-form").submit(function(event) {
         data: queryStr,
         success: function(response) {
             query();
-        },
+        }
     });
 });
 
