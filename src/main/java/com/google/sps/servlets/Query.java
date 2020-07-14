@@ -63,8 +63,14 @@ public class Query extends HttpServlet {
         String radius = servletRequest.getParameter("radius");
         String type = "restaurant";
         String searchTerms = servletRequest.getParameter("searchTerms");
-        String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
+        searchTerms = searchTerms.replaceAll("\\s", "+");
 
+        //Adds the diet options to the search: causes the search to return multiple types
+        String dietaryOptions = servletRequest.getParameter("dietary-options");
+        if(!dietaryOptions.equals("Nothing specific"))
+            searchTerms = searchTerms + "+" + dietaryOptions;
+
+        String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
         URL url = new URL(urlStr);
         URLConnection conn = url.openConnection();
         conn.connect();
@@ -79,7 +85,7 @@ public class Query extends HttpServlet {
 
     private void chooseRestaurant(Response response, int requestedPrice){
         if(response.results().size() == 0){
-            response.setStatus("EMPTY");
+            response.setStatus("ZERO_RESULTS");
             return;
         }
         HashMap<String, Integer> restaurantScores = new HashMap<>();
@@ -105,6 +111,7 @@ public class Query extends HttpServlet {
             if(selectedNum <= value){
                 response.setPick(response.results().stream().filter(p -> p.name().equals(key)).findFirst().orElse(null));
                 response.results().remove(response.getPick());
+                return;
             }
         }
     }
