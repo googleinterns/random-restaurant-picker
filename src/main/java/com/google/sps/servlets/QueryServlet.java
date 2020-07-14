@@ -56,16 +56,10 @@ public class QueryServlet extends HttpServlet {
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
-<<<<<<< HEAD
         if(response == null)
             servletResponse.getWriter().println(gson.toJson(new Response("NO_RESULTS", null)));
         else if (response.getStatus().equals("OK"))
-            chooseRestaurant(response);
-=======
-        if(response.status().equals("OK")){
-            chooseRestaurant(response, user.priceLevel());
-        }
->>>>>>> 8bf0119... Fix variable names and make deployable
+            chooseRestaurant(response, user.getPriceLevel());
         servletResponse.getWriter().println(gson.toJson(response));
     }
 
@@ -77,9 +71,15 @@ public class QueryServlet extends HttpServlet {
         String radius = servletRequest.getParameter("radius");
         String type = "restaurant";
         String searchTerms = servletRequest.getParameter("searchTerms");
-        String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
+        searchTerms = searchTerms.replaceAll("\\s", "+");
 
-        URLConnection conn = new URL(urlStr).openConnection();
+        //Adds the diet options to the search: causes the search to return multiple types
+        String dietaryOptions = servletRequest.getParameter("dietary-options");
+        if(!dietaryOptions.equals("Nothing specific"))
+            searchTerms = searchTerms + "+" + dietaryOptions;
+
+        String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
+        URL conn = new URL(urlStr).openConnection();
         conn.connect();
 
         JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
@@ -97,8 +97,8 @@ public class QueryServlet extends HttpServlet {
     }
 
     private void chooseRestaurant(Response response, int requestedPrice){
-        if(response.getResults().size() == 0){
-            response.setStatus("EMPTY");
+        if(response.results().size() == 0){
+            response.setStatus("ZERO_RESULTS");
             return;
         }
         HashMap<String, Integer> restaurantScores = new HashMap<>();
