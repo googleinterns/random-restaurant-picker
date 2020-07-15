@@ -14,6 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+
 import com.google.sps.data.Feedback;
 import com.google.sps.data.Search;
 import javax.servlet.annotation.WebServlet;
@@ -43,11 +49,30 @@ import java.util.Optional;
 @WebServlet("/feedback")
 public class FeedbackServlet extends HttpServlet {
     @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Query query = new Query("Feedback");
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
+
+        List<Feedback> feedbackList = new ArrayList<>();
+        for (Entity entity : results.asIterable()) {
+            Feedback feedback = (Feedback) entity.getProperty("feedback");
+            feedbackList.add(feedback);
+        }
+        // Send the JSON as the response
+        response.setContentType("application/json");
+        Gson gson = new Gson();
+        gson.toJson(gson.toJsonTree(feedbackList), gson.newJsonWriter(response.getWriter()));
+    }
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String restaurantRating = request.getParameter("restaurant-rating");
         String rrpRating = request.getParameter("rrp-rating");
         String notes = request.getParameter("notes");
         Feedback feedback = new Feedback(restaurantRating, rrpRating, notes);
-        
+        Entity feedbackEntity = new Entity("Feedback");
+        feedbackEntity.setProperty("feedback", feedback);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(feedbackEntity);
     }
 }

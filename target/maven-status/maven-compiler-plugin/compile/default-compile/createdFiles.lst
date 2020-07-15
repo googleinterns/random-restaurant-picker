@@ -5,6 +5,7 @@ com/google/sps/data/Search.class
 com/google/sps/servlets/FeedbackServlet.class
 com/google/sps/servlets/LoginServlet.class
 com/google/sps/data/Response.class
+com/google/sps/servlets/FavFoodServlet.class
 com/google/sps/servlets/SearchServlet.class
 com/google/sps/servlets/ConvertLocationServlet.class
 com/google/sps/servlets/Query.class

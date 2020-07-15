@@ -461,13 +461,67 @@ function saveSearch(lat, lng, radius, keyword){
 
 function getSearches(){
     let userID = 0;
-    if(localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        const searchesEl = document.getElementById('cards');
+        let searchesEl = document.getElementById('cards');
         searches.forEach((search) => {
             searchesEl.appendChild(createSearchElement(search));
         });
     });
+}
+
+function accountFunctions() {
+    getNumSearches();
+    getLastVisited();
+    getFavFood();
+}
+
+function getNumSearches() {
+    let count = 0;
+    let numSearchesEl = document.getElementById('num-searches');
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        searches.forEach((search) => {
+            count += 1;
+        });
+    });
+    numSearchesEl.innerText = count;
+}
+
+function getLastVisited() {
+    let lastVisitedEl = document.getElementById('last-visited');
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        lastVisitedEl.innerText = searches[0].name()});
+}
+
+function getFavFood() {
+    let food = document.getElementById('fav-food');
+    fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
+        if (foods[0].length == 0) {
+            food.innerHTML = '<textarea id="food-selection" placeholder="or foods :)"></textarea>';
+        } else {
+            food.innerText = foods[0];
+        }
+    });
+}
+
+function getNumReviews() {
+    let count = 0;
+    let numFeedbackEl = document.getElementById('num-feedback');
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/feedback?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((feedbackList) => {
+        feedbackList.forEach((feedback) => {
+            count += 1;
+        });
+    });
+    numFeedbackEl.innerText = count;
 }

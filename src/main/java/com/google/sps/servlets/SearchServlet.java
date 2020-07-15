@@ -53,7 +53,6 @@ public class SearchServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    System.out.println("Success");
     List<Search> searches = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       String userID = (String) entity.getProperty("user");
@@ -65,9 +64,7 @@ public class SearchServlet extends HttpServlet {
       long id = entity.getKey().getId();
       Feedback feedback = (Feedback) entity.getProperty("feedback");
       String restaurantName = (String) entity.getProperty("restaurantName");
-      System.out.println(restaurantName);
       Search search = new Search(userID, date, keywords, lat, lng, radius, id, feedback, restaurantName);
-      System.out.println(search);
       searches.add(search);
     }
     Gson gson = new Gson();

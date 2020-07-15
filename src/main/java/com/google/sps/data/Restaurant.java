@@ -19,19 +19,7 @@ public final class Restaurant {
     private final String name;
     private final double rating;
     private final String businessStatus;
-    // private final Geometry geometry;
-    // private final String icon;
     private final String id;
-    // private final OpeningHours opening_hours;
-    // private final Photo[] photos;
-    // private final String place_id;
-    // private final PlusCode plus_code;
-    // private final int price_level;
-    // private final String reference;
-    // private final String scope;
-    // private final Type[] types;
-    // private final int user_ratings_total;
-    // private final String vicinity;
 
     public Restaurant(String name, int weight, double rating, String businessStatus, String id) {
         this.name = name;

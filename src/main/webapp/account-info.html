@@ -19,7 +19,7 @@
     <link href="css/banner.css" rel="stylesheet">
 </head>
 
-<body>
+<body onload="accountFunctions()">
     <header>
         <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
         <div class="dropdown" id="account-menu">
@@ -43,19 +43,19 @@
             <div class="card card-2">
                 <div class="card-body" style="text-align:left">
                     <div class="card-object">
-                        <p1>Username: &nbsp<p1 id="user-name"></p1></p1>
+                        <p1>Username: &nbsp<p1 id="username"></p1></p1>
                     </div>
                     <div class="card-object">
-                        <p1>Favorite Cuisine: &nbsp<p1>Example</p1></p1>
+                        <p1>Favorite Food: &nbsp<div id="fav-food"></div></p1>
                     </div>
                     <div class="card-object">
-                        <p1>Last Restaurant Visited: &nbsp<p1>Example</p1></p1>
+                        <p1>Last Restaurant Visited: &nbsp<p1 id="last-visited"></p1></p1>
                     </div>
                     <div class="card-object">
-                        <p1>Number of Rolls: &nbsp<p1>Example</p1></p1>
+                        <p1>Number of Rolls: &nbsp<p1 id="num-searches"></p1></p1>
                     </div>
                     <div class="card-object">
-                        <p1>Number of Reviews Submitted: &nbsp<p1>Example</p1></p1>
+                        <p1>Number of Reviews Submitted: &nbsp<p1 id="num-feedback"></p1></p1>
                     </div>
                 </div>
             </div>
