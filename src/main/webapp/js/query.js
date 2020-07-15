@@ -275,9 +275,7 @@ function getSearches(){
     if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        console.log(searches);
         let searchesEl = document.getElementById('cards');
         searches.forEach((search) => {
             let searchCard = createSearchElement(search);
@@ -286,7 +284,7 @@ function getSearches(){
     });
 }
 
-// Creates the search card with the inputted search's name, keywords inputted by the user, and the feedback/reroll button (if necessary)
+//Create the card containing the search's information
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
     newCardEl.className = 'card card-2';
@@ -335,7 +333,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
     if (buttons) {
         let modal = document.getElementById('searchModal');
         let span = document.getElementsByClassName("close")[0];
-        span.onclick = () => {
+        span.onclick = function() {
             let restaurantContainerEl = document.getElementById("restaurant-name-container");
             restaurantContainerEl.remove();
             let submitButtonEl = document.getElementById("submit-button");
@@ -345,7 +343,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
             modal.style.display = "none";
         }
         // When the user clicks anywhere outside of the modal, close it
-        window.onclick = event => {
+        window.onclick = function(event) {
             if (event.target == modal) {
                 let restaurantContainerEl = document.getElementById("restaurant-name-container");
                 restaurantContainerEl.remove();
@@ -363,59 +361,19 @@ function createSearchesButtons(search, buttons, newCardBody) {
             let restaurantNameEl = createRestaurantElement(search.name);
             formEl.appendChild(restaurantNameEl);
             modal.style.display = "block";
-            feedbacks = getFeedback(search);
-            let tempFeedbackElement = feedbacks[0];
-            feedbackElement.innerText = tempFeedbackElement;
-            newCardBody.appendChild(feedbackElement);
-            newCardBody.appendChild(document.createElement('br'));
-
-            // creating the buttons and filling in the feedback element 
-            let buttons = feedbacks[1];
-            newCardBodyWithButtons = createSearchesButtons(search, buttons, newCardBody);
-            newCardEl.appendChild(newCardBodyWithButtons);
-            return newCardEl;
-        });
-    }
-}
-
-function createSearchesButtons(search, buttons, newCardBody) {
-    let feedbackButton = null;
-    let formEl = document.getElementById('searches-form');
-    if (buttons) {
-        let modal = document.getElementById('searchModal');
-        let span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
-            let restaurantContainerEl = document.getElementById("restaurant-name-container");
-            restaurantContainerEl.remove();
-            modal.style.display = "none";
-        }
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                let restaurantContainerEl = document.getElementById("restaurant-name-container");
-                restaurantContainerEl.remove();
-                modal.style.display = "none";
-            }
-        }
-        feedbackButton = document.createElement('button');
-        feedbackButton.className = 'button feedback';
-        feedbackButton.innerText = "Submit Feedback";
-        feedbackButton.addEventListener('click', () => {
-            let restaurantNameEl = createRestaurantElement(search.restaurantName);
-            formEl.appendChild(restaurantNameEl);
-            modal.style.display = "block";
         });
         newCardBody.appendChild(feedbackButton);
     }
     let searchButton = document.createElement('button');
-    searchButton.className = 'button search';
+    searchButton.className = 'btn1 search';
     searchButton.innerText = "Search with These Parameters Again";
-    newCardEl.appendChild(searchButton);
-    // searchButton.addEventListener('click', () => {
-    //     reroll()});
-    return newCardEl;
+    newCardBody.appendChild(searchButton);
+    searchButton.addEventListener('click', () => {
+        reroll()});
+    return newCardBody;
 }
 
+//Function to append restaurant name to modal form to force it to follow through to feedback
 function createRestaurantElement(restaurantName) {
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
@@ -428,7 +386,6 @@ function createRestaurantElement(restaurantName) {
     userEl.name = "user-id";
     userEl.value = userID;
     userEl.hidden = true;
-    console.log(userID);
 
     let inputGroupEl = document.createElement('div');
     inputGroupEl.className = "input-group";
@@ -482,8 +439,7 @@ async function getFeedback(search) {
 /*=========================
     HTML
 =========================*/
-// Form underline element    
-
+// Form underline element
 $("input, textarea").blur(function() {
     if ($(this).val() != "") {
         $(this).addClass("active");

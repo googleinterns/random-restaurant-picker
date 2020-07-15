@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns comments */
-/** TODO: add userID */
 @WebServlet("/fav-food")
 public final class FavFoodServlet extends HttpServlet {
 
