@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
+/*=========================
     RESTAURANT QUERY AND RE-ROLL
- */
-
+=========================*/
 function query() {
     const errorEl = document.getElementById("error");
     let lat = localStorage.getItem("lat");
@@ -65,14 +64,11 @@ function reroll() {
         .catch((error) => { pickEl.innerText = error; });
 }
 
-
-/*
+/*=========================
     USER'S LOCATION AND ADDRESS
- */
-
-// Get user location as lat/lng
+=========================*/
 function getLocation() {
-    if (navigator.geolocation) // Does browser support Geolocation?
+    if (navigator.geolocation)
         navigator.geolocation.getCurrentPosition(geoLocEnabled, geoLocFallback);
     else
         geoLocFallback();
@@ -119,8 +115,6 @@ function geoLocFallback() {
 }
 
 // TODO: remove this entirely; fallback should be to leave form blank instead
-// DEBUG USE
-// Use hardcoded lat/lng
 function geoLocHardcoded() {
     let locationEl = document.getElementById("location-container");
     let pos = { lat: 40.730610, lng: -73.935242 };
@@ -141,10 +135,9 @@ function convertLocation(location) {
         .catch((error) => console.log(error));
 }
 
-
-/*
+/*=========================
     USER SIGN-IN
-*/
+=========================*/
 function onSignIn(googleUser) {
     let id_token = googleUser.getAuthResponse().id_token;
     let profile = googleUser.getBasicProfile();
@@ -155,25 +148,31 @@ function onSignIn(googleUser) {
             localStorage.setItem("loggedIn", true);
             addUserContent(profile.getName(), profile.getImageUrl());
             toggleAccountMenu();
+        }).catch((error) =>{
+            console.log(error);
         });
 }
 
+//Add user information to signed in UI
 function addUserContent(name, image) {
     document.getElementById("user-name").innerText = name;
     document.getElementById("profile-pic").src = image;
 }
 
+//Replaces the sign-in button with signed in UI
 function toggleAccountMenu() {
     document.getElementById("account-menu").classList.toggle("show");
     document.getElementById("sign-in").classList.toggle("hide");
 }
 
+//Logs out of the account
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function() {
         console.log("User signed out.");
     });
     localStorage.setItem("user", 0);
+    localStorage.setItem("loggedIn", false);
     toggleAccountMenu();
 }
 
@@ -181,6 +180,7 @@ function toggleShow() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
 
+//Close account dropdown when clicking elsewhere
 window.onclick = function(event) {
     if (!event.target.matches(".dropbtn")) {
         let dropdownEl = document.getElementById("myDropdown");
@@ -190,10 +190,9 @@ window.onclick = function(event) {
     }
 };
 
-
-/*
+/*=========================
     SAVING SEARCHES
-*/
+=========================*/
 function saveSearch(lat, lng, radius, keyword) {
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
@@ -204,6 +203,7 @@ function saveSearch(lat, lng, radius, keyword) {
     });
 }
 
+//Retrieve searches associeted with the current user
 function getSearches() {
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
@@ -219,12 +219,9 @@ function getSearches() {
         });
 }
 
-
-/*
+/*=========================
     HTML
- */
-
-// AJAX POST for form
+=========================*/
 $("#randomize-form").submit(function(event) {
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
@@ -254,8 +251,8 @@ $("input, textarea").blur(function() {
     }
 });
 
-// TODO: make this seamless and non-jank
-// Switch to results page
+// TODO: make this more seamless
+//Loads the results page
 function resultsPage(name, rating, photoUrl) {
     fetch(`../results.html`)
         .then((html) => html.text())
@@ -267,6 +264,7 @@ function resultsPage(name, rating, photoUrl) {
         });
 }
 
+//Retrieve and display restaurant image
 function loadImage(photoUrl) {
     let photoEl = document.getElementById("photo");
     photoEl.innerHTML = "";

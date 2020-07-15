@@ -49,7 +49,7 @@ public class QueryServlet extends HttpServlet {
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
-        if (response.status().equals("OK"))
+        if (response.getStatus().equals("OK"))
             response.pick();
         servletResponse.getWriter().println(gson.toJson(response));
     }
@@ -63,8 +63,7 @@ public class QueryServlet extends HttpServlet {
         String searchTerms = servletRequest.getParameter("searchTerms");
         String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
 
-        URL url = new URL(urlStr);
-        URLConnection conn = url.openConnection();
+        URLConnection conn = new URL(urlStr).openConnection();
         conn.connect();
 
         JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));

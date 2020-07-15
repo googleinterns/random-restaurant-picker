@@ -33,17 +33,23 @@ public final class Response implements java.io.Serializable {
         this.results = results;
     }
 
-    public String status() {
-        return status;
+    public String getStatus() {
+        return this.status;
     }
 
-    public List<Restaurant> results() {
-        return results;
+    public List<Restaurant> getResults() {
+        return this.results;
     }
 
     public void pick() {
-        int randIdx = (int) (Math.random() * results.size());
-        pick = results.remove(randIdx);
+        if(results.size() > 1){
+            int randIdx = new Random().nextInt(results.size()-1);
+            pick = results.get(randIdx);
+            results.remove(randIdx);
+        } else if (results.size() == 1){
+            pick = results.get(0);
+            results.remove(0);
+        }
         if (results.size() == 0)
             status = "NO_REROLLS";
     }
