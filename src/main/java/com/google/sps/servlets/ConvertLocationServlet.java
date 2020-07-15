@@ -38,9 +38,9 @@ public class ConvertLocationServlet extends HttpServlet {
         String lng = request.getParameter("lng");
         String apiKey = "AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw";
         String sURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&result_type=street_address&key=" + apiKey;
+        
         // Connect to the URL using java's native library
-        URL url = new URL(sURL);
-        URLConnection conn = url.openConnection();
+        URLConnection conn = new URL(sURL).openConnection();
         conn.connect();
 
         JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));

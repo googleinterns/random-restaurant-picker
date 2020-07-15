@@ -39,7 +39,7 @@ public final class ResponseTest {
     Response response = new Response("OK", restArr);
     response.pick();
 
-    String actual = response.status();
+    String actual = response.getStatus();
     String expected = "NO_REROLLS";
     Assert.assertEquals(expected, actual);
   }

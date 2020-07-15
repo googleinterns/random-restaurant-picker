@@ -53,7 +53,6 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
         response.getWriter().println(json);
     }
 }
