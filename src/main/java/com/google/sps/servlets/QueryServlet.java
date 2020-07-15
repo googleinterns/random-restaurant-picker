@@ -47,12 +47,12 @@ public class QueryServlet extends HttpServlet {
 
     private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
     private final Gson gson = new GsonBuilder().create();
-    private User user;
 
     @Override
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
+        User user = (User) sessionlgetAttribute("user");
         if(response.status().equals("OK")){
             chooseRestaurant(response, user.priceLevel());
         }
