@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -13,6 +14,8 @@
 >>>>>>> restaurant name carries through to feedback form
 =======
 >>>>>>> feedback servlet form submission completed, servlet is fully functional
+=======
+>>>>>>> imported changes from updatedSearches branch, add comments
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "84f97586b28f8b8bf41fbbb25a9da7e35bc1c37d"}}
 =======
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "052e942cd245b90bd0103b7db221497dabcec531"}}
@@ -29,6 +32,7 @@
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "2fd5f8c0dc27865d7a51bd4d765bfa005f4dd519"}}
 >>>>>>> d31a05d... Update account functions
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "92f5b508bf3464476655ade79de71e4406e0911a"}}
@@ -44,3 +48,5 @@
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "70b98072a4c80cf11d93b22516f3377942fc7264"}}
 >>>>>>> 92f5b50... fix feedback servlet, is fully functional now; remove debugging statements; update variable names
 >>>>>>> feedback servlet form submission completed, servlet is fully functional
+=======
+>>>>>>> imported changes from updatedSearches branch, add comments
