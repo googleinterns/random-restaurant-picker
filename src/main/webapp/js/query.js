@@ -177,41 +177,112 @@ function toggleAccountMenu() {
 
 //Logs out of the account
 function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function() {
-        console.log("User signed out.");
-    });
-    localStorage.setItem("user", 0);
-    localStorage.setItem("loggedIn", false);
-    toggleAccountMenu();
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+  localStorage.setItem("user", 0);
+  toggleAccountMenu();
+}
+
+//Redirects to search page
+function backToHome() {
+    window.location.replace("index.html");
+}
+
+//Redirects to user's account information page
+function toAccount() {
+    window.location.replace("account-info.html");
+}
+
+//Redirects to past searches page
+function toSearches() {
+    window.location.replace("past-searches.html");
 }
 
 function toggleShow() {
-    document.getElementById("myDropdown").classList.toggle("show");
+  document.getElementById("myDropdown").classList.toggle("show");
 }
 
-//Close account dropdown when clicking elsewhere
+// Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
-    if (!event.target.matches(".dropbtn")) {
-        let dropdownEl = document.getElementById("myDropdown");
-        if (dropdownEl.classList.contains("show")) {
-            dropdownEl.classList.remove("show");
-        }
+  if (!event.target.matches('.dropbtn')) {
+    let dropdown = document.getElementById("myDropdown");
+      if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+      }
+  }
+}
+
+/*
+    FUNCTIONS RELATED TO THE ACCOUNTS PAGE
+*/
+
+function accountFunctions() {
+    getNumSearches();
+    getLastVisited();
+    getFavFood();
+    getNumReviews();
+}
+
+function getNumSearches() {
+    let count = 0;
+    let numSearchesEl = document.getElementById('num-searches');
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
     }
-};
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        searches.forEach((search) => {
+            count += 1;
+        });
+    });
+    numSearchesEl.innerText = count;
+}
+
+function getLastVisited() {
+    let lastVisitedEl = document.getElementById('last-visited');
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        lastVisitedEl.innerText = searches[0].name()});
+}
+
+function getFavFood() {
+    let food = document.getElementById('fav-food');
+    fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
+        if (foods[0].length == 0) {
+            food.appendChild('<textarea id="food-selection" placeholder="or foods :)"></textarea>');
+        } else {
+            food.innerText = foods[0];
+        }
+    });
+}
+
+function getNumReviews() {
+    let count = 0;
+    let numFeedbackEl = document.getElementById('num-feedback');
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/feedback?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((feedbackList) => {
+        feedbackList.forEach((feedback) => {
+            count += 1;
+        });
+    });
+    numFeedbackEl.innerText = count;
+}
 
 /*=========================
     Retrieving SEARCHES
 =========================*/
-// Retrieve searches associated with the current user
-function getSearches() {
+//Retrieve searches associated with the current user
+function getSearches(){
     let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
+    if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        console.log(searches);
         let searchesEl = document.getElementById('cards');
         searches.forEach((search) => {
             let searchCard = createSearchElement(search);
@@ -220,7 +291,7 @@ function getSearches() {
     });
 }
 
-// Creates the search card with the inputted search's name, keywords inputted by the user, and the feedback/reroll button (if necessary)
+//Create the card containing the search's information
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
     newCardEl.className = 'card card-2';
@@ -228,7 +299,8 @@ function createSearchElement(search) {
     newCardBody.className = 'card-body';
     //creating the restaurant name element
     const nameElement = document.createElement('p2');
-    nameElement.innerText = search.restaurantName;
+    nameElement.id = 'restaurant-name';
+    nameElement.innerText = search.name;
     newCardBody.appendChild(nameElement);
     newCardBody.appendChild(document.createElement('br'));
 
@@ -260,6 +332,7 @@ function createSearchElement(search) {
     return newCardEl;
 }
 
+// Create feedback button (if feedback is not already submitted) and and search again button
 function createSearchesButtons(search, buttons, newCardBody) {
     let feedbackButton = null;
     let formEl = document.getElementById('searches-form');
@@ -269,6 +342,10 @@ function createSearchesButtons(search, buttons, newCardBody) {
         span.onclick = function() {
             let restaurantContainerEl = document.getElementById("restaurant-name-container");
             restaurantContainerEl.remove();
+            let submitButtonEl = document.getElementById("submit-button");
+            if (submitButtonEl != null) {
+                submitButtonEl.remove();
+            }
             modal.style.display = "none";
         }
         // When the user clicks anywhere outside of the modal, close it
@@ -276,28 +353,33 @@ function createSearchesButtons(search, buttons, newCardBody) {
             if (event.target == modal) {
                 let restaurantContainerEl = document.getElementById("restaurant-name-container");
                 restaurantContainerEl.remove();
+                let submitButtonEl = document.getElementById("submit-button");
+                if (submitButtonEl != null) {
+                    submitButtonEl.remove();
+                }
                 modal.style.display = "none";
             }
         }
         feedbackButton = document.createElement('button');
-        feedbackButton.className = 'button feedback';
+        feedbackButton.className = 'btn1 feedback';
         feedbackButton.innerText = "Submit Feedback";
         feedbackButton.addEventListener('click', () => {
-            let restaurantNameEl = createRestaurantElement(search.restaurantName);
+            let restaurantNameEl = createRestaurantElement(search.name);
             formEl.appendChild(restaurantNameEl);
             modal.style.display = "block";
         });
         newCardBody.appendChild(feedbackButton);
     }
     let searchButton = document.createElement('button');
-    searchButton.className = 'button search';
+    searchButton.className = 'btn1 search';
     searchButton.innerText = "Search with These Parameters Again";
-    newCardEl.appendChild(searchButton);
-    // searchButton.addEventListener('click', () => {
-    //     reroll()});
-    return newCardEl;
+    newCardBody.appendChild(searchButton);
+    searchButton.addEventListener('click', () => {
+        reroll()});
+    return newCardBody;
 }
 
+//Function to append restaurant name to modal form to force it to follow through to feedback
 function createRestaurantElement(restaurantName) {
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
@@ -310,7 +392,6 @@ function createRestaurantElement(restaurantName) {
     userEl.name = "user-id";
     userEl.value = userID;
     userEl.hidden = true;
-    console.log(userID);
 
     let inputGroupEl = document.createElement('div');
     inputGroupEl.className = "input-group";
@@ -364,8 +445,7 @@ async function getFeedback(search) {
 /*=========================
     HTML
 =========================*/
-// Form underline element    
-
+// Form underline element
 $("input, textarea").blur(function() {
     if ($(this).val() != "") {
         $(this).addClass("active");

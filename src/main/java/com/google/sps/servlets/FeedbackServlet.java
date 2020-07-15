@@ -56,7 +56,6 @@ public class FeedbackServlet extends HttpServlet {
         String user = request.getParameter("user");
         Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
         Query query = new Query("Feedback").setFilter(propertyFilter);
-
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
