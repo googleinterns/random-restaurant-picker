@@ -65,4 +65,5 @@ public class LoginServlet extends HttpServlet {
         }
         response.getWriter().println(json);
     }
+    response.getWriter().println(json);
 }
