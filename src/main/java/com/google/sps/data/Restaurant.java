@@ -22,6 +22,8 @@ public final class Restaurant implements java.io.Serializable {
     private transient int weight = 0;
     private final String name;
     private final double rating;
+    //These variables are named exactly the same as 
+    //they are on google maps to make the deserialization easier
     private final String business_status;
     private final int price_level;
     private final Photo[] photos;
