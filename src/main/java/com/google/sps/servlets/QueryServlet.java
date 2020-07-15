@@ -52,9 +52,9 @@ public class QueryServlet extends HttpServlet {
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
-        User user = (User) sessionlgetAttribute("user");
+        User user = (User) session.getAttribute("user");
         if(response.status().equals("OK")){
-            chooseRestaurant(response, user.priceLevel());
+            chooseRestaurant(response, user.getPriceLevel());
         }
         servletResponse.getWriter().println(gson.toJson(response));
     }
