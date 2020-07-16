@@ -29,7 +29,7 @@ function query() {
             if (response.status === "OK") {
                 let name = response.pick.name;
                 let rating = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photo_reference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
                 errorEl.innerText = name;
                 resultsPage(name, rating, photoUrl);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
@@ -54,7 +54,7 @@ function reroll() {
             if (response.status === "OK") {
                 pickEl.innerText = response.pick.name;
                 ratingEl.innerText = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photo_reference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
                 loadImage(photoUrl);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
@@ -203,7 +203,7 @@ function saveSearch(lat, lng, radius, keyword) {
     });
 }
 
-//Retrieve searches associeted with the current user
+//Retrieve searches associated with the current user
 function getSearches() {
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
