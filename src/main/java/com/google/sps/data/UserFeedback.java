@@ -16,7 +16,7 @@ package com.google.sps.data;
 import java.util.ArrayList;
 
 public class UserFeedback {
-    //How well the User Enjoys the restaurant
+    //How well the user enjoys the restaurant
     private String userRestaurantRating;
     //How well the search met the criteria
     private String userSearchRating;
