@@ -271,6 +271,11 @@ input {
   display: none !important;
 }
 
+.select--no-search .select2-search {
+  border: none;
+  display: none !important;
+}
+
 td.active {
     background-color: #2c6ed5;
 }

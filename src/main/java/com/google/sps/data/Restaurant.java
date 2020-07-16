@@ -42,11 +42,11 @@ public final class Restaurant {
     }
 
     public String businessStatus() {
-        return businessStatus;
+        return this.businessStatus;
     }
 
     public String id() {
-        return id;
+        return this.id;
     }
 
     public String toString() {

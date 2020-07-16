@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 com/google/sps/data/User.class
 com/google/sps/data/Feedback.class
 com/google/sps/data/Restaurant.class
@@ -9,3 +10,5 @@ com/google/sps/servlets/FavFoodServlet.class
 com/google/sps/servlets/SearchServlet.class
 com/google/sps/servlets/ConvertLocationServlet.class
 com/google/sps/servlets/Query.class
+=======
+>>>>>>> 819c2722edf8e3b73d99497f734358c7164d6dc4
