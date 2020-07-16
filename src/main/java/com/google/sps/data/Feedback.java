@@ -18,23 +18,23 @@ import java.util.ArrayList;
 
 public class Feedback {
     // the user's rating of the restaurant
-    private String restaurantRating;
+    private int restaurantRating;
     // the user's rating of how closely the selected restaurant matched their inputted parameters
-    private String rrpRating;
+    private int rrpRating;
     // the user's personal notes on the restaurant 
     private String notes;
 
-    public Feedback(String restaurantRating, String rrpRating, String notes){
+    public Feedback(int restaurantRating, int rrpRating, String notes){
         this.restaurantRating = restaurantRating;
         this.rrpRating = rrpRating;
         this.notes = notes;
     }
 
-    public String restaurantRating() {
+    public int restaurantRating() {
         return restaurantRating;
     }
 
-    public String rrpRating() {
+    public int rrpRating() {
         return rrpRating;
     }
 

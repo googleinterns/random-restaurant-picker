@@ -56,7 +56,10 @@ public class FeedbackServlet extends HttpServlet {
 
         List<Feedback> feedbackList = new ArrayList<>();
         for (Entity entity : results.asIterable()) {
-            Feedback feedback = (Feedback) entity.getProperty("feedback");
+            int restaurantRating = (int) entity.getProperty("restaurantRating");
+            int rrpRating = (int) entity.getProperty("rrpRating");
+            String notes = (String) entity.getProperty("notes");
+            Feedback feedback = new Feedback(restaurantRating, rrpRating, notes);
             feedbackList.add(feedback);
         }
         // Send the JSON as the response
@@ -69,9 +72,10 @@ public class FeedbackServlet extends HttpServlet {
         String restaurantRating = request.getParameter("restaurant-rating");
         String rrpRating = request.getParameter("rrp-rating");
         String notes = request.getParameter("notes");
-        Feedback feedback = new Feedback(restaurantRating, rrpRating, notes);
         Entity feedbackEntity = new Entity("Feedback");
-        feedbackEntity.setProperty("feedback", feedback);
+        feedbackEntity.setProperty("restaurantRating", restaurantRating);
+        feedbackEntity.setProperty("rrpRating", rrpRating);
+        feedbackEntity.setProperty("notes", notes);
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(feedbackEntity);
     }

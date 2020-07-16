@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -62,7 +64,10 @@ public class SearchServlet extends HttpServlet {
       String lat = (String) entity.getProperty("lat");
       String lng = (String) entity.getProperty("lng");
       long id = entity.getKey().getId();
-      Feedback feedback = (Feedback) entity.getProperty("feedback");
+      int restaurantRating = (int) entity.getProperty("restaurantRating");
+      int rrpRating = (int) entity.getProperty("rrpRating");
+      String notes = (String) entity.getProperty("notes");
+      Feedback feedback = new Feedback(restaurantRating, rrpRating, notes);
       String restaurantName = (String) entity.getProperty("restaurantName");
       Search search = new Search(userID, date, keywords, lat, lng, radius, id, feedback, restaurantName);
       searches.add(search);
@@ -94,8 +99,9 @@ public class SearchServlet extends HttpServlet {
     searchEntity.setProperty("timestamp", timestamp);
     searchEntity.setProperty("lat", lat);
     searchEntity.setProperty("lng", lng);
-    Feedback feedback = new Feedback("null", "null", "null");
-    searchEntity.setProperty("feedback", feedback);
+    searchEntity.setProperty("restaurantRating", null);
+    searchEntity.setProperty("rrpRating", null);
+    searchEntity.setProperty("notes", null);
     searchEntity.setProperty("restaurantName", restaurantName);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
