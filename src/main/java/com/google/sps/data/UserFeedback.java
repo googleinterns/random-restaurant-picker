@@ -22,7 +22,7 @@ public class UserFeedback {
     private String userSearchRating;
     private String notes;
 
-    public Feedback(String userRestaurantRating, String userSearchRating, String notes){
+    public UserFeedback(String userRestaurantRating, String userSearchRating, String notes){
         this.userRestaurantRating = userRestaurantRating;
         this.userSearchRating = userSearchRating;
         this.notes = notes;

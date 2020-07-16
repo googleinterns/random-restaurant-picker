@@ -49,6 +49,8 @@ public class QueryServlet extends HttpServlet {
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
+        if(response == null)
+            servletResponse.getWriter().println(gson.toJson(new Response("NO_RESULTS", null)));
         if (response.getStatus().equals("OK"))
             response.pick();
         servletResponse.getWriter().println(gson.toJson(response));
