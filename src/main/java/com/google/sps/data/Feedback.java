@@ -30,15 +30,16 @@ public class Feedback {
         this.notes = notes;
     }
 
-    public int restaurantRating() {
-        return restaurantRating;
+
+    public String restaurantRating() {
+        return this.restaurantRating;
     }
 
-    public int rrpRating() {
-        return rrpRating;
+    public String rrpRating() {
+        return this.rrpRating;
     }
 
     public String notes() {
-        return notes;
+        return this.notes;
     }
 }

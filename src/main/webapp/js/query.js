@@ -19,7 +19,6 @@ function query() {
     const radius = $('#radius').val();
     const searchTerms = document.getElementById('searchTerms').value;
     const errorEl = document.getElementById("error");
-
     errorEl.classList.add('hidden');
     fetch(`/query`, { method: 'GET' })
         .then(response => response.json())
