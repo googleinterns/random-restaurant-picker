@@ -31,14 +31,14 @@ public class Feedback {
     }
 
     public String restaurantRating() {
-        return restaurantRating;
+        return this.restaurantRating;
     }
 
     public String rrpRating() {
-        return rrpRating;
+        return this.rrpRating;
     }
 
     public String notes() {
-        return notes;
+        return this.notes;
     }
 }

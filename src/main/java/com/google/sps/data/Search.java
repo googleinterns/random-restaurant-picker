@@ -40,38 +40,38 @@ public class Search {
     }
 
     public String user() {
-        return user;
+        return this.user;
     }
 
     public String date() {
-        return date;
+        return this.date;
     }
 
     public String keywords() {
-        return keywords;
+        return this.keywords;
     }
 
     public String lat() {
-        return lat;
+        return this.lat;
     }
 
     public String lng() {
-        return lng;
+        return this.lng;
     }
 
     public String radius() {
-        return radius;
+        return this.radius;
     }
 
     public long id() {
-        return id;
+        return this.id;
     }
 
     public String name() {
-        return name;
+        return this.name;
     }
 
     public Feedback feedback() {
-        return feedback;
+        return this.feedback;
     }
 }
