@@ -51,7 +51,7 @@ public class QueryServlet extends HttpServlet {
         Response response = (Response) session.getAttribute("response");
         if(response == null)
             servletResponse.getWriter().println(gson.toJson(new Response("NO_RESULTS", null)));
-        if (response.getStatus().equals("OK"))
+        else if (response.getStatus().equals("OK"))
             response.pick();
         servletResponse.getWriter().println(gson.toJson(response));
     }
