@@ -11,19 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package com.google.sps.data;
 
 import java.util.ArrayList;
 
-public class Feedback {
-    private String restaurantRating;
-    private String rrpRating;
+public class UserFeedback {
+    //How well the User Enjoys the restaurant
+    private String userRestaurantRating;
+    //How well the search met the criteria
+    private String userSearchRating;
     private String notes;
 
-    public Feedback(String restaurantRating, String rrpRating, String notes){
-        this.restaurantRating = restaurantRating;
-        this.rrpRating = rrpRating;
+    public Feedback(String userRestaurantRating, String userSearchRating, String notes){
+        this.userRestaurantRating = userRestaurantRating;
+        this.userSearchRating = userSearchRating;
         this.notes = notes;
     }
 }
