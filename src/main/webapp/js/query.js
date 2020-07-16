@@ -476,6 +476,7 @@ function accountFunctions() {
     getNumSearches();
     getLastVisited();
     getFavFood();
+    getNumReviews();
 }
 
 function getNumSearches() {
