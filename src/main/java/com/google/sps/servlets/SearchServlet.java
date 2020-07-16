@@ -49,8 +49,8 @@ public class SearchServlet extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
-        List < SearchItem > searches = new ArrayList < > ();
-        for (Entity entity: results.asIterable()) {
+        List <SearchItem> searches = new ArrayList<>();
+        for (Entity entity : results.asIterable()) {
             String userID = (String) entity.getProperty("user");
             String date = (String) entity.getProperty("date");
             String keywords = (String) entity.getProperty("keywords");

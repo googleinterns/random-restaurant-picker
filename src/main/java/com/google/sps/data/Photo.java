@@ -15,27 +15,29 @@
 package com.google.sps.data;
 
 import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
 
 public final class Photo implements java.io.Serializable {
     private final int height;
     private final int width;
-    private final String photo_reference;
+    @SerializedName(value = photoReference, alternate = photo_reference)
+    private final String photoReference;
 
-    public Photo(int height, int width, String photo_reference) {
+    public Photo(int height, int width, String photoReference) {
         this.height = height;
         this.width = width;
-        this.photo_reference = photo_reference;
+        this.photoReference = photoReference;
     }
 
-    public int height() {
+    public int getHeight() {
         return this.height;
     }
 
-    public int width() {
+    public int getWidth() {
         return this.width;
     }
 
-    public String photo_reference() {
+    public String getPhotoReference() {
         return this.photo_reference;
     }
 }
