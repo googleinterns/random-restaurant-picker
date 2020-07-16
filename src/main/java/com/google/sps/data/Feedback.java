@@ -31,11 +31,11 @@ public class Feedback {
     }
 
 
-    public String restaurantRating() {
+    public int restaurantRating() {
         return this.restaurantRating;
     }
 
-    public String rrpRating() {
+    public int rrpRating() {
         return this.rrpRating;
     }
 

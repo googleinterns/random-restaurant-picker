@@ -45,6 +45,10 @@ function query() {
         });
 }
 
+/*
+    LOCATION AND DIRECTION FUNCTIONS
+*/
+
 // retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
 function getLocation() {
     let location = document.getElementById("location-container");
@@ -87,6 +91,43 @@ function convertLocation(location) {
         .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
 }
 
+//Directions to the selected restaurant
+function initMap() {
+  var directionsRenderer = new google.maps.DirectionsRenderer();
+  var directionsService = new google.maps.DirectionsService();
+  let lat = localStorage.getItem("lat")
+  let lng = localStorage.getItem("lng")
+  var map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 16,
+    center: { lat: parseFloat(lat), lng: parseFloat(lng)}
+  });
+  directionsRenderer.setMap(map);
+  directionsRenderer.setPanel(document.getElementById("directionsPanel"));
+  calculateAndDisplayRoute(directionsService, directionsRenderer);
+}
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+  let start = localStorage.getItem("lat") + "," + localStorage.getItem("lng");
+  directionsService.route(
+    {
+      origin: start,
+      destination: "1745 Plymouth Rd, Ann Arbor, MI 48105",
+      travelMode: "DRIVING"
+    },
+    function(response, status) {
+      if (status === "OK") {
+        directionsRenderer.setDirections(response);
+      } else {
+        window.alert("Directions request failed due to " + status);
+      }
+    }
+  );
+}
+
+/*
+    DROPDOWN MENU FUNCTIONS
+*/
+
 function onSignIn(googleUser) {
   let id_token = googleUser.getAuthResponse().id_token;
   let profile = googleUser.getBasicProfile();
@@ -116,6 +157,36 @@ function signOut() {
   localStorage.setItem("user", 0);
   toggleAccountMenu();
 }
+
+function backToHome() {
+    window.location.replace("index.html");
+}
+
+function toAccount() {
+    window.location.replace("account-info.html");
+}
+
+function toSearches() {
+    window.location.replace("past-searches.html");
+}
+
+function toggleShow() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    let dropdown = document.getElementById("myDropdown");
+      if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+      }
+  }
+}
+
+/*
+    SAVING AND RETRIEVING PAST SEARCHES FUNCTIONS
+*/
 
 function saveSearch(lat, lng, radius, keyword, restaurantName){
     let userID = 0;
@@ -192,7 +263,6 @@ function createSearchElement(search) {
     return newCardEl;
 }
 
-
 function createSearchesButtons(buttons) {
     feedbackButton = null;
     if (!buttons) {
@@ -217,20 +287,6 @@ function createSearchesButtons(buttons) {
     }
 }
 
-function toggleShow() {
-  document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    let dropdown = document.getElementById("myDropdown");
-      if (dropdown.classList.contains('show')) {
-        dropdown.classList.remove('show');
-      }
-  }
-}
-
 function getFeedback(tempFeedbackElement, buttons, search) {
     if (search.feedback = null) {
         tempFeedbackElement += "You haven't submitted feedback yet";
@@ -242,15 +298,6 @@ function getFeedback(tempFeedbackElement, buttons, search) {
     return tempFeedbackElement, buttons;
 }
 
-function createBreak() {
-    return document.createElement('/br');
-}
-
-// // needs to essentially perform a reroll
-// function searchAgain(search) {
-
-// }
-
 function feedbackWindow(feedbackButton) {
     fetch("/form.html")
       .then((response) => response.text())
@@ -259,51 +306,6 @@ function feedbackWindow(feedbackButton) {
       })
     var popup = document.getElementById("formPopup");
     popup.classList.toggle("show");
-}
-
-//Directions to the selected restaurant
-function initMap() {
-  var directionsRenderer = new google.maps.DirectionsRenderer();
-  var directionsService = new google.maps.DirectionsService();
-  let lat = localStorage.getItem("lat")
-  let lng = localStorage.getItem("lng")
-  var map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 16,
-    center: { lat: parseFloat(lat), lng: parseFloat(lng)}
-  });
-  directionsRenderer.setMap(map);
-  directionsRenderer.setPanel(document.getElementById("directionsPanel"));
-  calculateAndDisplayRoute(directionsService, directionsRenderer);
-}
-
-function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-  let start = localStorage.getItem("lat") + "," + localStorage.getItem("lng");
-  directionsService.route(
-    {
-      origin: start,
-      destination: "1745 Plymouth Rd, Ann Arbor, MI 48105",
-      travelMode: "DRIVING"
-    },
-    function(response, status) {
-      if (status === "OK") {
-        directionsRenderer.setDirections(response);
-      } else {
-        window.alert("Directions request failed due to " + status);
-      }
-    }
-  );
-}
-
-function backToHome() {
-    window.location.replace("index.html");
-}
-
-function toAccount() {
-    window.location.replace("account-info.html");
-}
-
-function toSearches() {
-    window.location.replace("past-searches.html");
 }
 
 $('#randomize-form').submit(function(event) {
@@ -366,48 +368,6 @@ function reroll() {
 }
 
 /*
-    FUNCTIONS TO GET THE USER'S LOCATION AND TRANSFORM TO AN ADDRESS
- */
-function getLocation() {
-    let location = document.getElementById("location-container");
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            let pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-            };
-            localStorage.setItem("lat", pos.lat);
-            localStorage.setItem("lng", pos.lng);
-            convertLocation(pos).then((address)=>{
-                console.log(address);
-                location.innerText = address;
-            });
-        });
-    } else {
-    // Browser doesn't support Geolocation
-        let pos = {lat: -34.397, lng: 150.644};
-        localStorage.setItem("lat", pos.lat);
-        localStorage.setItem("lng", pos.lng);
-        convertLocation(pos).then((address)=>{
-            console.log(address);
-            location.innerText = address;
-        });
-    }
-}
-
-function convertLocation(location) {
-    let lat = location.lat;
-    let long = location.lng;
-    return fetch(`/convert?lat=${lat}&lng=${long}`)
-        .then(response => response.json())
-        .then(response => {
-            console.log(response.results[0].formatted_address);
-            return response.results[0].formatted_address;
-        })
-        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
-}
-
-/*
     FUNCTIONS TO HANDLE USERS SIGNING IN
 */
 function onSignIn(googleUser) {
@@ -454,30 +414,8 @@ window.onclick = function(event) {
 }
 
 /*
-    FUNCTIONS FOR SAVING SEARCHES
+    FUNCTIONS RELATED TO THE ACCOUNTS PAGE
 */
-function saveSearch(lat, lng, radius, keyword){
-    let userID = 0;
-    if(localStorage.getItem("loggedIn")){
-        userID = localStorage.getItem("user");
-    }
-    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&lat=${lat}&lng=${lng}`, {
-        method: 'POST'
-    });
-}
-
-function getSearches(){
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")){
-        userID = localStorage.getItem("user");
-    }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        let searchesEl = document.getElementById('cards');
-        searches.forEach((search) => {
-            searchesEl.appendChild(createSearchElement(search));
-        });
-    });
-}
 
 function accountFunctions() {
     getNumSearches();

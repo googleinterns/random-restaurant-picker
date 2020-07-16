@@ -5,6 +5,7 @@
 /home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/FavFoodServlet.java
 /home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/data/Feedback.java
 /home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/LoginServlet.java
+/home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/WeightRestaurantsServlet.java
 /home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/data/Response.java
 /home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/servlets/ConvertLocationServlet.java
 /home/emmadunn/random-restaurant-picker/src/main/java/com/google/sps/data/User.java
