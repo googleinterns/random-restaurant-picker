@@ -42,19 +42,18 @@ public final class Response implements java.io.Serializable {
     }
 
     public void pick() {
-        if(results.size() > 1){
-            int randIdx = new Random().nextInt(results.size()-1);
-            pick = results.get(randIdx);
-            results.remove(randIdx);
-        } else if (results.size() == 1){
-            pick = results.get(0);
-            results.remove(0);
-        }
+        int randidx = (results.size() > 1) ? new Random().nextInt(results.size() - 1) : 0;
+        pick = results.get(randIdx);
+        results.remove(randIdx);
         if (results.size() == 0)
             status = "NO_REROLLS";
     }
 
     public String toString() {
         return (this.results).stream().map(n -> n.toString()).collect(Collectors.joining(","));
+    }
+
+    public Restaurant getPick(){
+        return this.pick;
     }
 }
