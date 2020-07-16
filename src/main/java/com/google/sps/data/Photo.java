@@ -20,7 +20,7 @@ import com.google.gson.annotations.SerializedName;
 public final class Photo implements java.io.Serializable {
     private final int height;
     private final int width;
-    @SerializedName(value = photoReference, alternate = photo_reference)
+    @SerializedName(value = "photoReference", alternate = "photo_reference")
     private final String photoReference;
 
     public Photo(int height, int width, String photoReference) {
@@ -38,6 +38,6 @@ public final class Photo implements java.io.Serializable {
     }
 
     public String getPhotoReference() {
-        return this.photo_reference;
+        return this.photoReference;
     }
 }
