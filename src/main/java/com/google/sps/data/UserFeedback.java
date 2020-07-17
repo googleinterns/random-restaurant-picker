@@ -21,10 +21,12 @@ public class UserFeedback {
     // How well the search met the criteria
     private String userSearchRating;
     private String notes;
+    private Boolean submitted;
 
     public UserFeedback (String userRestaurantRating, String userSearchRating, String notes) {
         this.userRestaurantRating = userRestaurantRating;
         this.userSearchRating = userSearchRating;
         this.notes = notes;
+        this.submitted = submitted;
     }
 }
