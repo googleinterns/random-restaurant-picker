@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 
 import java.io.IOException;
 
@@ -57,7 +59,7 @@ public class QueryServlet extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
+    public void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException, ServletException {
         String lat = servletRequest.getParameter("lat");
         String lon = servletRequest.getParameter("lng");
         String radius = servletRequest.getParameter("radius");
@@ -73,8 +75,11 @@ public class QueryServlet extends HttpServlet {
         Response response = gson.fromJson(responseJson, Response.class);
 
         HttpSession session = servletRequest.getSession(true);
+        if (response.getStatus().equals("OK"))
+            response.pick();
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
-
+        servletResponse.getWriter().println(gson.toJson(response));
+        servletRequest.getRequestDispatcher("/searches").forward(servletRequest, servletResponse);
     }
 }

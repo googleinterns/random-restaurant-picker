@@ -18,6 +18,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +41,7 @@ public class LoginServlet extends HttpServlet {
     GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory).setAudience(Collections.singletonList("758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com")).build();
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
         response.setContentType("text/html");
         response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
         String idTokenString = request.getParameter("id_token");
@@ -50,7 +51,9 @@ public class LoginServlet extends HttpServlet {
             Payload payload = idToken.getPayload();
             String userId = payload.getSubject();
             json = new JsonParser().parse(payload.toString()).getAsJsonObject();
-        } catch (Exception e) {
+        } catch (GeneralSecurityException e) {
+            System.out.println(e.getMessage());
+        } catch(IOException e){
             System.out.println(e.getMessage());
         }
         response.getWriter().println(json);
