@@ -14,24 +14,20 @@
 
 package com.google.sps.data;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Search {
-    private String user;
-    private String date;
-    private String keywords;
-    private String lat;
-    private String lng;
-    private String radius;
-    private long id;
+public final class User implements java.io.Serializable {
+    private int priceLevel;
 
-    public Search(String user, String date, String keywords, String lat, String lng, String radius, long id){
-        this.user = user;
-        this.date = date;
-        this.keywords = keywords;
-        this.lat = lat;
-        this.lng = lng;
-        this.radius = radius;
-        this.id = id;
+    public User(int priceLevel) {
+        this.priceLevel = priceLevel;
+    }
+
+    public int getPriceLevel() {
+        return this.priceLevel;
+    }
+
+    public String toString() {
+        return "" + priceLevel;
     }
 }

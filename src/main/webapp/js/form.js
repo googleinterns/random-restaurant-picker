@@ -1,3 +1,5 @@
+//This file handles the formatting for the form on RRP Homepage
+//This is done with a third-party formatting and styling package
 (function ($) {
     'use strict';
     /*==================================================================

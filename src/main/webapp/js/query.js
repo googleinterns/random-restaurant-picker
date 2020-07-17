@@ -11,321 +11,246 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-function query() {
-    let lat = localStorage.getItem("lat");
-    let lon = localStorage.getItem("lng");
-    const radius = $('#radius').val();
-    const searchTerms = document.getElementById('searchTerms').value;
+
+/*=========================
+    RESTAURANT QUERY AND RE-ROLL
+=========================*/
+$("#randomize-form").submit(function(event) {
     const errorEl = document.getElementById("error");
-    saveSearch(lat, lon, radius, searchTerms);
-    errorEl.classList.add('hidden');
-    console.log("Made it 1");
-    fetch(`/query`, { method: 'GET' })
-        .then(response => response.json())
+    errorEl.classList.add("hidden");
+
+    event.preventDefault();
+    let url = $(this).attr("action");
+    let lat = localStorage.getItem("lat");
+    let lng = localStorage.getItem("lng");
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
+    }
+    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}&user=${userID}`;
+    query(queryStr);
+});
+
+function query(queryStr) {
+    const errorEl = document.getElementById("error");
+    fetch(`/query?${queryStr}`, { method: "POST"})
+        .then((response) => response.json())
         .then((response) => {
             console.log(response);
             if (response.status === "OK") {
-                let queryArr = response.results;
-                console.log(queryArr);
-                errorEl.classList.remove('error-banner');
-                errorEl.classList.remove('hidden');
-                errorEl.classList.add('success-banner');
-                errorEl.innerText = "Success!";
-                // test(JSON.stringify(response));
-            } else if (response.status === "INVALID_REQUEST"){
-                throw 'Invalid request'
-            }
-            else if (response.status === "ZERO_RESULTS"){
-                throw 'No results'
-            }
-            else{
-                throw 'Unforeseen error'
-            }
+                let name = response.pick.name;
+                let rating = response.pick.rating + ' ★';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                errorEl.innerText = name;
+                resultsPage(name, rating, photoUrl);
+            } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
+            else if (response.status === "ZERO_RESULTS") throw "No results";
+            else if (response.status === "NO_REROLLS") throw "No re-rolls left";
+            else throw "Unforeseen error";
         })
         .catch((error) => {
-            errorEl.classList.remove('success-banner');
-            errorEl.classList.remove('hidden');
-            errorEl.classList.add('error-banner');
+            errorEl.classList.remove("success-banner");
+            errorEl.classList.remove("hidden");
+            errorEl.classList.add("error-banner");
             errorEl.innerText = error;
         });
 }
 
-$('#randomize-form').submit(function(e) {
-    e.preventDefault();
-    let url = $(this).attr('action');
-    let lat = localStorage.getItem("lat");
-    let lng = localStorage.getItem("lng");
-    let datum = $(this).serialize()+`&lat=${lat}&lng=${lng}`;
-
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: datum,
-        success: function(response) {
-            query();
-        }
-    });
-});
-
-function loadPage() {
-    window.location.replace("results.html");
+function reroll() {
+    const pickEl = document.getElementById("pick");
+    const ratingEl = document.getElementById("rating");
+    fetch(`/query`, { method: "GET" })
+        .then((response) => response.json())
+        .then((response) => {
+            if (response.status === "OK") {
+                pickEl.innerText = response.pick.name;
+                ratingEl.innerText = response.pick.rating + ' ★';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                loadImage(photoUrl);
+            } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
+            else if (response.status === "ZERO_RESULTS") throw "No results";
+            else if (response.status === "NO_REROLLS") throw "No re-rolls left";
+            else throw "Unforeseen error";
+        })
+        .catch((error) => { pickEl.innerText = error; });
 }
 
-// retrieves the user's current location, if allowed -> not sure how to store this/return lat, lng vals for query function
+/*=========================
+    USER'S LOCATION AND ADDRESS
+=========================*/
 function getLocation() {
-    let location = document.getElementById("location-container");
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+    if (navigator.geolocation)
+        navigator.geolocation.getCurrentPosition(geoLocEnabled, geoLocFallback);
+    else
+        geoLocFallback();
+}
+
+// Geolocation is supported and enabled
+function geoLocEnabled(position) {
+    let locationEl = document.getElementById("location-container");
+    let pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+    };
+    localStorage.setItem("lat", pos.lat);
+    localStorage.setItem("lng", pos.lng);
+    convertLocation(pos).then((address) => { locationEl.innerText = address; });
+}
+
+// Use inaccurate IP-based geolocation instead
+function geoLocFallback() {
+    let locationEl = document.getElementById("location-container");
+    $.ajax({
+        type: "POST",
+        url: 'https://www.googleapis.com/geolocation/v1/geolocate?key=' + 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc', // TODO: use safe API key storage!!!
+        data: { considerIp: 'true' },
+        success: function(response) {
             let pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
+                lat: response.location.lat,
+                lng: response.location.lng,
             };
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
-            convertLocation(pos).then((address)=>{
-                console.log(address);
-                location.innerText = address;
-            });
-        });
-    } else {
-    // Browser doesn't support Geolocation
-        let pos = {lat: -34.397, lng: 150.644};
-        localStorage.setItem("lat", pos.lat);
-        localStorage.setItem("lng", pos.lng);
-        convertLocation(pos).then((address)=>{
-            console.log(address);
-            location.innerText = address;
-        });
-    }
+            convertLocation(pos).then((address) => { locationEl.innerText = address; });
+        },
+        error: function(xhr) {
+            if (xhr.status == 404)
+                console.log("No results");
+            if (xhr.status == 403)
+                console.log("Usage limits exceeded");
+            if (xhr.status == 400)
+                console.log("API key is invalid or JSON parsing error");
+            geoLocHardcoded(); // DEBUG
+        }
+    });
 }
 
-// convert lat/lng format to human-readable address --> my goal was to call this in the above function and store the human-readable
-// address in the location-container spot (so it was in the spot as the sydney australia address)
+// TODO: remove this entirely; fallback should be to leave form blank instead
+function geoLocHardcoded() {
+    let locationEl = document.getElementById("location-container");
+    let pos = { lat: 40.730610, lng: -73.935242 };
+    localStorage.setItem("lat", pos.lat);
+    localStorage.setItem("lng", pos.lng);
+    convertLocation(pos).then((address) => {
+        locationEl.innerText = address;
+    });
+}
+
+// Convert lat/lng to human readable address
 function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
     return fetch(`/convert?lat=${lat}&lng=${long}`)
-        .then(response => response.json())
-        .then(response => {
-            console.log(response.results[0].formatted_address);
-            return response.results[0].formatted_address;
-        })
-        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+        .then((response) => response.json())
+        .then((response) => { return response.results[0].formatted_address; })
+        .catch((error) => console.log(error));
 }
 
+/*=========================
+    USER SIGN-IN
+=========================*/
 function onSignIn(googleUser) {
-  let id_token = googleUser.getAuthResponse().id_token;
-  let profile = googleUser.getBasicProfile();
-  fetch(`/login?id_token=${id_token}`).then(response => response.json()).then((data) => {
-      localStorage.setItem("user", data.id);
-      localStorage.setItem("loggedIn", true);
-      addUserContent(profile.getName(), profile.getImageUrl());
-      toggleAccountMenu();
-    });
+    let id_token = googleUser.getAuthResponse().id_token;
+    let profile = googleUser.getBasicProfile();
+    fetch(`/login?id_token=${id_token}`)
+        .then((response) => response.json())
+        .then((data) => {
+            localStorage.setItem("user", data.id);
+            localStorage.setItem("loggedIn", true);
+            addUserContent(profile.getName(), profile.getImageUrl());
+            toggleAccountMenu();
+        }).catch((error) =>{
+            console.log(error);
+        });
 }
 
-function addUserContent(name, image){
+//Add user information to signed in UI
+function addUserContent(name, image) {
     document.getElementById("user-name").innerText = name;
     document.getElementById("profile-pic").src = image;
 }
 
+//Replaces the sign-in button with signed in UI
 function toggleAccountMenu() {
-    document.getElementById("account-menu").classList.toggle('show');
-    document.getElementById("sign-in").classList.toggle('hide');
+    document.getElementById("account-menu").classList.toggle("show");
+    document.getElementById("sign-in").classList.toggle("hide");
 }
 
+//Logs out of the account
 function signOut() {
-  var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log('User signed out.');
-  });
-  localStorage.setItem("user", 0);
-  toggleAccountMenu();
-}
-
-function saveSearch(lat, lng, radius, keyword){
-    let userID = 0;
-    if(localStorage.getItem("loggedIn")){
-        userID = localStorage.getItem("user");
-    }
-    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&lat=${lat}&lng=${lng}`, {
-        method: 'POST'
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function() {
+        console.log("User signed out.");
     });
-}
-
-function getSearches(){
-    let userID = 0;
-    if(localStorage.getItem("loggedIn")){
-        userID = localStorage.getItem("user");
-    }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        const searchesEl = document.getElementById('cards');
-        searches.forEach((search) => {
-            searchesEl.appendChild(createSearchElement(search));
-        });
-    });
-}
-
-function createSearchElement(search) {
-    const cardElement = document.createElement('card-object');
-    cardElement.className = 'card';
-
-    const nameElement = document.createElement('p2');
-    nameElement.innerText = search.name;
-
-    const paramElement = document.createElement('p3');
-    const tempParamElement = "Parameters: ";
-    for (items in search.keywords) {
-        tempParamElement += items;
-        tempParamElement += ", ";
-    }
-    tempParamElement += radius;
-    paramElement.innerText = tempParamElement;
-
-    const feedbackElement = document.createElement('p3');
-    // needs to create feedback element, submit feedback button if no feedback,
-    // and submit w/ these parameters again button
-    const tempFeedbackElement = "Feedback: ";
-    const buttons = null;
-    feedbackElement.innerText, buttons = getFeedback(tempFeedbackElement, buttons);
-    //still working on adding buttons here
-
+    localStorage.setItem("user", 0);
+    localStorage.setItem("loggedIn", false);
+    toggleAccountMenu();
 }
 
 function toggleShow() {
-  document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById("myDropdown").classList.toggle("show");
 }
 
-// Close the dropdown menu if the user clicks outside of it
+//Close account dropdown when clicking elsewhere
 window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    let dropdown = document.getElementById("myDropdown");
-      if (dropdown.classList.contains('show')) {
-        dropdown.classList.remove('show');
-      }
-  }
-}
-
-function getFeedback(tempFeedbackElement, buttons) {
-    if (search.feedback = null) {
-        tempFeedbackElement += "You haven't submitted feedback yet";
-        buttons = true;
-    } else {
-        tempFeedbackElement += search.feedback;
-        buttons = false;
+    if (!event.target.matches(".dropbtn")) {
+        let dropdownEl = document.getElementById("myDropdown");
+        if (dropdownEl.classList.contains("show")) {
+            dropdownEl.classList.remove("show");
+        }
     }
-    return tempFeedbackElement, buttons;
-}
+};
 
-function createBreak() {
-    return document.createElement('/br');
-}
-
-function createSearchesButtons(buttons) {
-    if (!buttons) {
-        feedbackButton = document.createElement('feedback button');
-        feedbackButton.innerText = "Submit Feedback";
-        feedbackButton.addEventListener('click', () => {
-            feedbackWindow();
+/*=========================
+    Retrieving SEARCHES
+=========================*/
+//Retrieve searches associated with the current user
+function getSearches() {
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/searches?user=${userID}`, { method: "GET" })
+        .then((response) => response.json())
+        .then((searches) => {
+            const searchesEl = document.getElementById("cards");
+            searches.forEach((search) => {
+                searchesEl.appendChild(createSearchElement(search));
+            });
         });
-        const popupText = document.createElement('span');
-        popupText.className = 'popuptext';
-        popupText.id = 'searchPopup';
+}
 
+/*=========================
+    HTML
+=========================*/
+// Form underline element
+$("input, textarea").blur(function() {
+    if ($(this).val() != "") {
+        $(this).addClass("active");
+    } else {
+        $(this).removeClass("active");
     }
-    // should essentially do 'reroll' with these parameters
-    searchButton = document.createElement('search button');
-    searchButton.innerText = "Search with These Parameters Again";
-    searchButton.addEventListener('click', () => {
-        searchAgain();
-    });
+});
+
+// TODO: make this more seamless
+//Loads the results page
+function resultsPage(name, rating, photoUrl) {
+    fetch(`../results.html`)
+        .then((html) => html.text())
+        .then((html) => {
+            document.getElementById("page-container").innerHTML = html;
+            document.getElementById("pick").innerText = name;
+            document.getElementById("rating").innerText = rating;
+            loadImage(photoUrl);
+        });
 }
 
+//Retrieve and display restaurant image
+function loadImage(photoUrl) {
+    let photoEl = document.getElementById("photo");
+    photoEl.innerHTML = "";
 
-function feedbackWindow() {
-    fetch("/form.html")
-      .then((response) => response.text())
-      .then((data) => {
-          feedbackButton.innerHTML = data;
-      })
-    var popup = document.getElementById("formPopup");
-    popup.classList.toggle("show");
+    let img = document.createElement('img');
+    img.src = photoUrl;
+    photoEl.appendChild(img);
 }
-
-//Directions to the selected restaurant
-function initMap() {
-  var directionsRenderer = new google.maps.DirectionsRenderer();
-  var directionsService = new google.maps.DirectionsService();
-  let lat = localStorage.getItem("lat")
-  let lng = localStorage.getItem("lng")
-  var map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 16,
-    center: { lat: parseFloat(lat), lng: parseFloat(lng)}
-  });
-  directionsRenderer.setMap(map);
-  directionsRenderer.setPanel(document.getElementById("directionsPanel"));
-  calculateAndDisplayRoute(directionsService, directionsRenderer);
-}
-
-function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-  let start = localStorage.getItem("lat") + "," + localStorage.getItem("lng");
-  directionsService.route(
-    {
-      origin: start,
-      destination: "1745 Plymouth Rd, Ann Arbor, MI 48105",
-      travelMode: "DRIVING"
-    },
-    function(response, status) {
-      if (status === "OK") {
-        directionsRenderer.setDirections(response);
-      } else {
-        window.alert("Directions request failed due to " + status);
-      }
-    }
-  );
-}
-
-function weighRestaurants(restaurants) {
-    let requestedPrice = document.getElementById('price').value;
-    let requestedRating = document.getElementById('rating').value;
-
-    HashMap<String, Integer> restaurantMap;
-        let total = 0; 
-        for (restaurant in restaurants) {
-            let score = 1;
-            let priceLevel = restaurant.price_level;
-            let ratingLevel = restaurant.rating;
-            if (requestedPrice == 0 || requestedPrice == priceLevel) {
-                score += 4;
-            } else if (Math.abs(requestedPrice-priceLevel) <= 1) {
-                score += 3;
-            } else if (Math.abs(requestedPrice-priceLevel) <= 2) {
-                score += 2;
-            }
-
-            if (requestedRating == 0 || requestedRating == ratingLevel) {
-                score += 4;
-            } else if (Math.abs(requestedRating-ratingLevel) <= 1) {
-                score += 3;
-            } else if (Math.abs(requestedRating-ratingLevel) <= 2) {
-                score += 2;
-            } else if (Math.abs(requestedRating-ratingLevel) <= 3) {
-                score += 1;
-            }
-
-            restaurantMap.set(restaurant, score);
-            total += score;
-        }
-        let selected = Math.floor(Math.random() * total);
-        let curTotalScore = 0;
-        // finds the correct restaurant by adding the next score of a restaurant to the 
-        for (i = 0; i < restaurants.length; i++) {
-            curTotalScore = restaurantMap.get(restaurants[i-1]);
-            let curScore = restaurantMap.get(restaurants[i]);
-            if (curTotalScore <= selected && selected < curTotalScore + curScore) {
-                return restaurants[i];
-            }
-            curTotalScore += curScore;
-        }
-}
-
