@@ -284,7 +284,18 @@ function getSearches(){
     });
 }
 
-//Create the card containing the search's information
+/*=========================
+    HTML
+=========================*/
+// Form underline element    
+    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        let searchesEl = document.getElementById('cards');
+        searches.forEach((search) => {
+            let searchCard = createSearchElement(search);
+            searchesEl.appendChild(searchCard);
+        });
+    });
+
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
     newCardEl.className = 'card card-2';
@@ -294,6 +305,7 @@ function createSearchElement(search) {
     const nameElement = document.createElement('p2');
     nameElement.id = 'restaurant-name';
     nameElement.innerText = search.name;
+
     newCardBody.appendChild(nameElement);
     newCardBody.appendChild(document.createElement('br'));
 
@@ -360,9 +372,110 @@ function createSearchesButtons(search, buttons, newCardBody) {
             let restaurantNameEl = createRestaurantElement(search.name);
             formEl.appendChild(restaurantNameEl);
             modal.style.display = "block";
+    feedbacks = getFeedback(search);
+    let tempFeedbackElement = feedbacks[0];
+    feedbackElement.innerText = tempFeedbackElement;
+    newCardBody.appendChild(feedbackElement);
+    newCardBody.appendChild(document.createElement('br'));
+
+    // creating the buttons and filling in the feedback element 
+    let buttons = feedbacks[1];
+    newCardEl.appendChild(newCardBody);
+    newCardElWithButtons = createSearchesButtons(buttons, newCardEl);
+    return newCardElWithButtons;
+});
+    }
+}
+
+function createSearchesButtons(buttons, newCardEl) {
+    let feedbackButton = null;
+    if (buttons) {
+        feedbackButton = document.createElement('button');
+        feedbackButton.className = 'button feedback';
+        feedbackButton.innerText = "Submit Feedback";
+        // feedbackButton.addEventListener('click', () => {
+        //     feedbackWindow(feedbackButton);
+        // });
+        // let popupText = document.createElement('span');
+        // popupText.className = 'popuptext';
+        // popupText.id = 'searchPopup';
+        // popupText.innerText = "Popup";
+        newCardEl.appendChild(feedbackButton);
+    }
+    let searchButton = document.createElement('button');
+    searchButton.className = 'button search';
+    searchButton.innerText = "Search with These Parameters Again";
+    newCardEl.appendChild(searchButton);
+    // searchButton.addEventListener('click', () => {
+    //     reroll()});
+    return newCardEl;
+}
+
+function getFeedback(search) {
+    let tempFeedbackElement;
+    let buttons;
+    //feedback
+    if (!search.feedback.submitted) {
+        tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
+        buttons = true;
+    } else {
+        //search.feedback.notes? which rating? search.feedback.restaurantRating + notes
+        tempFeedbackElement = "Feedback" + search.feedback;
+        buttons = false;
+    }
+    return [tempFeedbackElement, buttons];
+}
+
+function feedbackWindow(feedbackButton) {
+    fetch("/form.html")
+      .then((response) => response.text())
+      .then((data) => {
+          feedbackButton.appendChild(data);
+      })
+    var popup = document.getElementById("formPopup");
+    popup.classList.toggle("show");
+}
+
+$('#randomize-form').submit(function(event) {
+    const errorEl = document.getElementById("error");
+    errorEl.classList.add('hidden');
+
+    event.preventDefault();
+    let url = $(this).attr('action');
+    let lat = localStorage.getItem("lat");
+    let lng = localStorage.getItem("lng");
+    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}`;
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: queryStr,
+        success: function(response) {
+            query();
+        }
+    });
+});
+
+$("input, textarea").blur(function() {
+    if ($(this).val() != "") {
+        $(this).addClass("active");
+    } else {
+        $(this).removeClass("active");
+    }
+});
+
+// TODO: make this more seamless
+//Loads the results page
+function resultsPage(name, rating, photoUrl) {
+    fetch(`../results.html`)
+        .then((html) => html.text())
+        .then((html) => {
+            document.getElementById("page-container").innerHTML = html;
+            document.getElementById("pick").innerText = name;
+            document.getElementById("rating").innerText = rating;
+            loadImage(photoUrl);
         });
         newCardBody.appendChild(feedbackButton);
-    }
     let searchButton = document.createElement('button');
     searchButton.className = 'btn1 search';
     searchButton.innerText = "Search with These Parameters Again";

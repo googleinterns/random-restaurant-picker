@@ -313,7 +313,6 @@ card-body {
 /* ==========================================================================
    Feedback and Search Buttons
    ========================================================================== */
-
 .btn1, .submit {
     background-color: white;
     border: 1px solid black;
@@ -390,4 +389,9 @@ card-body {
     width: 25vw;
     height: 35vh;
     overflow: scroll;
+}
+
+.feedback .search{
+    border-color: black;
+    border-radius: 15px;
 }

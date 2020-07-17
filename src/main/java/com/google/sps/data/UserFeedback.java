@@ -25,6 +25,7 @@ public class UserFeedback {
     private String userSearchRating;
     // the user's personal notes on the restaurant 
     private String notes;
+    private Boolean submitted;
 
     public UserFeedback(String user, String restaurantName, String userRestaurantRating, String userSearchRating, String notes) {
         this.user = user;
@@ -32,5 +33,6 @@ public class UserFeedback {
         this.userRestaurantRating = userRestaurantRating;
         this.userSearchRating = userSearchRating;
         this.notes = notes;
+        this.submitted = submitted;
     }
 }
