@@ -197,6 +197,7 @@ public final class QueryServletTest {
     String results = sw.getBuffer().toString().trim();
     JsonElement jsonEl = new JsonParser().parse(results);
     JsonObject json = jsonEl.getAsJsonObject();
+    JsonObject pick = json.get("pick").getAsJsonObject();
     Assert.assertEquals(pick.get("businessStatus").getAsString(), "OPERATIONAL");
     Assert.assertEquals(json.get("status").getAsString(), "OK");
   }

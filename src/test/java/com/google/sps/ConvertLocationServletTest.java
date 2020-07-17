@@ -50,7 +50,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
 @RunWith(MockitoJUnitRunner.class)
-public final class QueryServletTest {
+public final class ConvertLocationServletTest {
   @Mock
   HttpServletRequest request;
   @Mock
@@ -79,7 +79,7 @@ public final class QueryServletTest {
     when(response.getWriter()).thenReturn(pw);
 
     //Run the servlet with mock objects and collect data
-    new ConvertLocationServlet(urlOpener).doPost(request, response);
+    new ConvertLocationServlet(urlOpener).doGet(request, response);
     ArgumentCaptor<String> asString = ArgumentCaptor.forClass(String.class);
     verify(response).getWriter();
     verify(urlOpener).openUrl(asString.capture());
@@ -87,8 +87,8 @@ public final class QueryServletTest {
     //process results and check correctness
     String results = sw.getBuffer().toString().trim();
     JsonElement jsonEl = new JsonParser().parse(results);
-    JsonObject json = jsonEl.getAsJsonObject();
-    Assert.assertEquals(json.get("status").getAsString(), "ZERO_RESULTS");
+    JsonObject jsonResponse = jsonEl.getAsJsonObject();
+    Assert.assertEquals(jsonResponse.get("status").getAsString(), "ZERO_RESULTS");
     Assert.assertEquals(asString.getValue(), "https://maps.googleapis.com/maps/api/geocode/json?latlng=40.84,74.01&result_type=street_address&key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw");
   }
 
@@ -96,7 +96,7 @@ public final class QueryServletTest {
   public void GETValidResults() throws IOException{
     //Submit a post request to ConvertLocationServlet that has zero results
     //Actual response abridged for readability
-    String json = "{\"plus_code\":{\"compound_code\":\"77J6+22 Ann Arbor, MI, USA\",\"global_code\":\"86JR77J6+22\"},\"results\":[{\"formatted_address\":\"220 S Thayer St, Ann Arbor, MI 48104, USA\",\"place_id\":\"ChIJKQkrYECuPIgRVL8htvW27eM\",\"types\":[\"street_address\"]},{\"formatted_address\":\"208 S Thayer St, Ann Arbor, MI 48104, USA\",\"place_id\":\"EikyMDggUyBUaGF5ZXIgU3QsIEFubiBBcmJvciwgTUkgNDgxMDQsIFVTQSIbEhkKFAoSCTH47V5ArjyIEYGV766E3_UFENAB\",\"types\":[\"street_address\"]}],\"status\":\"OK\"}";
+    String json = "{\"results\":[{\"formatted_address\":\"220 S Thayer St, Ann Arbor, MI 48104, USA\",\"place_id\":\"ChIJKQkrYECuPIgRVL8htvW27eM\",\"types\":[\"street_address\"]},{\"formatted_address\":\"208 S Thayer St, Ann Arbor, MI 48104, USA\",\"place_id\":\"EikyMDggUyBUaGF5ZXIgU3QsIEFubiBBcmJvciwgTUkgNDgxMDQsIFVTQSIbEhkKFAoSCTH47V5ArjyIEYGV766E3_UFENAB\",\"types\":[\"street_address\"]}],\"status\":\"OK\"}";
     JsonElement apiResponse = new JsonParser().parse(json);
 
     //Handle mock object return values
@@ -108,7 +108,7 @@ public final class QueryServletTest {
     when(response.getWriter()).thenReturn(pw);
 
     //Run the function with the mock objects
-    new ConvertLocationServlet(urlOpener).doPost(request, response);
+    new ConvertLocationServlet(urlOpener).doGet(request, response);
     ArgumentCaptor<String> asString = ArgumentCaptor.forClass(String.class);
     verify(response).getWriter();
     verify(urlOpener).openUrl(asString.capture());
@@ -116,10 +116,10 @@ public final class QueryServletTest {
     //Process the results and check correctness
     String resultsString = sw.getBuffer().toString().trim();
     JsonElement jsonEl = new JsonParser().parse(resultsString);
-    JsonObject json = jsonEl.getAsJsonObject();
-    JsonArray results = json.get("results").getAsJsonArray();
+    JsonObject jsonResponse = jsonEl.getAsJsonObject();
+    JsonArray results = jsonResponse.get("results").getAsJsonArray();
     String address = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
-    Assert.assertEquals(json.get("status").getAsString(), "OK");
+    Assert.assertEquals(jsonResponse.get("status").getAsString(), "OK");
     Assert.assertEquals(address, "220 S Thayer St, Ann Arbor, MI 48104, USA");
     Assert.assertEquals(asString.getValue(), "https://maps.googleapis.com/maps/api/geocode/json?latlng=42.28,-83.74&result_type=street_address&key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw");
   }

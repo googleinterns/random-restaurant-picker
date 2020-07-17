@@ -14,7 +14,7 @@
 
 package com.google.sps;
 
-import com.google.sps.servlets.ConvertLocationServlet;
+import com.google.sps.servlets.SearchServlet;
 import com.google.sps.data.UrlOpener;
 
 import javax.servlet.http.HttpServlet;
@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -57,11 +58,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
 @RunWith(MockitoJUnitRunner.class)
-public final class QueryServletTest {
-  private final LocalServiceTestHelper helper = 
-    new LocalServiceTestHelper(
-        new LocalDatastoreServiceTestConfig()
-            .setDefaultHighRepJobPolicyUnappliedJobPercentage(0));
+public final class SearchServletTest {
+  private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig().setDefaultHighRepJobPolicyUnappliedJobPercentage(0));
   
   @Mock
   HttpServletRequest request;
@@ -86,14 +84,14 @@ public final class QueryServletTest {
       when(request.getParameter("lat")).thenReturn("40");
       when(request.getParameter("lng")).thenReturn("-80");
       when(request.getParameter("user")).thenReturn("1");
-      when(request.getParameter("radisu")).thenReturn("1000");
+      when(request.getParameter("radius")).thenReturn("1000");
       when(request.getParameter("keywords")).thenReturn("coffee");
 
       new SearchServlet().doPost(request, response);
       verify(response).sendRedirect("/index.html");
 
-      DatastoreService ds = DatastoreServiceFactory.getDataStoreService();
-      assertEquals(1, ds.prepare(new Query("savedSearch")).countEntities());
+      DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+      Assert.assertEquals(1, ds.prepare(new Query("savedSearch")).countEntities());
 
   }
 
