@@ -69,8 +69,8 @@ public class FeedbackServlet extends HttpServlet {
     }
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String restaurantRating = request.getParameter("restaurant-rating");
-        String rrpRating = request.getParameter("rrp-rating");
+        int restaurantRating = Integer.parseInt(request.getParameter("restaurant-rating"));
+        int rrpRating = Integer.parseInt(request.getParameter("rrp-rating"));
         String notes = request.getParameter("notes");
         Entity feedbackEntity = new Entity("Feedback");
         feedbackEntity.setProperty("restaurantRating", restaurantRating);

@@ -203,13 +203,14 @@ function getSearches(){
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
+    
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        console.log(searches);
         let searchesEl = document.getElementById('cards');
-        let innerCards;
         searches.forEach((search) => {
-            innerCards += createSearchElement(search);
+            let searchCard = createSearchElement(search);
+            searchesEl.appendChild(searchCard);
         });
-        searchesEl.innerHTML = innerCards;
     });
 }
 
@@ -220,44 +221,44 @@ function createSearchElement(search) {
     newCardBody.className = 'card-body';
     //creating the restaurant name element
     const nameElement = document.createElement('p2');
-    nameElement.innerText = search.name();
+    nameElement.innerText = search; //search.name();
     newCardBody.appendChild(nameElement);
 
-    //creating the list of parameters
-    const paramElement = document.createElement('p3');
-    const tempParamElement = "Parameters: ";
-    for (items in search.keywords()) {
-        tempParamElement += items;
-        tempParamElement += ", ";
-    }
-    tempParamElement += radius;
-    paramElement.innerText = tempParamElement;
-    newCardBody.appendChild(paramElement);
+    // //creating the list of parameters
+    // const paramElement = document.createElement('p3');
+    // const tempParamElement = "Parameters: ";
+    // for (items in search.keywords()) {
+    //     tempParamElement += items;
+    //     tempParamElement += ", ";
+    // }
+    // tempParamElement += radius;
+    // paramElement.innerText = tempParamElement;
+    // newCardBody.appendChild(paramElement);
 
-    //creating the feedback element
-    const feedbackElement = document.createElement('p3');
-    const tempFeedbackElement = "Feedback: ";
+    // //creating the feedback element
+    // const feedbackElement = document.createElement('p3');
+    // const tempFeedbackElement = "Feedback: ";
 
-    // creating the buttons and filling in the feedback element 
-    const buttons = null;
-    feedbackElement.innerText, buttons = getFeedback(tempFeedbackElement, buttons, search);
-    newCardBody.appendChild(feedbackElement);
-    feedbackButton = null;
-    searchButton = null;
-    const centerButtons = document.createElement('div1');
-    centerButtons.className = 'center-buttons';
-    if (buttons) {
-        searchButton = createSearchesButtons(buttons, search);
-    } else {
-        searchButton, feedbackButton = createSearchesButtons(buttons, search);
-    }
-    if (feedbackButton == null) {
-        centerButtons.appendChild(searchButton);
-    } else {
-        centerButtons.appendChild(searchButton);
-        centerButtons.appendChild(feedbackButton);
-    }
-    newCardBody.appendChild(centerButtons);
+    // // creating the buttons and filling in the feedback element 
+    // const buttons = null;
+    // feedbackElement.innerText, buttons = getFeedback(tempFeedbackElement, buttons, search);
+    // newCardBody.appendChild(feedbackElement);
+    // feedbackButton = null;
+    // searchButton = null;
+    // const centerButtons = document.createElement('div1');
+    // centerButtons.className = 'center-buttons';
+    // if (buttons) {
+    //     searchButton = createSearchesButtons(buttons);
+    // } else {
+    //     searchButton, feedbackButton = createSearchesButtons(buttons);
+    // }
+    // if (feedbackButton == null) {
+    //     centerButtons.appendChild(searchButton);
+    // } else {
+    //     centerButtons.appendChild(searchButton);
+    //     centerButtons.appendChild(feedbackButton);
+    // }
+    // newCardBody.appendChild(centerButtons);
 
     newCardEl.appendChild(newCardBody);
     return newCardEl;
@@ -302,7 +303,7 @@ function feedbackWindow(feedbackButton) {
     fetch("/form.html")
       .then((response) => response.text())
       .then((data) => {
-          feedbackButton.innerHTML = data;
+          feedbackButton.appendChild(data);
       })
     var popup = document.getElementById("formPopup");
     popup.classList.toggle("show");
@@ -340,7 +341,7 @@ function resultsPage(pick) {
     fetch(`../results.html`)
         .then(html => html.text())
         .then((html) => {
-            document.getElementById("page-container").innerHTML = html;
+            document.getElementById("page-container").appendChild(html);
             document.getElementById("pick").innerText = pick;
         });
 }
@@ -451,7 +452,7 @@ function getFavFood() {
     let food = document.getElementById('fav-food');
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
         if (foods[0].length == 0) {
-            food.innerHTML = '<textarea id="food-selection" placeholder="or foods :)"></textarea>';
+            food.appendChild('<textarea id="food-selection" placeholder="or foods :)"></textarea>');
         } else {
             food.innerText = foods[0];
         }

@@ -30,8 +30,8 @@ public class Feedback {
         this.notes = notes;
     }
 
-
     public int restaurantRating() {
+        System.out.println("2" + this.restaurantRating);
         return this.restaurantRating;
     }
 

@@ -55,22 +55,25 @@ public class SearchServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<Search> searches = new ArrayList<>();
+    List<String> searches = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      String userID = (String) entity.getProperty("user");
-      String date = (String) entity.getProperty("date");
-      String keywords = (String) entity.getProperty("keywords");
-      String radius = (String) entity.getProperty("radius");
-      String lat = (String) entity.getProperty("lat");
-      String lng = (String) entity.getProperty("lng");
-      long id = entity.getKey().getId();
-      int restaurantRating = (int) entity.getProperty("restaurantRating");
-      int rrpRating = (int) entity.getProperty("rrpRating");
-      String notes = (String) entity.getProperty("notes");
-      Feedback feedback = new Feedback(restaurantRating, rrpRating, notes);
-      String restaurantName = (String) entity.getProperty("restaurantName");
-      Search search = new Search(userID, date, keywords, lat, lng, radius, id, feedback, restaurantName);
-      searches.add(search);
+    //   String userID = (String) entity.getProperty("user");
+    //   String date = (String) entity.getProperty("date");
+    //   String keywords = (String) entity.getProperty("keywords");
+    //   String radius = (String) entity.getProperty("radius");
+    //   String lat = (String) entity.getProperty("lat");
+    //   String lng = (String) entity.getProperty("lng");
+    //   long id = (long) entity.getKey().getId();
+    //   System.out.println("1" + entity.getProperty("restaurantRating"));
+    //   int restaurantRating = Integer.parseInt(entity.getProperty("restaurantRating").toString());
+    //   int rrpRating = Integer.parseInt(entity.getProperty("rrpRating").toString());
+    //   String notes = (String) entity.getProperty("notes");
+    //   Feedback feedback = new Feedback(restaurantRating, rrpRating, notes);
+        String restaurantName = (String) entity.getProperty("restaurantName");
+        searches.add(restaurantName);
+
+    //   Search search = new Search(userID, date, keywords, lat, lng, radius, id, feedback, restaurantName);
+    //   searches.add(search);
     }
     Gson gson = new Gson();
     response.setContentType("application/json;");
@@ -99,9 +102,9 @@ public class SearchServlet extends HttpServlet {
     searchEntity.setProperty("timestamp", timestamp);
     searchEntity.setProperty("lat", lat);
     searchEntity.setProperty("lng", lng);
-    searchEntity.setProperty("restaurantRating", null);
-    searchEntity.setProperty("rrpRating", null);
-    searchEntity.setProperty("notes", null);
+    searchEntity.setProperty("restaurantRating", 0);
+    searchEntity.setProperty("rrpRating", 0);
+    searchEntity.setProperty("notes", "null");
     searchEntity.setProperty("restaurantName", restaurantName);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
