@@ -269,11 +269,15 @@ option {
 }
 
 p2 {
+    align-content: left;
+    text-align: left;
     font-size: 30px; 
     font-weight:bold;
 }
 
 p3 {
+    align-content: left;
+    text-align: left;
     font-size: 20px;
     font-weight:100;
 }
@@ -382,4 +386,13 @@ body.fade-out {
 #user-name{
   padding: 16px;
   font-size: 16px;
+}
+
+/* ==========================================================================
+   Feedback and Search Buttons
+   ========================================================================== */
+
+.feedback .search{
+    border-color: black;
+    border-radius: 15px;
 }

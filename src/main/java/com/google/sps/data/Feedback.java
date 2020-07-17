@@ -23,11 +23,13 @@ public class Feedback {
     private int rrpRating;
     // the user's personal notes on the restaurant 
     private String notes;
+    private Boolean submitted;
 
-    public Feedback(int restaurantRating, int rrpRating, String notes){
+    public Feedback(int restaurantRating, int rrpRating, String notes, Boolean submitted){
         this.restaurantRating = restaurantRating;
         this.rrpRating = rrpRating;
         this.notes = notes;
+        this.submitted = submitted;
     }
 
     public int restaurantRating() {
@@ -41,5 +43,9 @@ public class Feedback {
 
     public String notes() {
         return this.notes;
+    }
+
+    public Boolean submitted() {
+        return this.submitted;
     }
 }

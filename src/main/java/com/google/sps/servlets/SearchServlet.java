@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -55,11 +57,12 @@ public class SearchServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<String> searches = new ArrayList<>();
+    List<Search> searches = new ArrayList<>();
+    // HashMap<String, Search> restaurantMap = new HashMap<>();
     for (Entity entity : results.asIterable()) {
     //   String userID = (String) entity.getProperty("user");
     //   String date = (String) entity.getProperty("date");
-    //   String keywords = (String) entity.getProperty("keywords");
+        String keywords = (String) entity.getProperty("keywords");
     //   String radius = (String) entity.getProperty("radius");
     //   String lat = (String) entity.getProperty("lat");
     //   String lng = (String) entity.getProperty("lng");
@@ -69,11 +72,14 @@ public class SearchServlet extends HttpServlet {
     //   int rrpRating = Integer.parseInt(entity.getProperty("rrpRating").toString());
     //   String notes = (String) entity.getProperty("notes");
     //   Feedback feedback = new Feedback(restaurantRating, rrpRating, notes);
+        Boolean feedbackSubmitted = false;
+        Feedback feedback = new Feedback(0, 0, "none", feedbackSubmitted);
         String restaurantName = (String) entity.getProperty("restaurantName");
-        searches.add(restaurantName);
-
+        Search search = new Search(keywords, restaurantName, feedback);
+        // searches.add(restaurantName);
+        // restaurantMap.put(search.getRestaurantName(), search);
     //   Search search = new Search(userID, date, keywords, lat, lng, radius, id, feedback, restaurantName);
-    //   searches.add(search);
+        searches.add(search);
     }
     Gson gson = new Gson();
     response.setContentType("application/json;");
