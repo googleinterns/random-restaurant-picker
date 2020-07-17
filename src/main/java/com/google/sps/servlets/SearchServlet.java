@@ -69,7 +69,7 @@ public class SearchServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String user = request.getParameter("user");
         String radius = request.getParameter("radius");
-        String keywords = request.getParameter("keywords");
+        String keywords = request.getParameter("searchTerms");
         String lat = request.getParameter("lat");
         String lng = request.getParameter("lng");
         long timestamp = System.currentTimeMillis();
@@ -90,8 +90,5 @@ public class SearchServlet extends HttpServlet {
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(searchEntity);
-
-        // Redirect back to the HTML page.
-        response.sendRedirect("/index.html");
     }
 }

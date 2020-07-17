@@ -19,6 +19,7 @@ import com.google.sps.data.Restaurant;
 import com.google.sps.data.Photo;
 
 import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,13 +35,13 @@ public final class ResponseTest {
     // A Response with only one restaurant.
     // pick() is called once, which should update the response status to NO_REROLLS.
 
-    List<Restaurant> restArr = new ArrayList<>();
-    restArr.add(new Restaurant("McDonald's", 4.5, "OPERATIONAL", new Photo[]{}));
-    Response response = new Response("OK", restArr);
+    List<Restaurant> restaurants = new ArrayList<>();
+    restaurants.add(new Restaurant("McDonald's", 4.5, "OPERATIONAL", new Photo[]{}));
+    Response response = new Response("OK", restaurants);
     response.pick();
 
     String actual = response.getStatus();
     String expected = "NO_REROLLS";
-    Assert.assertEquals(expected, actual);
+    assertEquals(expected, actual);
   }
 }

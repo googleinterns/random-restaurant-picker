@@ -15,14 +15,25 @@
 /*=========================
     RESTAURANT QUERY AND RE-ROLL
 =========================*/
-function query() {
+$("#randomize-form").submit(function(event) {
     const errorEl = document.getElementById("error");
+    errorEl.classList.add("hidden");
+
+    event.preventDefault();
+    let url = $(this).attr("action");
     let lat = localStorage.getItem("lat");
-    let lon = localStorage.getItem("lng");
-    const radius = $("#radius").val();
-    const searchTerms = document.getElementById("searchTerms").value;
-    saveSearch(lat, lon, radius, searchTerms);
-    fetch(`/query`, { method: "GET" })
+    let lng = localStorage.getItem("lng");
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
+    }
+    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}&user=${userID}`;
+    query(queryStr);
+});
+
+function query(queryStr) {
+    const errorEl = document.getElementById("error");
+    fetch(`/query?${queryStr}`, { method: "POST"})
         .then((response) => response.json())
         .then((response) => {
             console.log(response);
@@ -191,18 +202,8 @@ window.onclick = function(event) {
 };
 
 /*=========================
-    SAVING SEARCHES
+    Retrieving SEARCHES
 =========================*/
-function saveSearch(lat, lng, radius, keyword) {
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    fetch(`/searches?user=${userID}&radius=${radius}&keywords=${keyword}&lat=${lat}&lng=${lng}`, {
-        method: "POST",
-    });
-}
-
 //Retrieve searches associated with the current user
 function getSearches() {
     let userID = 0;
@@ -222,26 +223,6 @@ function getSearches() {
 /*=========================
     HTML
 =========================*/
-$("#randomize-form").submit(function(event) {
-    const errorEl = document.getElementById("error");
-    errorEl.classList.add("hidden");
-
-    event.preventDefault();
-    let url = $(this).attr("action");
-    let lat = localStorage.getItem("lat");
-    let lng = localStorage.getItem("lng");
-    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}`;
-
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: queryStr,
-        success: function(response) {
-            query();
-        }
-    });
-});
-
 // Form underline element
 $("input, textarea").blur(function() {
     if ($(this).val() != "") {
