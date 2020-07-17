@@ -43,6 +43,7 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
@@ -91,8 +92,90 @@ public final class SearchServletTest {
       verify(response).sendRedirect("/index.html");
 
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+      List<Entity> results = ds.prepare(new Query("savedSearch")).asList(FetchOptions.Builder.withDefaults());
       Assert.assertEquals(1, ds.prepare(new Query("savedSearch")).countEntities());
-
+      Assert.assertEquals((String)results.get(0).getProperty("keywords"), "coffee");
   }
 
+  @Test
+  public void GETOneMatching() throws IOException{
+      //Test that the servlet retrieves items from the datastore
+      DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+      Entity searchEntity = new Entity("savedSearch");
+      searchEntity.setProperty("user", "2");
+      searchEntity.setProperty("radius", "1000");
+      searchEntity.setProperty("date", "Jul 17, at 13:21");
+      searchEntity.setProperty("keywords", "indian");
+      searchEntity.setProperty("timestamp", 112030394);
+      searchEntity.setProperty("lat", "40");
+      searchEntity.setProperty("lng", "-80");
+      ds.put(searchEntity);
+
+      //Handle calls to the mock objects
+      when(request.getParameter("user")).thenReturn("2");
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
+      when(response.getWriter()).thenReturn(pw);
+
+      //Run the servlet and verify functions are called
+      new SearchServlet().doGet(request, response);
+      verify(response).setContentType("application/json;");
+      verify(response).getWriter();
+
+      //Process data and check correctness
+      String results = sw.getBuffer().toString().trim();
+      JsonObject resultsObj = (new JsonParser().parse(results)).getAsJsonArray().get(0).getAsJsonObject();
+      Assert.assertEquals(resultsObj.get("user").getAsString(), "2");
+      Assert.assertEquals(resultsObj.get("keywords").getAsString(), "indian");
+  }
+
+  @Test
+  public void GETZeroMatching() throws IOException{
+      //Test the servlet when no items are in the datastore
+      //Handle calls to the mock objects
+      when(request.getParameter("user")).thenReturn("2");
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
+      when(response.getWriter()).thenReturn(pw);
+
+      //Run the servlet and verify functions are called
+      new SearchServlet().doGet(request, response);
+      verify(response).setContentType("application/json;");
+      verify(response).getWriter();
+
+      //Process data and check correctness
+      String results = sw.getBuffer().toString().trim();
+      Assert.assertEquals(results, "[]");
+  }
+
+  @Test
+  public void GETOneNotMatching() throws IOException{
+      //Test that the servlet when an item in the datastore doesn't
+      //match the user request that was processed
+      DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+      Entity searchEntity = new Entity("savedSearch");
+      searchEntity.setProperty("user", "2");
+      searchEntity.setProperty("radius", "1000");
+      searchEntity.setProperty("date", "Jul 17, at 13:21");
+      searchEntity.setProperty("keywords", "indian");
+      searchEntity.setProperty("timestamp", 112030394);
+      searchEntity.setProperty("lat", "40");
+      searchEntity.setProperty("lng", "-80");
+      ds.put(searchEntity);
+
+      //Handle calls to the mock objects
+      when(request.getParameter("user")).thenReturn("3");
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
+      when(response.getWriter()).thenReturn(pw);
+
+      //Run the servlet and verify functions are called
+      new SearchServlet().doGet(request, response);
+      verify(response).setContentType("application/json;");
+      verify(response).getWriter();
+
+      //Process data and check correctness
+      String results = sw.getBuffer().toString().trim();
+      Assert.assertEquals(results, "[]");
+  }
 }
