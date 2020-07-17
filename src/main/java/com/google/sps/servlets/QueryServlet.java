@@ -48,6 +48,7 @@ public class QueryServlet extends HttpServlet {
     private User user;
 
     @Override
+    // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
@@ -59,6 +60,7 @@ public class QueryServlet extends HttpServlet {
     }
 
     @Override
+    // TODO: return a user-friendly error rather than throwing an exception
     public void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException, ServletException {
         String lat = servletRequest.getParameter("lat");
         String lon = servletRequest.getParameter("lng");
@@ -80,6 +82,7 @@ public class QueryServlet extends HttpServlet {
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
         servletResponse.getWriter().println(gson.toJson(response));
+        //TODO: make this a separate class or function, doesn't need a servlet to handle storing
         servletRequest.getRequestDispatcher("/searches").forward(servletRequest, servletResponse);
     }
 }

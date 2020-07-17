@@ -32,6 +32,7 @@ import java.net.URLConnection;
 public class ConvertLocationServlet extends HttpServlet {
 
     @Override
+    // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         String lat = request.getParameter("lat");
