@@ -41,6 +41,7 @@ import com.google.sps.data.SearchItem;
 public class SearchServlet extends HttpServlet {
 
     @Override
+    // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String user = request.getParameter("user");
         Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
@@ -66,6 +67,8 @@ public class SearchServlet extends HttpServlet {
         response.getWriter().println(new Gson().toJson(searches));
     }
 
+    @Override
+    // TODO: return a user-friendly error rather than throwing an exception
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String user = request.getParameter("user");
         String radius = request.getParameter("radius");

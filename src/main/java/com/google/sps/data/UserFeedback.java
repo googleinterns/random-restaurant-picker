@@ -16,13 +16,13 @@ package com.google.sps.data;
 import java.util.ArrayList;
 
 public class UserFeedback {
-    //How well the user enjoys the restaurant
+    // How well the user enjoys the restaurant
     private String userRestaurantRating;
-    //How well the search met the criteria
+    // How well the search met the criteria
     private String userSearchRating;
     private String notes;
 
-    public UserFeedback(String userRestaurantRating, String userSearchRating, String notes){
+    public UserFeedback (String userRestaurantRating, String userSearchRating, String notes) {
         this.userRestaurantRating = userRestaurantRating;
         this.userSearchRating = userSearchRating;
         this.notes = notes;
