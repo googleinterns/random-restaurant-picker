@@ -202,3 +202,23 @@ body.fade-out {
   padding: 16px;
   font-size: 16px;
 }
+
+/* ==========================================================================
+   Maps
+   ========================================================================== */
+   .map-container{
+       display: flex;
+       flex-direction: row;
+       justify-content: center;
+   }
+
+   #map{
+       width: 25vw;
+       height: 35vh;;
+   }
+
+   #directionsPanel{
+       width:25vw;
+       height: 35vh;
+       overflow: scroll;
+   }
