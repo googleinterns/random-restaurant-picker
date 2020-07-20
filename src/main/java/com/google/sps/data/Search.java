@@ -24,10 +24,10 @@ public class Search {
     // private String lng;
     // private String radius;
     // private long id;
-    private Feedback feedback;
+    // private Feedback feedback;
     private String restaurantName;
 
-    public Search(String keywords, String restaurantName, Feedback feedback){
+    public Search(String keywords, String restaurantName){
     // public Search(String user, String date, String keywords, String lat, String lng, String radius, long id, Feedback feedback, String name){
         // this.user = user;
         // this.date = date;
@@ -37,7 +37,7 @@ public class Search {
         // this.radius = radius;
         // this.id = id;
         this.restaurantName = restaurantName;
-        this.feedback = feedback;
+        // this.feedback = feedback;
     }
 
     // public String user() {
@@ -72,7 +72,7 @@ public class Search {
         return this.restaurantName;
     }
 
-    public Feedback feedback() {
-        return this.feedback;
-    }
+    // public Feedback feedback() {
+    //     return this.feedback;
+    // }
 }

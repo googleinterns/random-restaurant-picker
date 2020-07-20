@@ -220,6 +220,7 @@ function createSearchElement(search) {
     newCardBody.className = 'card-body';
     //creating the restaurant name element
     const nameElement = document.createElement('p2');
+    nameElement.id = 'restaurant-name';
     nameElement.innerText = search.restaurantName;
     newCardBody.appendChild(nameElement);
     newCardBody.appendChild(document.createElement('br'));
@@ -245,40 +246,59 @@ function createSearchElement(search) {
 
     // creating the buttons and filling in the feedback element 
     let buttons = feedbacks[1];
-    newCardEl.appendChild(newCardBody);
-    newCardElWithButtons = createSearchesButtons(buttons, newCardEl);
-    return newCardElWithButtons;
-}
-
-function createSearchesButtons(buttons, newCardEl) {
-    let feedbackButton = null;
-    if (buttons) {
-        feedbackButton = document.createElement('button');
-        feedbackButton.className = 'button feedback';
-        feedbackButton.innerText = "Submit Feedback";
-        // feedbackButton.addEventListener('click', () => {
-        //     feedbackWindow(feedbackButton);
-        // });
-        // let popupText = document.createElement('span');
-        // popupText.className = 'popuptext';
-        // popupText.id = 'searchPopup';
-        // popupText.innerText = "Popup";
-        newCardEl.appendChild(feedbackButton);
-    }
-    let searchButton = document.createElement('button');
-    searchButton.className = 'button search';
-    searchButton.innerText = "Search with These Parameters Again";
-    newCardEl.appendChild(searchButton);
-    // searchButton.addEventListener('click', () => {
-    //     reroll()});
+    newCardBodyWithButtons = createSearchesButtons(buttons, newCardBody);
+    newCardEl.appendChild(newCardBodyWithButtons);
     return newCardEl;
 }
 
+function createSearchesButtons(buttons, newCardBody) {
+    let feedbackButton = null;
+    if (buttons) {
+        let modal = document.getElementById('searchModal');
+        let span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        feedbackButton = document.createElement('button');
+        feedbackButton.className = 'btn1 feedback';
+        feedbackButton.innerText = "Submit Feedback";
+        feedbackButton.addEventListener('click', () => {
+            modal.style.display = "block";
+        });
+        newCardBody.appendChild(feedbackButton);
+    }
+    let searchButton = document.createElement('button');
+    searchButton.className = 'btn1 search';
+    searchButton.innerText = "Search with These Parameters Again";
+    newCardBody.appendChild(searchButton);
+    // searchButton.addEventListener('click', () => {
+    //     reroll()});
+    return newCardBody;
+}
+
 function getFeedback(search) {
+    let userID = 0;
+    let submitted = false;
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/feedback?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((feedbackList) => {
+        for (feedback in feedbackList) {
+            if (feedback.restaurantName == search.restaurantName) {
+                submitted = true;
+            }
+        }
+    });
     let tempFeedbackElement;
     let buttons;
     //feedback
-    if (!search.feedback.submitted) {
+    if (!submitted) {
         tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
         buttons = true;
     } else {
@@ -287,16 +307,6 @@ function getFeedback(search) {
         buttons = false;
     }
     return [tempFeedbackElement, buttons];
-}
-
-function feedbackWindow(feedbackButton) {
-    fetch("/form.html")
-      .then((response) => response.text())
-      .then((data) => {
-          feedbackButton.appendChild(data);
-      })
-    var popup = document.getElementById("formPopup");
-    popup.classList.toggle("show");
 }
 
 $('#randomize-form').submit(function(event) {

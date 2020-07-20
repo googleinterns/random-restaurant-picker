@@ -72,10 +72,10 @@ public class SearchServlet extends HttpServlet {
     //   int rrpRating = Integer.parseInt(entity.getProperty("rrpRating").toString());
     //   String notes = (String) entity.getProperty("notes");
     //   Feedback feedback = new Feedback(restaurantRating, rrpRating, notes);
-        Boolean feedbackSubmitted = false;
-        Feedback feedback = new Feedback(0, 0, "none", feedbackSubmitted);
+        // Boolean feedbackSubmitted = false;
         String restaurantName = (String) entity.getProperty("restaurantName");
-        Search search = new Search(keywords, restaurantName, feedback);
+        // Feedback feedback = new Feedback(restaurantName, 0, 0, "none", feedbackSubmitted);
+        Search search = new Search(keywords, restaurantName);
         // searches.add(restaurantName);
         // restaurantMap.put(search.getRestaurantName(), search);
     //   Search search = new Search(userID, date, keywords, lat, lng, radius, id, feedback, restaurantName);
@@ -108,9 +108,6 @@ public class SearchServlet extends HttpServlet {
     searchEntity.setProperty("timestamp", timestamp);
     searchEntity.setProperty("lat", lat);
     searchEntity.setProperty("lng", lng);
-    searchEntity.setProperty("restaurantRating", 0);
-    searchEntity.setProperty("rrpRating", 0);
-    searchEntity.setProperty("notes", "null");
     searchEntity.setProperty("restaurantName", restaurantName);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

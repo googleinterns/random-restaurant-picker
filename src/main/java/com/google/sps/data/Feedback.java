@@ -17,27 +17,32 @@ package com.google.sps.data;
 import java.util.ArrayList;
 
 public class Feedback {
+    private String restaurantName;
     // the user's rating of the restaurant
-    private int restaurantRating;
+    private String restaurantRating;
     // the user's rating of how closely the selected restaurant matched their inputted parameters
-    private int rrpRating;
+    private String rrpRating;
     // the user's personal notes on the restaurant 
     private String notes;
     private Boolean submitted;
 
-    public Feedback(int restaurantRating, int rrpRating, String notes, Boolean submitted){
+    public Feedback(String restaurantName, String restaurantRating, String rrpRating, String notes, Boolean submitted){
+        this.restaurantName = restaurantName;
         this.restaurantRating = restaurantRating;
         this.rrpRating = rrpRating;
         this.notes = notes;
         this.submitted = submitted;
     }
 
-    public int restaurantRating() {
-        System.out.println("2" + this.restaurantRating);
+    public String restaurantName() {
+        return this.restaurantName;
+    }
+
+    public String restaurantRating() {
         return this.restaurantRating;
     }
 
-    public int rrpRating() {
+    public String rrpRating() {
         return this.rrpRating;
     }
 
