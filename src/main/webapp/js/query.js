@@ -233,7 +233,7 @@ $("input, textarea").blur(function() {
 });
 
 // TODO: make this more seamless
-//Loads the results page
+//Loads the results page and restaurant photo
 function resultsPage(name, rating, photoUrl) {
     fetch(`../results.html`)
         .then((html) => html.text())
