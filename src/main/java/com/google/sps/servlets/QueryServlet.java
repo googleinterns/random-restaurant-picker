@@ -42,7 +42,6 @@ import java.util.ArrayList;
 
 @WebServlet("/query")
 public class QueryServlet extends HttpServlet {
-    private final String apiKey = AccessSecret.accessSecretVersion();
     private final Gson gson = new GsonBuilder().create();
     private Response response;
     private User user;
@@ -62,13 +61,13 @@ public class QueryServlet extends HttpServlet {
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException, ServletException {
+        String apiKey = (new AccessSecret()).getKey();
         String lat = servletRequest.getParameter("lat");
         String lon = servletRequest.getParameter("lng");
         String radius = servletRequest.getParameter("radius");
         String type = "restaurant";
         String searchTerms = servletRequest.getParameter("searchTerms");
         String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
-
         URLConnection conn = new URL(urlStr).openConnection();
         conn.connect();
 
