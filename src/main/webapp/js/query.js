@@ -40,7 +40,7 @@ function query(queryStr) {
             if (response.status === "OK") {
                 let name = response.pick.name;
                 let rating = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=';
                 errorEl.innerText = name;
                 resultsPage(name, rating, photoUrl);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
@@ -65,7 +65,7 @@ function reroll() {
             if (response.status === "OK") {
                 pickEl.innerText = response.pick.name;
                 ratingEl.innerText = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=';
                 loadImage(photoUrl);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
@@ -248,11 +248,12 @@ function resultsPage(name, rating, photoUrl) {
 }
 
 //Retrieve and display restaurant image
-function loadImage(photoUrl) {
+async function loadImage(photoUrl) {
     let photoEl = document.getElementById("photo");
     photoEl.innerHTML = "";
 
     let img = document.createElement('img');
-    img.src = photoUrl;
+    let url = encodeURIComponent(photoUrl);
+    img.src = `/image?url=${url}`;
     photoEl.appendChild(img);
 }
