@@ -99,27 +99,19 @@ function geoLocEnabled(position) {
 // Use inaccurate IP-based geolocation instead
 function geoLocFallback() {
     let locationEl = document.getElementById("location-container");
-    $.ajax({
-        type: "POST",
-        url: 'https://www.googleapis.com/geolocation/v1/geolocate?key=' + 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc', // TODO: use safe API key storage!!!
-        data: { considerIp: 'true' },
-        success: function(response) {
+    fetch("/geolocate", {method: "POST"}).then(response => response.json()).then(response => {
+        try{
             let pos = {
                 lat: response.location.lat,
                 lng: response.location.lng,
             };
+            console.log(response);
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address) => { locationEl.innerText = address; });
-        },
-        error: function(xhr) {
-            if (xhr.status == 404)
-                console.log("No results");
-            if (xhr.status == 403)
-                console.log("Usage limits exceeded");
-            if (xhr.status == 400)
-                console.log("API key is invalid or JSON parsing error");
-            geoLocHardcoded(); // DEBUG
+        } catch(error){
+            throw "Location not found";
+            geoLocHardcoded();
         }
     });
 }
@@ -141,10 +133,8 @@ function convertLocation(location) {
     let long = location.lng;
     return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then(response => response.json())
-        .then(response => {
-            return response.results[0].formatted_address;
-        })
-        .catch(() => console.log("Can’t access " + url + " response. Blocked by browser?"));
+        .then((response) => { return response.results[0].formatted_address; })
+        .catch((error) => console.log(error));
 }
 
 /*=========================
