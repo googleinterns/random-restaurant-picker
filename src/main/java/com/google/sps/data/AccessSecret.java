@@ -15,7 +15,7 @@ public class AccessSecret {
   public String accessSecretVersion() throws IOException {
     String projectId = "team-38-step-2020";
     String secretId = "API_KEY";
-    String versionId = "1";
+    String versionId = "2";
     return accessSecretVersion(projectId, secretId, versionId);
   }
 

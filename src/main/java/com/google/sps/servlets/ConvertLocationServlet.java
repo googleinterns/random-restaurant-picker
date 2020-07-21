@@ -37,7 +37,7 @@ public class ConvertLocationServlet extends HttpServlet {
     // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-        String apiKey = new AccessSecret().getKey();
+        String apiKey = (new AccessSecret()).getKey();
         String lat = request.getParameter("lat");
         String lng = request.getParameter("lng");
         String sURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&result_type=street_address&key=" + apiKey;
