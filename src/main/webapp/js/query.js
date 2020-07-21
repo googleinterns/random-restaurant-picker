@@ -33,7 +33,7 @@ $("#randomize-form").submit(function(event) {
 
 function query(queryStr) {
     const errorEl = document.getElementById("error");
-    fetch(`/query?${queryStr}`, { method: "POST"})
+    fetch(`/query?${queryStr}`, { method: "POST" })
         .then((response) => response.json())
         .then((response) => {
             console.log(response);
@@ -162,7 +162,7 @@ function onSignIn(googleUser) {
             localStorage.setItem("loggedIn", true);
             addUserContent(profile.getName(), profile.getImageUrl());
             toggleAccountMenu();
-        }).catch((error) =>{
+        }).catch((error) => {
             console.log(error);
         });
 }
@@ -238,15 +238,11 @@ $("input, textarea").blur(function() {
 // TODO: make this more seamless
 //Loads the results page
 function resultsPage(name, rating, photoUrl) {
-    fetch(`../results.html`)
-        .then((html) => html.text())
-        .then((html) => {
-            document.getElementById("page-container").innerHTML = html;
-            document.getElementById("pick").innerText = name;
-            document.getElementById("rating").innerText = rating;
-            loadImage(photoUrl);
-            addMapScript();
-        });
+    document.getElementById("pick").innerText = name;
+    document.getElementById("rating").innerText = rating;
+    loadImage(photoUrl);
+    addMapScript();
+    window.location.href='#results';
 }
 
 //Retrieve and display restaurant image
@@ -262,9 +258,10 @@ function loadImage(photoUrl) {
 /*=========================
     Directions to the Restaurant
  =========================*/
- let directionsRenderer;
- let directionsService;
-function addMapScript(){
+let directionsRenderer;
+let directionsService;
+
+function addMapScript() {
     let script = document.createElement('script');
     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw&callback=initMap';
     script.defer = true;
@@ -273,34 +270,33 @@ function addMapScript(){
 }
 
 function initMap() {
-  directionsRenderer = new google.maps.DirectionsRenderer();
-  directionsService = new google.maps.DirectionsService();
-  let lat = localStorage.getItem("lat")
-  let lng = localStorage.getItem("lng")
-  var map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 16,
-    center: { lat: parseFloat(lat), lng: parseFloat(lng)}
-  });
-  directionsRenderer.setMap(map);
-  directionsRenderer.setPanel(document.getElementById("directionsPanel"));
-  calculateAndDisplayRoute(directionsService, directionsRenderer);
+    directionsRenderer = new google.maps.DirectionsRenderer();
+    directionsService = new google.maps.DirectionsService();
+    let lat = localStorage.getItem("lat")
+    let lng = localStorage.getItem("lng")
+    var map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 16,
+        center: { lat: parseFloat(lat), lng: parseFloat(lng) }
+    });
+    directionsRenderer.setMap(map);
+    directionsRenderer.setPanel(document.getElementById("directionsPanel"));
+    calculateAndDisplayRoute(directionsService, directionsRenderer);
 }
 
 function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-  let start = localStorage.getItem("lat") + "," + localStorage.getItem("lng");
-  let end = localStorage.getItem("restaurantAddress");
-  directionsService.route(
-    {
-      origin: start,
-      destination: end,
-      travelMode: "DRIVING"
-    },
-    function(response, status) {
-      if (status === "OK") {
-        directionsRenderer.setDirections(response);
-      } else {
-        window.alert("Directions request failed due to " + status);
-      }
-    }
-  );
+    let start = localStorage.getItem("lat") + "," + localStorage.getItem("lng");
+    let end = localStorage.getItem("restaurantAddress");
+    directionsService.route({
+            origin: start,
+            destination: end,
+            travelMode: "DRIVING"
+        },
+        function(response, status) {
+            if (status === "OK") {
+                directionsRenderer.setDirections(response);
+            } else {
+                window.alert("Directions request failed due to " + status);
+            }
+        }
+    );
 }

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
@@ -18,106 +19,137 @@
     <link href="css/button.css" rel="stylesheet">
     <link href="css/form.css" rel="stylesheet">
     <link href="css/banner.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/transition.css">
 </head>
+
 <body>
-    <header>
-        <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-        <div class="dropdown" id="account-menu">
-            <button onclick="toggleShow()" class="dropbtn">
-                <img id="profile-pic" src="">
-                <h3 id="user-name">name</h3>
-            </button>
-            <div id="myDropdown" class="dropdown-content">
-                <a href="#">Account</a>
-                <a href="#">History</a>
-                <a onclick="signOut()">Sign Out</a>
+    <a id="search"></a>
+    <a id="results"></a>
+    <a id="three"></a>
+    <section id="search">
+        <header>
+            <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
+            <div class="dropdown" id="account-menu">
+                <button onclick="toggleShow()" class="dropbtn">
+                    <img id="profile-pic" src="">
+                    <h3 id="user-name">name</h3>
+                </button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="#">Account</a>
+                    <a href="#">History</a>
+                    <a onclick="signOut()">Sign Out</a>
+                </div>
             </div>
-        </div>
-    </header>
-    <div id="page-container">
-        <div class="p-t-80" style="text-align:center">
-            <h>Random Restaurant Picker</h>
-        </div>
-        <div class="page-wrapper p-t-40 font-robo">
-            <div class="wrapper wrapper--w960">
-                <div class="card card-2">
-                    <div class="card-body">
-                        <h2>Your location:</h2>
-                        </br>
-                        <p id="location-container"></p>
-                        </br>
-                        <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
-                        </br></br></br>
-                        <form id="randomize-form" action="/query" method="POST">
-                            <div class="input-group">
-                                <input class="input--style-2" type="text" name="searchTerms" id="searchTerms">
-                                <label for="searchTerms">Search terms</label>
-                                <div class="border"></div>
-                            </div>
-                            <div class="row row-space">
-                                <div class="col-2">
-                                    <div class="input-group">
-                                        <input class="input--style-2" type="text" name="radius" id="radius">
-                                        <label for="radius">Max distance (meters)</label>
-                                        <div class="border"></div>
+        </header>
+        <div id="page-container">
+            <div class="p-t-80" style="text-align:center">
+                <h>Random Restaurant Picker</h>
+            </div>
+            <div class="page-wrapper p-t-40 font-robo">
+                <div class="wrapper wrapper--w960">
+                    <div class="card card-2">
+                        <div class="card-body">
+                            <h2>Your location:</h2>
+                            </br>
+                            <p id="location-container"></p>
+                            </br>
+                            <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
+                            </br></br></br>
+                            <form id="randomize-form" action="/query" method="POST">
+                                <div class="input-group">
+                                    <input class="input--style-2" type="text" name="searchTerms" id="searchTerms">
+                                    <label for="searchTerms">Search terms</label>
+                                    <div class="border"></div>
+                                </div>
+                                <div class="row row-space">
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            <input class="input--style-2" type="text" name="radius" id="radius">
+                                            <label for="radius">Max distance (meters)</label>
+                                            <div class="border"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div>
+                                            <input type="radio" id="price0" name="priceLevel" value="0" checked>
+                                            <label for="price0">Any</label>
+                                            <input type="radio" id="price1" name="priceLevel" value="1">
+                                            <label for="price1">$</label>
+                                            <input type="radio" id="price2" name="priceLevel" value="2">
+                                            <label for="price2">$$</label>
+                                            <input type="radio" id="price3" name="priceLevel" value="3">
+                                            <label for="price3">$$$</label>
+                                            <input type="radio" id="price4" name="priceLevel" value="4">
+                                            <label for="price4">$$$$</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-2">
-                                    <div>
-                                        <input type="radio" id="price0" name="priceLevel" value="0" checked>
-                                        <label for="price0">Any</label>
-                                        <input type="radio" id="price1" name="priceLevel" value="1">
-                                        <label for="price1">$</label>
-                                        <input type="radio" id="price2" name="priceLevel" value="2">
-                                        <label for="price2">$$</label>
-                                        <input type="radio" id="price3" name="priceLevel" value="3">
-                                        <label for="price3">$$$</label>
-                                        <input type="radio" id="price4" name="priceLevel" value="4">
-                                        <label for="price4">$$$$</label>
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="category">
+                                            <option value="">Category...</option>
+                                            <option>No preference</option>
+                                            <option>Dine-in</option>
+                                            <option>Fast Food</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="input-group">
-                                <div class="rs-select2 js-select-simple select--no-search">
-                                    <select name="category">
-                                        <option value="">Category...</option>
-                                        <option>No preference</option>
-                                        <option>Dine-in</option>
-                                        <option>Fast Food</option>
-                                    </select>
-                                    <div class="select-dropdown"></div>
+                                <div class="input-group">
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="dietary-options">
+                                            <option value="">Dietary options...</option>
+                                            <option>Nothing specific</option>
+                                            <option>Vegetarian</option>
+                                            <option>Vegan</option>
+                                            <option>Kosher</option>
+                                            <option>Halal</option>
+                                            <option>Gluten-free</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="input-group">
-                                <div class="rs-select2 js-select-simple select--no-search">
-                                    <select name="dietary-options">
-                                        <option value="">Dietary options...</option>
-                                        <option>Nothing specific</option>
-                                        <option>Vegetarian</option>
-                                        <option>Vegan</option>
-                                        <option>Kosher</option>
-                                        <option>Halal</option>
-                                        <option>Gluten-free</option>
-                                    </select>
-                                    <div class="select-dropdown"></div>
+                                <div class="success-banner hidden" id="error"></div>
+                                <div style="text-align:center">
+                                    <button class="btn style4" type="submit">Randomize</button>
                                 </div>
-                            </div>
-                            <div class="success-banner hidden" id="error"></div>
-                            <div style="text-align:center">
-                                <button class="btn style4" type="submit">Randomize</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="js/query.js"></script>
-    <!-- Form -->
-    <script src="third-party/select2/select2.min.js"></script>
-    <script src="third-party/datepicker/moment.min.js"></script>
-    <script src="third-party/datepicker/daterangepicker.js"></script>
-    <script src="js/form.js"></script>
+        <script src="js/query.js"></script>
+        <!-- Form -->
+        <script src="third-party/select2/select2.min.js"></script>
+        <script src="third-party/datepicker/moment.min.js"></script>
+        <script src="third-party/datepicker/daterangepicker.js"></script>
+        <script src="js/form.js"></script>
+    </section>
+    <section id="results">
+        <div style="text-align:center">
+            <h1 class="m-t-80">You're headed to:</h1>
+            </br>
+            <h id="pick"></h>
+            </br>
+            </br>
+            <h1 id="rating"></h1>
+            </br>
+            </br>
+            </br>
+            <div id="photo"></div>
+            <div class="map-container">
+                <div id="map"></div>
+                <div id="directionsPanel"></div>
+            </div>
+            </br>
+            <h3 class="m-t-80">Not feeling it?</h3>
+            <button class="btn style4" onclick="reroll()">Roll Again</button>
+            <button class="btn style4" onclick="window.location.href='#search'">
+                Back
+            </button>
+        </div>
+    </section>
 </body>
 
 </html>
