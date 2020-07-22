@@ -1,0 +1,12 @@
+indexes:
+- kind: "savedSearch"
+  properties:
+  - name: "user"
+  - name: "timestamp"
+    direction: desc
+- kind: "savedSearch"
+  properties:
+  - name: "user"
+    direction: asc
+  - name: "timestamp"
+    direction: desc
