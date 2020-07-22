@@ -246,22 +246,27 @@ function createSearchElement(search) {
 
     // creating the buttons and filling in the feedback element 
     let buttons = feedbacks[1];
-    newCardBodyWithButtons = createSearchesButtons(buttons, newCardBody);
+    newCardBodyWithButtons = createSearchesButtons(search, buttons, newCardBody);
     newCardEl.appendChild(newCardBodyWithButtons);
     return newCardEl;
 }
 
-function createSearchesButtons(buttons, newCardBody) {
+function createSearchesButtons(search, buttons, newCardBody) {
     let feedbackButton = null;
+    let formEl = document.getElementById('searches-form');
     if (buttons) {
         let modal = document.getElementById('searchModal');
         let span = document.getElementsByClassName("close")[0];
         span.onclick = function() {
+            let restaurantContainerEl = document.getElementById("restaurant-name-container");
+            restaurantContainerEl.remove();
             modal.style.display = "none";
         }
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target == modal) {
+                let restaurantContainerEl = document.getElementById("restaurant-name-container");
+                restaurantContainerEl.remove();
                 modal.style.display = "none";
             }
         }
@@ -269,6 +274,8 @@ function createSearchesButtons(buttons, newCardBody) {
         feedbackButton.className = 'btn1 feedback';
         feedbackButton.innerText = "Submit Feedback";
         feedbackButton.addEventListener('click', () => {
+            let restaurantNameEl = createRestaurantElement(search.restaurantName);
+            formEl.appendChild(restaurantNameEl);
             modal.style.display = "block";
         });
         newCardBody.appendChild(feedbackButton);
@@ -280,6 +287,20 @@ function createSearchesButtons(buttons, newCardBody) {
     // searchButton.addEventListener('click', () => {
     //     reroll()});
     return newCardBody;
+}
+
+function createRestaurantElement(restaurantName) {
+    let inputGroupEl = document.createElement('div');
+    inputGroupEl.className = "input-group";
+    inputGroupEl.id = "restaurant-name-container";
+    let inputContainer = document.createElement('input');
+    inputContainer.className = "input--style-2";
+    inputContainer.type = "text";
+    inputContainer.id = restaurantName + "-fill";
+    inputContainer.value = restaurantName;
+    inputContainer.innerText = restaurantName;
+    inputGroupEl.appendChild(inputContainer);
+    return inputGroupEl;
 }
 
 function getFeedback(search) {

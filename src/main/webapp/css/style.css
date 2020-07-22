@@ -392,7 +392,7 @@ body.fade-out {
    Feedback and Search Buttons
    ========================================================================== */
 
-.btn1 {
+.btn1, .submit {
     background-color: white;
     border: 1px solid black;
     border-radius: 10px;
