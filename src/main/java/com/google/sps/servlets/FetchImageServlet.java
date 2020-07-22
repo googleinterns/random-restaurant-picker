@@ -39,8 +39,8 @@ public class FetchImageServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
         String decodedUrl = new URLDecoder().decode(request.getParameter("url"));
-        String apiKey = (new AccessSecret()).getKey();
-        String urlStr = decodedUrl+apiKey;
+        String apiKey = (AccessSecret.getInstance()).getKey();
+        String urlStr = decodedUrl + apiKey;
         
         URLConnection conn = new URL(urlStr).openConnection();
         conn.connect();
