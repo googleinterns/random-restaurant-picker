@@ -29,10 +29,10 @@ public final class Restaurant implements java.io.Serializable {
     private final int price;
     private final Photo[] photos;
 
-    public Restaurant(String name, double rating, String business_status, int price, Photo[] photos) {
+    public Restaurant(String name, double rating, String businessStatus, int price, Photo[] photos) {
         this.name = name;
         this.rating = rating;
-        this.business_status = business_status;
+        this.businessStatus = businessStatus;
         this.photos = photos;
         this.price = price;
     }
@@ -61,7 +61,7 @@ public final class Restaurant implements java.io.Serializable {
         return this.name;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return this.price;
     }
 }

@@ -59,11 +59,11 @@ public final class Response implements java.io.Serializable {
         this.pick = restaurant;
     }
 
-    public Restaurant getPick(){
-        return this.pick;
-    }
-
     public void setStatus(String status){
         this.status = status;
+    }
+
+    public Restaurant getPick(){
+        return this.pick;
     }
 }
