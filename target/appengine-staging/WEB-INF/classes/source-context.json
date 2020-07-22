@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "84f97586b28f8b8bf41fbbb25a9da7e35bc1c37d"}}
+=======
+{"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "052e942cd245b90bd0103b7db221497dabcec531"}}
+>>>>>>> c4ad722... restaurant name carries through to feedback form now!
