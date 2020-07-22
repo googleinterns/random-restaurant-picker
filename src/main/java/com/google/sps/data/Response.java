@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 import java.util.Random;
 import java.io.Serializable;
 
-
 public final class Response implements java.io.Serializable {
     private Restaurant pick = null;
     private List<Restaurant> results;
