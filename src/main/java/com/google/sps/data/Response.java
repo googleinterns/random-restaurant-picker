@@ -59,4 +59,3 @@ public final class Response implements java.io.Serializable {
         return this.pick;
     }
 }
-

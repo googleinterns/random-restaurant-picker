@@ -21,7 +21,6 @@ import com.google.sps.data.Restaurant;
 import com.google.sps.data.Photo;
 
 import org.junit.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
