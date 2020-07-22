@@ -36,7 +36,6 @@ function query(queryStr) {
     fetch(`/query?${queryStr}`, { method: "POST"})
         .then((response) => response.json())
         .then((response) => {
-            console.log(response);
             if (response.status === "OK") {
                 let name = response.pick.name;
                 let rating = response.pick.rating + ' ★';
@@ -155,7 +154,7 @@ function onSignIn(googleUser) {
     fetch(`/login?id_token=${id_token}`)
         .then((response) => response.json())
         .then((data) => {
-            localStorage.setItem("user", data.id);
+            localStorage.setItem("user", data.sub);
             localStorage.setItem("loggedIn", true);
             addUserContent(profile.getName(), profile.getImageUrl());
             toggleAccountMenu();
