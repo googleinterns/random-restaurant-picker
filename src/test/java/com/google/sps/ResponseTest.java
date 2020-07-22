@@ -17,6 +17,7 @@ package com.google.sps;
 import com.google.sps.data.Response;
 import com.google.sps.data.Restaurant;
 import com.google.sps.data.Photo;
+import com.google.sps.data.RestaurantChooser;
 import com.google.sps.servlets.QueryServlet;
 
 import org.junit.Assert;
@@ -38,12 +39,11 @@ public final class ResponseTest {
 
     List<Restaurant> restArr = new ArrayList<>();
     restArr.add(new Restaurant("McDonald's", 4.5, "OPERATIONAL", 2, new Photo[]{}));
-    /*TODO FIX THIS PART OF THE TEST
     Response response = new Response("OK", restArr);
-    chooseRestaurant(response, 2);
+    RestaurantChooser.chooseRestaurant(response, 2);
 
-    String actual = response.status();
+    String actual = response.getStatus();
     String expected = "ZERO_RESULTS";
-    Assert.assertEquals(expected, actual);*/
+    Assert.assertEquals(expected, actual);
   }
 }

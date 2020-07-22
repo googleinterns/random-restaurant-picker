@@ -25,7 +25,7 @@ public final class Restaurant implements java.io.Serializable {
     private final double rating;
     @SerializedName(value = "businessStatus", alternate = "business_status")
     private final String businessStatus;
-    @SerialiedName(value = "priceLevel", alternate = "price_level")
+    @SerializedName(value = "priceLevel", alternate = "price_level")
     private final int priceLevel;
     private final Photo[] photos;
 
