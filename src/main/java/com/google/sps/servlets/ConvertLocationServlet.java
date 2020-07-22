@@ -20,10 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.sps.data.AccessSecret;
-<<<<<<< HEAD
-=======
-
->>>>>>> 5d685cc... Access Secret Correct implementation + removing embedded API keys
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

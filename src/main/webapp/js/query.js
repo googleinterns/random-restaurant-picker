@@ -194,61 +194,6 @@ window.onclick = function(event) {
 };
 
 /*=========================
-    USER SIGN-IN
- =========================*/
-function onSignIn(googleUser) {
-    let id_token = googleUser.getAuthResponse().id_token;
-    let profile = googleUser.getBasicProfile();
-    fetch(`/login?id_token=${id_token}`)
-        .then((response) => response.json())
-        .then((data) => {
-            localStorage.setItem("user", data.id);
-            localStorage.setItem("loggedIn", true);
-            addUserContent(profile.getName(), profile.getImageUrl());
-            toggleAccountMenu();
-        }).catch((error) =>{
-            console.log(error);
-        });
-}
-
-//Add user information to signed in UI
-function addUserContent(name, image) {
-    document.getElementById("user-name").innerText = name;
-    document.getElementById("profile-pic").src = image;
-}
-
-//Replaces the sign-in button with signed in UI
-function toggleAccountMenu() {
-    document.getElementById("account-menu").classList.toggle("show");
-    document.getElementById("sign-in").classList.toggle("hide");
-}
-
-//Logs out of the account
-function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function() {
-        console.log("User signed out.");
-    });
-    localStorage.setItem("user", 0);
-    localStorage.setItem("loggedIn", false);
-    toggleAccountMenu();
-}
-
-function toggleShow() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-//Close account dropdown when clicking elsewhere
-window.onclick = function(event) {
-    if (!event.target.matches(".dropbtn")) {
-        let dropdownEl = document.getElementById("myDropdown");
-        if (dropdownEl.classList.contains("show")) {
-            dropdownEl.classList.remove("show");
-        }
-    }
-};
-
-/*=========================
     Retrieving SEARCHES
  =========================*/
 //Retrieve searches associated with the current user
