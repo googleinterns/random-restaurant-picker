@@ -35,7 +35,7 @@ public class ConvertLocationServlet extends HttpServlet {
     // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
-        String apiKey = (new AccessSecret()).getKey();
+        String apiKey = (AccessSecret.getInstance()).getKey();
         String lat = request.getParameter("lat");
         String lng = request.getParameter("lng");
         String apiKey = "AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw";

@@ -38,7 +38,7 @@ import org.apache.http.util.EntityUtils;
 public class GeoLocateServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        String apiKey = (new AccessSecret()).getKey();
+        String apiKey = (AccessSecret.getInstance()).getKey();
         String urlStr = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + apiKey;
         
         HttpClient httpClient = new DefaultHttpClient();

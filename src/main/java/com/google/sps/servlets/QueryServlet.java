@@ -61,7 +61,7 @@ public class QueryServlet extends HttpServlet {
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException, ServletException {
-        String apiKey = (new AccessSecret()).getKey();
+        String apiKey = (AccessSecret.getInstance()).getKey();
         String lat = servletRequest.getParameter("lat");
         String lon = servletRequest.getParameter("lng");
         String radius = servletRequest.getParameter("radius");
