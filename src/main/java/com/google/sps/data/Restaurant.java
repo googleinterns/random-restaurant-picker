@@ -14,39 +14,44 @@
 
 package com.google.sps.data;
 
-public final class Restaurant {
+import com.google.sps.data.Photo;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public final class Restaurant implements java.io.Serializable {
     private transient int weight = 0;
     private final String name;
     private final double rating;
+    @SerializedName(value = "businessStatus", alternate = "business_status")
     private final String businessStatus;
-    private final String id;
+    private final Photo[] photos;
 
-    public Restaurant(String name, int weight, double rating, String businessStatus, String id) {
+    public Restaurant(String name, double rating, String businessStatus, Photo[] photos) {
         this.name = name;
-        this.weight = weight;
         this.rating = rating;
         this.businessStatus = businessStatus;
-        this.id = id;
+        this.photos = photos;
     }
 
-    public int weight() {
+    public int getWeight() {
         return this.weight;
     }
 
-    public String name() {
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public String getName() {
         return this.name;
     }
 
-    public double rating() {
+    public double getRating() {
         return this.rating;
     }
 
-    public String businessStatus() {
+    public String getBusinessStatus() {
         return this.businessStatus;
-    }
-
-    public String id() {
-        return this.id;
     }
 
     public String toString() {

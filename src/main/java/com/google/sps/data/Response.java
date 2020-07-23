@@ -21,9 +21,10 @@ import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.Random;
+import java.io.Serializable;
 
-public final class Response {
-    private String pick = null;
+public final class Response implements java.io.Serializable {
+    private Restaurant pick = null;
     private List<Restaurant> results;
     private String status;
 
@@ -32,25 +33,29 @@ public final class Response {
         this.results = results;
     }
 
-    public String status() {
-        return status;
+    public String getStatus() {
+        return this.status;
     }
 
-    public List<Restaurant> results() {
-        return results;
+    public List<Restaurant> getResults() {
+        return this.results;
     }
 
     public void pick() {
-        int randIdx = (int) (Math.random() * results.size());
-        pick = results.get(randIdx).name();
-        results.remove(randIdx);
+        if(results.size() > 0){
+            int randIdx = (results.size() > 1) ? new Random().nextInt(results.size() - 1) : 0;
+            pick = results.get(randIdx);
+            results.remove(randIdx);
+        }
         if (results.size() == 0)
             status = "NO_REROLLS";
     }
 
     public String toString() {
-        return (this.results).stream()
-        .map(n -> n.toString())
-        .collect(Collectors.joining( "," ) );
+        return (this.results).stream().map(n -> n.toString()).collect(Collectors.joining(","));
+    }
+
+    public Restaurant getPick(){
+        return this.pick;
     }
 }

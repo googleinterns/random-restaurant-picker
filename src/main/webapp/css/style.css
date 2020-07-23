@@ -95,7 +95,6 @@ body {
 h {
     align-content: center;
     color: black;
-    font-family: "Comfortaa";
     font-size: 70px;
     font-weight: bold;
     text-align: center;
@@ -163,11 +162,28 @@ p1 {
     color: white;
 }
 
+/* ==========================================================================
+   TRANSITIONS
+   ========================================================================== */
+body {
+    opacity: 1;
+    transition: 1s opacity;
+}
+
+body.fade-out {
+    opacity: 0;
+    transition: none;
+}
+
 #sign-in{
     position: fixed;
     right: 30px;
     top: 30px;
 }
+
+/* ==========================================================================
+   Logged in Account
+   ========================================================================== */
 
 .dropbtn {
   background-color: white;

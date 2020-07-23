@@ -1,11 +1,13 @@
-com/google/sps/data/User.class
 com/google/sps/data/Feedback.class
 com/google/sps/data/Restaurant.class
-com/google/sps/data/Search.class
 com/google/sps/servlets/FeedbackServlet.class
 com/google/sps/servlets/LoginServlet.class
 com/google/sps/data/Response.class
 com/google/sps/servlets/FavFoodServlet.class
 com/google/sps/servlets/SearchServlet.class
+com/google/sps/data/User.class
+com/google/sps/data/Photo.class
+com/google/sps/data/SearchItem.class
+com/google/sps/servlets/QueryServlet.class
+com/google/sps/data/UserFeedback.class
 com/google/sps/servlets/ConvertLocationServlet.class
-com/google/sps/servlets/Query.class

@@ -39,10 +39,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
 import java.text.SimpleDateFormat;  
 import java.util.Date;
-import org.json.JSONObject;
-import org.json.JSONException;
-import org.json.HTTP;
-import com.google.sps.data.Search;
+import com.google.sps.data.SearchItem;
 import com.google.sps.data.Feedback;
 
 @WebServlet("/searches")
@@ -57,33 +54,23 @@ public class SearchServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<Search> searches = new ArrayList<>();
-    // HashMap<String, Search> restaurantMap = new HashMap<>();
+    List<SearchItem> searches = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-    //   String userID = (String) entity.getProperty("user");
-    //   String date = (String) entity.getProperty("date");
+        String userID = (String) entity.getProperty("user");
+        String date = (String) entity.getProperty("date");
         String keywords = (String) entity.getProperty("keywords");
-    //   String radius = (String) entity.getProperty("radius");
-    //   String lat = (String) entity.getProperty("lat");
-    //   String lng = (String) entity.getProperty("lng");
-    //   long id = (long) entity.getKey().getId();
-    //   System.out.println("1" + entity.getProperty("restaurantRating"));
-    //   int restaurantRating = Integer.parseInt(entity.getProperty("restaurantRating").toString());
-    //   int rrpRating = Integer.parseInt(entity.getProperty("rrpRating").toString());
-    //   String notes = (String) entity.getProperty("notes");
-    //   Feedback feedback = new Feedback(restaurantRating, rrpRating, notes);
-        // Boolean feedbackSubmitted = false;
+        String radius = (String) entity.getProperty("radius");
+        String lat = (String) entity.getProperty("lat");
+        String lng = (String) entity.getProperty("lng");
+        long id = entity.getKey().getId();
         String restaurantName = (String) entity.getProperty("restaurantName");
-        // Feedback feedback = new Feedback(restaurantName, 0, 0, "none", feedbackSubmitted);
-        Search search = new Search(keywords, restaurantName);
-        // searches.add(restaurantName);
-        // restaurantMap.put(search.getRestaurantName(), search);
-    //   Search search = new Search(userID, date, keywords, lat, lng, radius, id, feedback, restaurantName);
+
+        SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id, restaurantName);
         searches.add(search);
     }
     Gson gson = new Gson();
     response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(searches));
+    response.getWriter().println(new Gson().toJson(searches));
   }
 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -93,11 +80,11 @@ public class SearchServlet extends HttpServlet {
     String lat = request.getParameter("lat");
     String lng = request.getParameter("lng");
     long timestamp = System.currentTimeMillis();
+    String restaurantName = request.getParameter("restaurantName");
 
     SimpleDateFormat formatter = new SimpleDateFormat("MMM d, 'at' HH:mm");
     Date date = new Date(System.currentTimeMillis());
     String formattedDate = formatter.format(date);
-    String restaurantName = request.getParameter("restaurantName");
 
     //Make an entity
     Entity searchEntity = new Entity("savedSearch");
@@ -112,8 +99,5 @@ public class SearchServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(searchEntity);
-
-    // Redirect back to the HTML page.
-    response.sendRedirect("/index.html");
   }
 }

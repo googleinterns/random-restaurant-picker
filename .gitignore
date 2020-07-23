@@ -39,9 +39,14 @@ buildNumber.properties
 .mvn/timing.properties
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 .DS_Store
 >>>>>>> resultsPage
 =======
 >>>>>>> 819c2722edf8e3b73d99497f734358c7164d6dc4
+=======
+
+.DS_Store
+>>>>>>> master
