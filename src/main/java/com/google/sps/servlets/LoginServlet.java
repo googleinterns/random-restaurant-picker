@@ -38,7 +38,15 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 public class LoginServlet extends HttpServlet {
     UrlFetchTransport transport = new UrlFetchTransport();
     JacksonFactory jacksonFactory = new JacksonFactory();
-    GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory).setAudience(Collections.singletonList("758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com")).build();
+    GoogleIdTokenVerifier verifier;
+    
+    public LoginServlet(){
+        this.verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory).setAudience(Collections.singletonList("758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com")).build();
+    }
+
+    public LoginServlet(GoogleIdTokenVerifier verifier){
+        this.verifier = verifier;
+    }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
