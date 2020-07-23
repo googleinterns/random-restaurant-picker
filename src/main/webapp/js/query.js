@@ -298,7 +298,7 @@ function createSearchElement(search) {
     //creating the restaurant name element
     const nameElement = document.createElement('p2');
     nameElement.id = 'restaurant-name';
-    nameElement.innerText = search.restaurantName;
+    nameElement.innerText = search.name;
     newCardBody.appendChild(nameElement);
     newCardBody.appendChild(document.createElement('br'));
 
@@ -359,7 +359,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
         feedbackButton.className = 'btn1 feedback';
         feedbackButton.innerText = "Submit Feedback";
         feedbackButton.addEventListener('click', () => {
-            let restaurantNameEl = createRestaurantElement(search.restaurantName);
+            let restaurantNameEl = createRestaurantElement(search.name);
             formEl.appendChild(restaurantNameEl);
             modal.style.display = "block";
         });
@@ -401,7 +401,7 @@ function getFeedback(search) {
     }
     fetch(`/feedback?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((feedbackList) => {
         for (feedback in feedbackList) {
-            if (feedback.restaurantName == search.restaurantName) {
+            if (feedback.restaurantName == search.name) {
                 submitted = true;
             }
         }

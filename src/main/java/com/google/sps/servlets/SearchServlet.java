@@ -20,12 +20,10 @@ import com.google.gson.Gson;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -37,67 +35,72 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
-import java.text.SimpleDateFormat;  
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.google.sps.data.SearchItem;
-import com.google.sps.data.Feedback;
+import com.google.sps.data.Response;
 
 @WebServlet("/searches")
 public class SearchServlet extends HttpServlet {
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String user = request.getParameter("user");
-    Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
-    Query query = new Query("savedSearch").setFilter(propertyFilter).addSort("timestamp", SortDirection.DESCENDING);
+    @Override
+    // TODO: return a user-friendly error rather than throwing an exception
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String user = request.getParameter("user");
+        Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
+        Query query = new Query("savedSearch").setFilter(propertyFilter).addSort("timestamp", SortDirection.DESCENDING);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
 
-    List<SearchItem> searches = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
-        String userID = (String) entity.getProperty("user");
-        String date = (String) entity.getProperty("date");
-        String keywords = (String) entity.getProperty("keywords");
-        String radius = (String) entity.getProperty("radius");
-        String lat = (String) entity.getProperty("lat");
-        String lng = (String) entity.getProperty("lng");
-        long id = entity.getKey().getId();
-        String restaurantName = (String) entity.getProperty("restaurantName");
+        List <SearchItem> searches = new ArrayList<>();
+        for (Entity entity : results.asIterable()) {
+            String userID = (String) entity.getProperty("user");
+            String date = (String) entity.getProperty("date");
+            String keywords = (String) entity.getProperty("keywords");
+            String radius = (String) entity.getProperty("radius");
+            String lat = (String) entity.getProperty("lat");
+            String lng = (String) entity.getProperty("lng");
+            long id = entity.getKey().getId();
+            String restaurantName = (String) entity.getProperty("restaurantName");
 
-        SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id, restaurantName);
-        searches.add(search);
+            SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id, restaurantName);
+            searches.add(search);
+        }
+        response.setContentType("application/json;");
+        response.getWriter().println(new Gson().toJson(searches));
     }
-    Gson gson = new Gson();
-    response.setContentType("application/json;");
-    response.getWriter().println(new Gson().toJson(searches));
-  }
 
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String user = request.getParameter("user");
-    String radius = request.getParameter("radius");
-    String keywords = request.getParameter("keywords");
-    String lat = request.getParameter("lat");
-    String lng = request.getParameter("lng");
-    long timestamp = System.currentTimeMillis();
-    String restaurantName = request.getParameter("restaurantName");
+    @Override
+    // TODO: return a user-friendly error rather than throwing an exception
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String user = request.getParameter("user");
+        String radius = request.getParameter("radius");
+        String keywords = request.getParameter("searchTerms");
+        String lat = request.getParameter("lat");
+        String lng = request.getParameter("lng");
+        long timestamp = System.currentTimeMillis();
 
-    SimpleDateFormat formatter = new SimpleDateFormat("MMM d, 'at' HH:mm");
-    Date date = new Date(System.currentTimeMillis());
-    String formattedDate = formatter.format(date);
+        HttpSession session = request.getSession(false);
+        Response newResponse = (Response) session.getAttribute("response");
+        String restaurantName = newResponse.getPick().getName();
 
-    //Make an entity
-    Entity searchEntity = new Entity("savedSearch");
-    searchEntity.setProperty("user", user);
-    searchEntity.setProperty("radius", radius);
-    searchEntity.setProperty("date", formattedDate);
-    searchEntity.setProperty("keywords", keywords);
-    searchEntity.setProperty("timestamp", timestamp);
-    searchEntity.setProperty("lat", lat);
-    searchEntity.setProperty("lng", lng);
-    searchEntity.setProperty("restaurantName", restaurantName);
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM d, 'at' HH:mm");
+        Date date = new Date(System.currentTimeMillis());
+        String formattedDate = formatter.format(date);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(searchEntity);
-  }
+        //Make an entity
+        Entity searchEntity = new Entity("savedSearch");
+        searchEntity.setProperty("user", user);
+        searchEntity.setProperty("radius", radius);
+        searchEntity.setProperty("date", formattedDate);
+        searchEntity.setProperty("keywords", keywords);
+        searchEntity.setProperty("timestamp", timestamp);
+        searchEntity.setProperty("lat", lat);
+        searchEntity.setProperty("lng", lng);
+        searchEntity.setProperty("restaurantName", restaurantName);
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(searchEntity);
+    }
 }
