@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/button.css">
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/banner.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
+    <!-- Form -->
+    <link rel="stylesheet" href="third-party/mdi-font/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="third-party/select2/select2.min.css">
+    <link rel="stylesheet" href="third-party/datepicker/daterangepicker.css">
+    <!-- smoothState.js -->
+    <link rel="stylesheet" href="css/smoothState/animations.css">
+    <link rel="stylesheet" href="css/smoothState/smoothState.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body class="preload">
+    <div class="m-scene" id="main">
+        <div class="scene_element fadeinright" style="text-align:center">
+            <h1 class="m-t-80">You're headed to:</h1>
+            </br>
+            <h id="pick"></h>
+            </br>
+            </br>
+            <h1 id="rating"></h1>
+            </br>
+            </br>
+            </br>
+            <div id="photo"></div>
+            <div class="map-container">
+                <div id="map"></div>
+                <div id="directionsPanel"></div>
+            </div>
+            </br>
+            <h3 class="m-t-80">Not feeling it?</h3>
+            <button class="btn style4" onclick="roll()">Roll Again</button>
+            <button class="btn style4" onclick="redirectToIndex()">
+                Back
+            </button>
+        </div>
+        <!-- smoothState.js -->
+        <script src="js/smoothState/jquery.smoothState.min.js"></script>
+        <script src="js/smoothState/smoothStateRedirect.js"></script>
+        <script>roll()</script>
+    </div>
+</body>
+
+</html>
