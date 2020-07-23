@@ -19,6 +19,9 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 import com.google.sps.data.Feedback;
 import com.google.sps.data.SearchItem;
@@ -50,35 +53,42 @@ import java.util.Optional;
 public class FeedbackServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Query query = new Query("Feedback");
+        String user = request.getParameter("user");
+        Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
+        Query query = new Query("Feedback").setFilter(propertyFilter);
+
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
         List<Feedback> feedbackList = new ArrayList<>();
         for (Entity entity : results.asIterable()) {
+            String userID = (String) entity.getProperty("user");
             String restaurantName = (String) entity.getProperty("restaurantName");
             String restaurantRating = (String) entity.getProperty("restaurantRating");
             String rrpRating = (String) entity.getProperty("rrpRating");
             String notes = (String) entity.getProperty("notes");
-            Feedback feedback = new Feedback(restaurantName, restaurantRating, rrpRating, notes, true);
+            Feedback feedback = new Feedback(userID, restaurantName, restaurantRating, rrpRating, notes);
             feedbackList.add(feedback);
         }
         // Send the JSON as the response
         response.setContentType("application/json");
-        Gson gson = new Gson();
-        gson.toJson(gson.toJsonTree(feedbackList), gson.newJsonWriter(response.getWriter()));
+        response.getWriter().println(new Gson().toJson(feedbackList));
     }
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String restaurantName = request.getParameter("restaurant-name");
+        String user = request.getParameter("user-id");
+        String restaurantName = request.getParameter("restaurant-name-fill");
         String restaurantRating = request.getParameter("restaurant-rating");
         String rrpRating = request.getParameter("rrp-rating");
         String notes = request.getParameter("notes");
+
         Entity feedbackEntity = new Entity("Feedback");
+        feedbackEntity.setProperty("user", user);
         feedbackEntity.setProperty("restaurantName", restaurantName);
         feedbackEntity.setProperty("restaurantRating", restaurantRating);
         feedbackEntity.setProperty("rrpRating", rrpRating);
         feedbackEntity.setProperty("notes", notes);
+
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(feedbackEntity);
 

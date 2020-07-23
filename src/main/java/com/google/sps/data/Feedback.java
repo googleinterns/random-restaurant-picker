@@ -17,6 +17,7 @@ package com.google.sps.data;
 import java.util.ArrayList;
 
 public class Feedback {
+    private String user; 
     private String restaurantName;
     // the user's rating of the restaurant
     private String restaurantRating;
@@ -24,33 +25,32 @@ public class Feedback {
     private String rrpRating;
     // the user's personal notes on the restaurant 
     private String notes;
-    private Boolean submitted;
 
-    public Feedback(String restaurantName, String restaurantRating, String rrpRating, String notes, Boolean submitted){
+    public Feedback(String user, String restaurantName, String restaurantRating, String rrpRating, String notes){
+        this.user = user;
         this.restaurantName = restaurantName;
         this.restaurantRating = restaurantRating;
         this.rrpRating = rrpRating;
         this.notes = notes;
-        this.submitted = submitted;
     }
 
-    public String restaurantName() {
-        return this.restaurantName;
-    }
+    // public String getRestaurantName() {
+    //     return this.restaurantName;
+    // }
 
-    public String restaurantRating() {
-        return this.restaurantRating;
-    }
+    // public String restaurantRating() {
+    //     return this.restaurantRating;
+    // }
 
-    public String rrpRating() {
-        return this.rrpRating;
-    }
+    // public String rrpRating() {
+    //     return this.rrpRating;
+    // }
 
-    public String notes() {
-        return this.notes;
-    }
+    // public String notes() {
+    //     return this.notes;
+    // }
 
-    public Boolean submitted() {
-        return this.submitted;
-    }
+    // public Boolean submitted() {
+    //     return this.submitted;
+    // }
 }
