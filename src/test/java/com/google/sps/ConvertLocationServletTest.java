@@ -32,9 +32,11 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.junit.Assert.assertEquals;
+
 import org.mockito.Mock;
 import org.mockito.ArgumentCaptor;
-import static org.mockito.ArgumentMatchers.*;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -88,8 +90,8 @@ public final class ConvertLocationServletTest {
     String results = sw.getBuffer().toString().trim();
     JsonElement jsonEl = new JsonParser().parse(results);
     JsonObject jsonResponse = jsonEl.getAsJsonObject();
-    Assert.assertEquals(jsonResponse.get("status").getAsString(), "ZERO_RESULTS");
-    Assert.assertEquals(asString.getValue(), "https://maps.googleapis.com/maps/api/geocode/json?latlng=40.84,74.01&result_type=street_address&key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw");
+    assertEquals(jsonResponse.get("status").getAsString(), "ZERO_RESULTS");
+    assertEquals(asString.getValue(), "https://maps.googleapis.com/maps/api/geocode/json?latlng=40.84,74.01&result_type=street_address&key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw");
   }
 
   @Test
@@ -119,8 +121,8 @@ public final class ConvertLocationServletTest {
     JsonObject jsonResponse = jsonEl.getAsJsonObject();
     JsonArray results = jsonResponse.get("results").getAsJsonArray();
     String address = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
-    Assert.assertEquals(jsonResponse.get("status").getAsString(), "OK");
-    Assert.assertEquals(address, "220 S Thayer St, Ann Arbor, MI 48104, USA");
-    Assert.assertEquals(asString.getValue(), "https://maps.googleapis.com/maps/api/geocode/json?latlng=42.28,-83.74&result_type=street_address&key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw");
+    assertEquals(jsonResponse.get("status").getAsString(), "OK");
+    assertEquals(address, "220 S Thayer St, Ann Arbor, MI 48104, USA");
+    assertEquals(asString.getValue(), "https://maps.googleapis.com/maps/api/geocode/json?latlng=42.28,-83.74&result_type=street_address&key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw");
   }
 }
