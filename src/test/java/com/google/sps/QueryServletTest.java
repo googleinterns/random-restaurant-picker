@@ -39,6 +39,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.*;
+import static org.junit.Assert.assertEquals;
 
 import org.mockito.Mock;
 import org.mockito.ArgumentCaptor;
@@ -101,8 +102,8 @@ public final class QueryServletTest {
     //Process results and check correctness
     String resultStatus = ((Response) asObject.getAllValues().get(0)).getStatus();
     int userPrice = ((User) asObject.getAllValues().get(1)).getPriceLevel();
-    Assert.assertEquals(resultStatus, "ZERO_RESULTS");
-    Assert.assertEquals(userPrice, 4);
+    assertEquals(resultStatus, "ZERO_RESULTS");
+    assertEquals(userPrice, 4);
   }
 
   @Test
@@ -133,8 +134,8 @@ public final class QueryServletTest {
     //Process results and check correctness
     String resultStatus = ((Response) asObject.getAllValues().get(0)).getStatus();
     int userPrice = ((User) asObject.getAllValues().get(1)).getPriceLevel();
-    Assert.assertEquals(resultStatus, "NO_REROLLS");
-    Assert.assertEquals(userPrice, 4);
+    assertEquals(resultStatus, "NO_REROLLS");
+    assertEquals(userPrice, 4);
   }
 
   @Test
@@ -158,7 +159,7 @@ public final class QueryServletTest {
     String results = sw.getBuffer().toString().trim();
     JsonElement jsonEl = new JsonParser().parse(results);
     JsonObject json = jsonEl.getAsJsonObject();
-    Assert.assertEquals(json.get("status").getAsString(), "ZERO_RESULTS");
+    assertEquals(json.get("status").getAsString(), "ZERO_RESULTS");
   }
 
   @Test
@@ -184,9 +185,9 @@ public final class QueryServletTest {
     JsonElement jsonEl = new JsonParser().parse(results);
     JsonObject json = jsonEl.getAsJsonObject();
     JsonObject pick = json.get("pick").getAsJsonObject();
-    Assert.assertEquals(pick.get("name").getAsString(), "McDonalds");
-    Assert.assertEquals(pick.get("businessStatus").getAsString(), "OPERATIONAL");
-    Assert.assertEquals(json.get("status").getAsString(), "NO_REROLLS");
+    assertEquals(pick.get("name").getAsString(), "McDonalds");
+    assertEquals(pick.get("businessStatus").getAsString(), "OPERATIONAL");
+    assertEquals(json.get("status").getAsString(), "NO_REROLLS");
   }
 
   @Test
@@ -213,8 +214,8 @@ public final class QueryServletTest {
     JsonElement jsonEl = new JsonParser().parse(results);
     JsonObject json = jsonEl.getAsJsonObject();
     JsonObject pick = json.get("pick").getAsJsonObject();
-    Assert.assertEquals(pick.get("businessStatus").getAsString(), "OPERATIONAL");
-    Assert.assertEquals(json.get("status").getAsString(), "OK");
+    assertEquals(pick.get("businessStatus").getAsString(), "OPERATIONAL");
+    assertEquals(json.get("status").getAsString(), "OK");
   }
 
   @Test
@@ -237,6 +238,6 @@ public final class QueryServletTest {
     String results = sw.getBuffer().toString().trim();
     JsonElement jsonEl = new JsonParser().parse(results);
     JsonObject json = jsonEl.getAsJsonObject();
-    Assert.assertEquals(json.get("status").getAsString(), "NO_RESULTS");
+    assertEquals(json.get("status").getAsString(), "NO_RESULTS");
   }
 }
