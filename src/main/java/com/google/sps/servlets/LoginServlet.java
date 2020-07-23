@@ -38,6 +38,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 public class LoginServlet extends HttpServlet {
     UrlFetchTransport transport = new UrlFetchTransport();
     JacksonFactory jacksonFactory = new JacksonFactory();
+
     GoogleIdTokenVerifier verifier;
     
     public LoginServlet(){

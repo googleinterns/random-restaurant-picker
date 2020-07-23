@@ -56,7 +56,7 @@ public class QueryServlet extends HttpServlet {
     public QueryServlet(){
         this.urlOpener = new UrlOpener();
     }
-    
+
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
