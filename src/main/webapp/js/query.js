@@ -15,21 +15,6 @@
 /*=========================
     RESTAURANT QUERY AND RE-ROLL
 =========================*/
-$("#randomize-form").submit(function(event) {
-    const errorEl = document.getElementById("error");
-    errorEl.classList.add("hidden");
-
-    event.preventDefault();
-    let url = $(this).attr("action");
-    let lat = localStorage.getItem("lat");
-    let lng = localStorage.getItem("lng");
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}&user=${userID}`;
-    query(queryStr);
-});
 
 function query(queryStr) {
     const errorEl = document.getElementById("error");
@@ -37,14 +22,9 @@ function query(queryStr) {
         .then((response) => response.json())
         .then((response) => {
             console.log(response);
-            if (response.status === "OK") {
-                let name = response.pick.name;
-                let rating = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
-                errorEl.innerText = name;
-                localStorage.setItem("restaurantAddress", response.pick.vicinity);
-                resultsPage(name, rating, photoUrl);
-            } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
+            if (response.status === "OK")
+                redirectToResults();
+            else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
             else if (response.status === "NO_REROLLS") throw "No re-rolls left";
             else throw "Unforeseen error";
@@ -57,7 +37,7 @@ function query(queryStr) {
         });
 }
 
-function reroll() {
+function roll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
     fetch(`/query`, { method: "GET" })
@@ -69,6 +49,7 @@ function reroll() {
                 let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
                 localStorage.setItem("restaurantAddress", response.pick.vicinity);
                 loadImage(photoUrl);
+                // addMapScript(); // JANK ALERT: don't add maps script multiple times; fix this in the future
                 calculateAndDisplayRoute(directionsService, directionsRenderer);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
@@ -235,14 +216,14 @@ $("input, textarea").blur(function() {
     }
 });
 
-// TODO: make this more seamless
-//Loads the results page
-function resultsPage(name, rating, photoUrl) {
-    document.getElementById("pick").innerText = name;
-    document.getElementById("rating").innerText = rating;
-    loadImage(photoUrl);
-    addMapScript();
-    window.location.href='#results';
+function redirectToResults() {
+    let smoothState = $('#main').smoothState().data('smoothState');
+    smoothState.load('/results.html');
+}
+
+function redirectToIndex() {
+    let smoothState = $('#main').smoothState().data('smoothState');
+    smoothState.load('/index.html');
 }
 
 //Retrieve and display restaurant image

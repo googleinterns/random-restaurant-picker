@@ -1,5 +1,9 @@
-/* @mixin respond-to
-------------------------------------------------------------------- */
+body.preload * {
+    animation-duration: 0s !important;
+    -webkit-animation-duration: 0s !important;
+    transition: background-color 0s, opacity 0s, color 0s, width 0s, height 0s, padding 0s, margin 0s !important;
+}
+
 /* line 6, /Users/miguelperez/Sites/csstricks/source/stylesheets/pageTransitions.css.scss */
 .m-scene .scene_element {
     -webkit-animation-duration: 0.25s;
@@ -11,25 +15,25 @@
 }
 
 /* line 17, /Users/miguelperez/Sites/csstricks/source/stylesheets/pageTransitions.css.scss */
-.m-scene .scene_element--fadein {
+.m-scene .fadein {
     -webkit-animation-name: fadeIn;
     animation-name: fadeIn;
 }
 
 /* line 22, /Users/miguelperez/Sites/csstricks/source/stylesheets/pageTransitions.css.scss */
-.m-scene .scene_element--fadeinup {
+.m-scene .fadeinup {
     -webkit-animation-name: fadeInUp;
     animation-name: fadeInUp;
 }
 
 /* line 27, /Users/miguelperez/Sites/csstricks/source/stylesheets/pageTransitions.css.scss */
-.m-scene .scene_element--fadeinright {
+.m-scene .fadeinright {
     -webkit-animation-name: fadeInRight;
     animation-name: fadeInRight;
 }
 
 /* line 32, /Users/miguelperez/Sites/csstricks/source/stylesheets/pageTransitions.css.scss */
-.m-scene .scene_element--delayed {
+.m-scene .delayed {
     -webkit-animation-delay: 0.25s;
     animation-delay: 0.25s;
 }
@@ -41,15 +45,9 @@
 }
 
 /* line 42, /Users/miguelperez/Sites/csstricks/source/stylesheets/pageTransitions.css.scss */
-.m-scene.is-exiting .scene_element--delayed {
+.m-scene.is-exiting .delayed {
     -webkit-animation-delay: 0s;
     animation-delay: 0s;
-}
-
-/* line 47, /Users/miguelperez/Sites/csstricks/source/stylesheets/pageTransitions.css.scss */
-.m-scene.is-exiting .scene_element--noexiting {
-    -webkit-animation-direction: alternate-reverse;
-    animation-direction: alternate-reverse;
 }
 
 .is-loading,
