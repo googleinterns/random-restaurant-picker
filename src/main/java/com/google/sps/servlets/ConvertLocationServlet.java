@@ -32,19 +32,19 @@ import java.net.URLConnection;
 public class ConvertLocationServlet extends HttpServlet {
 
     @Override
+    // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         String lat = request.getParameter("lat");
         String lng = request.getParameter("lng");
         String apiKey = "AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw";
         String sURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&result_type=street_address&key=" + apiKey;
+        
         // Connect to the URL using java's native library
-        URL url = new URL(sURL);
-        URLConnection requestURL = url.openConnection();
-        requestURL.connect();
+        URLConnection conn = new URL(sURL).openConnection();
+        conn.connect();
 
-        JsonParser jp = new JsonParser();
-        JsonElement jsonElement = jp.parse(new InputStreamReader((InputStream) requestURL.getContent()));
+        JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
         JsonObject jsonObj = jsonElement.getAsJsonObject();
         response.getWriter().println(jsonObj.toString());
     }

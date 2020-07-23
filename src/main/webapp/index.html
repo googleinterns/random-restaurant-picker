@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="js/query.js"></script>
     <!-- Form -->
     <link href="third-party/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
     <link href="third-party/select2/select2.min.css" rel="stylesheet" media="all">
@@ -21,107 +20,94 @@
     <link href="css/banner.css" rel="stylesheet">
 </head>
 <body>
-    <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-    <div class="dropdown" id="account-menu">
-        <button onclick="toggleShow()" class="dropbtn">
-            <img id="profile-pic" src="">
-            <h3 id="user-name">name</h3>
-        </button>
-        <div id="myDropdown" class="dropdown-content">
-            <a href="#">Account</a>
-            <a href="#">History</a>
-            <a onclick="signOut()">Sign Out</a>
+    <header>
+        <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
+        <div class="dropdown" id="account-menu">
+            <button onclick="toggleShow()" class="dropbtn">
+                <img id="profile-pic" src="">
+                <h3 id="user-name">name</h3>
+            </button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#">Account</a>
+                <a href="#">History</a>
+                <a onclick="signOut()">Sign Out</a>
+            </div>
         </div>
-    </div>
-    <div class="p-t-80" style="text-align:center">
-        <h>Random Restaurant Picker</h>
-    </div>
-    <div class="page-wrapper p-t-40">
-        <div class="wrapper wrapper--w960">
-            <div class="card card-2">
-                <div class="card-body">
-                    <h2 style="margin-bottom:0px">Your location:</h2>
-                    </br>
-                    <p id="location-container">Pirrama Rd, Pyrmont NSW 2009, Australia</p>
-                    </br>
-                    <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
-                    </br></br></br>
-                    <form id="randomize-form" action="/query" method="POST">
-                        <div class="input-group">
-                            <input class="input--style-2" type="text" placeholder="Cuisine preference(s)" id="searchTerms" autocomplete="off" name="searchTerms">
-                        </div>
-                        <div class="row row-space">
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <input class="input--style-2" type="text" placeholder="Max distance (meters)" name="radius" id="radius" autocomplete="off">
-                                </div>
+    </header>
+    <div id="page-container">
+        <div class="p-t-80" style="text-align:center">
+            <h>Random Restaurant Picker</h>
+        </div>
+        <div class="page-wrapper p-t-40 font-robo">
+            <div class="wrapper wrapper--w960">
+                <div class="card card-2">
+                    <div class="card-body">
+                        <h2>Your location:</h2>
+                        </br>
+                        <p id="location-container"></p>
+                        </br>
+                        <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
+                        </br></br></br>
+                        <form id="randomize-form" action="/query" method="POST">
+                            <div class="input-group">
+                                <input class="input--style-2" type="text" name="searchTerms" id="searchTerms">
+                                <label for="searchTerms">Search terms</label>
+                                <div class="border"></div>
                             </div>
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="category">
-                                            <option value="">Category...</option>
-                                            <option>No preference</option>
-                                            <option>Dine-in</option>
-                                            <option>Fast Food</option>
-                                        </select>
-                                        <div class="select-dropdown"></div>
+                            <div class="row row-space">
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <input class="input--style-2" type="text" name="radius" id="radius">
+                                        <label for="radius">Max distance (meters)</label>
+                                        <div class="border"></div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div>
+                                        <input type="radio" id="price0" name="priceLevel" value="0" checked>
+                                        <label for="price0">Any</label>
+                                        <input type="radio" id="price1" name="priceLevel" value="1">
+                                        <label for="price1">$</label>
+                                        <input type="radio" id="price2" name="priceLevel" value="2">
+                                        <label for="price2">$$</label>
+                                        <input type="radio" id="price3" name="priceLevel" value="3">
+                                        <label for="price3">$$$</label>
+                                        <input type="radio" id="price4" name="priceLevel" value="4">
+                                        <label for="price4">$$$$</label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row row-space">
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
-                                        <select id="price">
-                                            <option disabled="disabled" selected="selected">Price</option>
-                                            <option value=0>No preference</option>
-                                            <option value=1>$</option>
-                                            <option value=2>$$</option>
-                                            <option value=3>$$$</option>
-                                            <option value=4>$$$$</option>
-                                        </select>
-                                        <div class="select-dropdown"></div>
-                                    </div>
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="category">
+                                        <option value="">Category...</option>
+                                        <option>No preference</option>
+                                        <option>Dine-in</option>
+                                        <option>Fast Food</option>
+                                    </select>
+                                    <div class="select-dropdown"></div>
                                 </div>
                             </div>
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
-                                        <select id="rating" name="rating">
-                                            <option disabled="disabled" selected="selected">Rating</option>
-                                            <option value=0>No preference</option>
-                                            <option value=1>☆</option>
-                                            <option value=2>☆☆</option>
-                                            <option value=3>☆☆☆</option>
-                                            <option value=4>☆☆☆☆</option>
-                                            <option value=5>☆☆☆☆☆</option>
-                                        </select>
-                                        <div class="select-dropdown"></div>
-                                    </div>
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="dietary-options">
+                                        <option value="">Dietary options...</option>
+                                        <option>Nothing specific</option>
+                                        <option>Vegetarian</option>
+                                        <option>Vegan</option>
+                                        <option>Kosher</option>
+                                        <option>Halal</option>
+                                        <option>Gluten-free</option>
+                                    </select>
+                                    <div class="select-dropdown"></div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="input-group">
-                            <div class="rs-select2 js-select-simple select--no-search">
-                                <select id="dietary" name="dietary-options">
-                                    <option disabled="disabled" selected="selected">Dietary options</option>
-                                    <option>Nothing specific</option>
-                                    <option>Vegetarian</option>
-                                    <option>Vegan</option>
-                                    <option>Kosher</option>
-                                    <option>Halal</option>
-                                    <option>Gluten-free</option>
-                                </select>
-                                <div class="select-dropdown"></div>
+                            <div class="success-banner hidden" id="error"></div>
+                            <div style="text-align:center">
+                                <button class="btn style4" type="submit">Randomize</button>
                             </div>
-                        </div>
-                        <div class="success-banner hidden" id="error"></div>
-                        <div style="text-align:center">
-                            <button class="btn style4" type="submit">Randomize</button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
