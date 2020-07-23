@@ -86,10 +86,9 @@ public final class SearchServletTest {
       when(request.getParameter("lng")).thenReturn("-80");
       when(request.getParameter("user")).thenReturn("1");
       when(request.getParameter("radius")).thenReturn("1000");
-      when(request.getParameter("keywords")).thenReturn("coffee");
+      when(request.getParameter("searchTerms")).thenReturn("coffee");
 
       new SearchServlet().doPost(request, response);
-      verify(response).sendRedirect("/index.html");
 
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
       List<Entity> results = ds.prepare(new Query("savedSearch")).asList(FetchOptions.Builder.withDefaults());
