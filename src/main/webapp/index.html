@@ -2,27 +2,29 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Random Restaurant Picker</title>
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <!-- Styles -->
+    <link rel="stylesheet" href="css/transition.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/button.css">
     <link rel="stylesheet" href="css/form.css">
     <link rel="stylesheet" href="css/banner.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <!-- Form -->
     <link rel="stylesheet" href="third-party/mdi-font/css/material-design-iconic-font.min.css">
     <link rel="stylesheet" href="third-party/select2/select2.min.css">
     <link rel="stylesheet" href="third-party/datepicker/daterangepicker.css">
-    <!-- smoothState.js -->
-    <link rel="stylesheet" href="css/smoothState/animations.css">
-    <link rel="stylesheet" href="css/smoothState/smoothState.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
-<body class="preload">
-    <header>
+<body>
+    <div class="loading-container">
+        <div class="loading-screen">
+        </div>
+    </div>
+    <header class="main-navigation">
         <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
         <div class="dropdown" id="account-menu">
             <button onclick="toggleShow()" class="dropbtn">
@@ -36,111 +38,97 @@
             </div>
         </div>
     </header>
-    <div class="m-scene" id="main">
-        <div id="page-container">
-            <div class="p-t-80 scene_element fadein" style="text-align:center">
-                <h>Random Restaurant Picker</h>
-            </div>
-            <div class="page-wrapper p-t-40 font-robo scene_element fadeinup">
-                <div class="wrapper wrapper--w960">
-                    <div class="card card-2">
-                        <div class="card-body">
-                            <h2>Your location:</h2>
-                            </br>
-                            <p id="location-container"></p>
-                            </br>
-                            <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
-                            </br></br></br>
-                            <form id="randomize-form" action="/query" method="POST">
-                                <div class="input-group">
-                                    <input class="input--style-2" type="text" name="searchTerms" id="searchTerms">
-                                    <label for="searchTerms">Search terms</label>
-                                    <div class="border"></div>
-                                </div>
-                                <div class="row row-space">
-                                    <div class="col-2">
-                                        <div class="input-group">
-                                            <input class="input--style-2" type="text" name="radius" id="radius">
-                                            <label for="radius">Max distance (meters)</label>
-                                            <div class="border"></div>
+    <div data-barba="wrapper">
+        <!-- Only this section changes on link navigation -->
+        <main data-barba="container" data-barba-namespace="search">
+            <div id="page-container">
+                <div class="p-t-80" style="text-align:center">
+                    <h>Random Restaurant Picker</h>
+                </div>
+                <div class="page-wrapper p-t-40 font-robo">
+                    <div class="wrapper wrapper--w960">
+                        <div class="card card-2">
+                            <div class="card-body">
+                                <h2>Your location:</h2>
+                                </br>
+                                <p id="location-container"></p>
+                                </br>
+                                <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
+                                </br></br></br>
+                                <form id="randomize-form" action="/query" method="POST">
+                                    <div class="input-group">
+                                        <input class="input--style-2" type="text" name="searchTerms" id="searchTerms">
+                                        <label for="searchTerms">Search terms</label>
+                                        <div class="border"></div>
+                                    </div>
+                                    <div class="row row-space">
+                                        <div class="col-2">
+                                            <div class="input-group">
+                                                <input class="input--style-2" type="text" name="radius" id="radius">
+                                                <label for="radius">Max distance (meters)</label>
+                                                <div class="border"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div>
+                                                <input type="radio" id="price0" name="priceLevel" value="0" checked>
+                                                <label for="price0">Any</label>
+                                                <input type="radio" id="price1" name="priceLevel" value="1">
+                                                <label for="price1">$</label>
+                                                <input type="radio" id="price2" name="priceLevel" value="2">
+                                                <label for="price2">$$</label>
+                                                <input type="radio" id="price3" name="priceLevel" value="3">
+                                                <label for="price3">$$$</label>
+                                                <input type="radio" id="price4" name="priceLevel" value="4">
+                                                <label for="price4">$$$$</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-2">
-                                        <div>
-                                            <input type="radio" id="price0" name="priceLevel" value="0" checked>
-                                            <label for="price0">Any</label>
-                                            <input type="radio" id="price1" name="priceLevel" value="1">
-                                            <label for="price1">$</label>
-                                            <input type="radio" id="price2" name="priceLevel" value="2">
-                                            <label for="price2">$$</label>
-                                            <input type="radio" id="price3" name="priceLevel" value="3">
-                                            <label for="price3">$$$</label>
-                                            <input type="radio" id="price4" name="priceLevel" value="4">
-                                            <label for="price4">$$$$</label>
+                                    <div class="input-group">
+                                        <div class="rs-select2 js-select-simple select--no-search">
+                                            <select name="category">
+                                                <option value="">Category...</option>
+                                                <option>No preference</option>
+                                                <option>Dine-in</option>
+                                                <option>Fast Food</option>
+                                            </select>
+                                            <div class="select-dropdown"></div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="category">
-                                            <option value="">Category...</option>
-                                            <option>No preference</option>
-                                            <option>Dine-in</option>
-                                            <option>Fast Food</option>
-                                        </select>
-                                        <div class="select-dropdown"></div>
+                                    <div class="input-group">
+                                        <div class="rs-select2 js-select-simple select--no-search">
+                                            <select name="dietary-options">
+                                                <option value="">Dietary options...</option>
+                                                <option>Nothing specific</option>
+                                                <option>Vegetarian</option>
+                                                <option>Vegan</option>
+                                                <option>Kosher</option>
+                                                <option>Halal</option>
+                                                <option>Gluten-free</option>
+                                            </select>
+                                            <div class="select-dropdown"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="input-group">
-                                    <div class="rs-select2 js-select-simple select--no-search">
-                                        <select name="dietary-options">
-                                            <option value="">Dietary options...</option>
-                                            <option>Nothing specific</option>
-                                            <option>Vegetarian</option>
-                                            <option>Vegan</option>
-                                            <option>Kosher</option>
-                                            <option>Halal</option>
-                                            <option>Gluten-free</option>
-                                        </select>
-                                        <div class="select-dropdown"></div>
+                                    <div class="success-banner hidden" id="error"></div>
+                                    <div style="text-align:center">
+                                        <button class="btn style4" type="submit">Randomize</button>
                                     </div>
-                                </div>
-                                <div class="success-banner hidden" id="error"></div>
-                                <div style="text-align:center">
-                                    <button class="btn style4" type="submit">Randomize</button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <script>
-        $("#randomize-form").submit(function(event) {
-            const errorEl = document.getElementById("error");
-            errorEl.classList.add("hidden");
-
-            event.preventDefault();
-            let url = $(this).attr("action");
-            let lat = localStorage.getItem("lat");
-            let lng = localStorage.getItem("lng");
-            let userID = 0;
-            if (localStorage.getItem("loggedIn")) {
-                userID = localStorage.getItem("user");
-            }
-            let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}&user=${userID}`;
-            query(queryStr);
-        });
-        </script>
-        <!-- Form -->
-        <script src="third-party/select2/select2.min.js"></script>
-        <script src="third-party/datepicker/moment.min.js"></script>
-        <script src="third-party/datepicker/daterangepicker.js"></script>
-        <script src="js/form.js"></script>
-        <script src="js/query.js"></script>
-        <!-- smoothState.js -->
-        <script src="js/smoothState/jquery.smoothState.min.js"></script>
-        <script src="js/smoothState/smoothStateRedirect.js"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <script src="https://unpkg.com/@barba/core"></script>
+                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
+                <script src="js/nav.js"></script>
+                <script src="js/query.js"></script>
+                <!-- Form -->
+                <script src="third-party/select2/select2.min.js"></script>
+                <script src="third-party/datepicker/moment.min.js"></script>
+                <script src="third-party/datepicker/daterangepicker.js"></script>
+                <script src="js/form.js"></script>
+        </main>
     </div>
 </body>
 
