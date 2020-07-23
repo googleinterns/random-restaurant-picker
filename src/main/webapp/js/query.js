@@ -211,6 +211,7 @@ function getSearches() {
     }
 
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        console.log(searches);
         let searchesEl = document.getElementById('cards');
         searches.forEach((search) => {
             let searchCard = createSearchElement(search);
@@ -297,16 +298,39 @@ function createSearchesButtons(search, buttons, newCardBody) {
 }
 
 function createRestaurantElement(restaurantName) {
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
+    }
+    let userEl = document.createElement('input');
+    userEl.className = "input--style-2";
+    userEl.type = "text";
+    userEl.id = "user-id";
+    userEl.name = "user-id";
+    userEl.value = userID;
+    userEl.hidden = true;
+    console.log(userID);
+
     let inputGroupEl = document.createElement('div');
     inputGroupEl.className = "input-group";
     inputGroupEl.id = "restaurant-name-container";
     let inputContainer = document.createElement('input');
     inputContainer.className = "input--style-2";
     inputContainer.type = "text";
-    inputContainer.id = restaurantName + "-fill";
+    inputContainer.id = "restaurant-name-fill";
+    inputContainer.name = "restaurant-name-fill";
     inputContainer.value = restaurantName;
     inputContainer.innerText = restaurantName;
     inputGroupEl.appendChild(inputContainer);
+<<<<<<< HEAD
+=======
+    inputGroupEl.appendChild(userEl);
+
+    let submitEl = document.createElement('input');
+    submitEl.type = "submit";
+    submitEl.id = "submit-button";
+    inputGroupEl.appendChild(submitEl);
+>>>>>>> 290377c... userID info added; still working on accessing restaurant name
     return inputGroupEl;
 }
 
@@ -315,6 +339,7 @@ async function fetchFeedback() {
     if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
+<<<<<<< HEAD
     let response = await fetch(`/feedback?user=${userID}`, {
         method: 'GET'
     })
@@ -336,6 +361,35 @@ async function getFeedback(search) {
             tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
         }
     });
+=======
+    let thisRestaurantsFeedback;
+    fetch(`/feedback?user=${userID}`, {method: 'GET'})
+    .then(response => response.json())
+    .then((feedbackList) => {
+        console.log(feedbackList);
+        for (feedback in feedbackList) {
+            console.log("this feedback " + feedback);
+            console.log("cur name " + feedback.restaurantName);
+            console.log("want this name " + search.name)
+            if (feedback.restaurantName == search.name) {
+                submitted = true;
+                thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
+            }
+        }
+    });
+    let tempFeedbackElement;
+    let buttons;
+    //feedback
+    if (!submitted) {
+        tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
+        buttons = true;
+    } else {
+        tempFeedbackElement = "Feedback" + thisRestaurantsFeedback;
+        buttons = false;
+    }
+    console.log("feedback " + tempFeedbackElement);
+    console.log("buttons " + buttons)
+>>>>>>> 290377c... userID info added; still working on accessing restaurant name
     return [tempFeedbackElement, buttons];
 }
 
