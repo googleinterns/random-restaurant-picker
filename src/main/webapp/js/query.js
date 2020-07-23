@@ -299,6 +299,7 @@ function getSearches(){
     }
 
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        console.log(searches);
         let searchesEl = document.getElementById('cards');
         searches.forEach(search => {
             let searchCard = createSearchElement(search);

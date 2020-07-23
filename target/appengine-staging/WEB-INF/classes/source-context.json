@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "84f97586b28f8b8bf41fbbb25a9da7e35bc1c37d"}}
 =======
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "052e942cd245b90bd0103b7db221497dabcec531"}}
@@ -7,3 +8,6 @@
 =======
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "70b98072a4c80cf11d93b22516f3377942fc7264"}}
 >>>>>>> 92f5b50... fix feedback servlet, is fully functional now; remove debugging statements; update variable names
+=======
+{"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "e7ad78b409d2f56f41a8e3700042774508cf27b4"}}
+>>>>>>> 290377c... userID info added; still working on accessing restaurant name
