@@ -277,6 +277,7 @@ function getSearches(){
     }
 
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+        console.log(searches);
         let searchesEl = document.getElementById('cards');
         searches.forEach((search) => {
             let searchCard = createSearchElement(search);
@@ -415,16 +416,36 @@ function createSearchesButtons(search, buttons, newCardBody) {
 }
 
 function createRestaurantElement(restaurantName) {
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
+    }
+    let userEl = document.createElement('input');
+    userEl.className = "input--style-2";
+    userEl.type = "text";
+    userEl.id = "user-id";
+    userEl.name = "user-id";
+    userEl.value = userID;
+    userEl.hidden = true;
+    console.log(userID);
+
     let inputGroupEl = document.createElement('div');
     inputGroupEl.className = "input-group";
     inputGroupEl.id = "restaurant-name-container";
     let inputContainer = document.createElement('input');
     inputContainer.className = "input--style-2";
     inputContainer.type = "text";
-    inputContainer.id = restaurantName + "-fill";
+    inputContainer.id = "restaurant-name-fill";
+    inputContainer.name = "restaurant-name-fill";
     inputContainer.value = restaurantName;
     inputContainer.innerText = restaurantName;
     inputGroupEl.appendChild(inputContainer);
+    inputGroupEl.appendChild(userEl);
+
+    let submitEl = document.createElement('input');
+    submitEl.type = "submit";
+    submitEl.id = "submit-button";
+    inputGroupEl.appendChild(submitEl);
     return inputGroupEl;
 }
 
