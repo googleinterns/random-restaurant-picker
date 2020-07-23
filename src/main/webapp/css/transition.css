@@ -1,0 +1,130 @@
+/* Loading Screen Styling */
+
+.loading-screen {
+    position: relative;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    background-color: #4885ed;
+    width: 100%;
+    height: 100%;
+    transform: scaleY(0) skewX(0);
+    transform-origin: top left;
+}
+
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Loading Screen Styling Ends */
+
+/* ================= */
+
+/* Heading Container Styling */
+
+.heading-container {
+    max-width: 800px;
+    margin: auto;
+    position: relative;
+    padding-top: 40px;
+}
+
+footer {
+    max-width: 800px;
+    margin: auto;
+    border-top: 1px dashed #28ca9f;
+    margin-top: 40px;
+}
+
+footer ul {
+    list-style: none;
+    text-align: center;
+}
+
+footer ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+footer ul li a {
+    color: #28ca9f;
+}
+
+footer ul li a:hover {
+    text-decoration: underline;
+}
+
+.heading-container img.main-img {
+    position: absolute;
+    right: -140px;
+    top: 80px;
+    width: 60%;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.heading-container h1 {
+    font-size: 100px;
+    line-height: 100px;
+    padding: 50px;
+    top: 50px;
+    margin-top: 20px;
+    transform: translateY(0);
+    opacity: 1;
+    position: relative;
+    z-index: 9;
+}
+
+/* Cool green stripe Styling */
+
+.heading-container h1 span.green-heading-bg {
+    display: inline;
+    z-index: -1;
+    background-image: linear-gradient(#4885ed, #4885ed);
+    background-position: 0 80%;
+    background-repeat: no-repeat;
+    background-size: 0 40%;
+    margin-left: -0.55rem;
+    margin-right: -0.55rem;
+    padding-left: 0.55rem;
+    padding-right: 0.55rem;
+    transition: background-size 1s 1.5s ease;
+}
+
+.heading-container h1 span.green-heading-bg.show {
+    background-size: 100% 40%;
+}
+
+.heading-container h1 i {
+    font-size: 100px;
+}
+
+/* Heading Styling Ends */
+
+/* ================= */
+
+
+@media only screen and (max-width: 600px) {
+    .heading-container h1 {
+        font-size: 52px;
+        line-height: 52px;
+        margin-left: 0;
+    }
+
+    .heading-container {
+        overflow: hidden;
+    }
+
+    .heading-container img.main-img {
+        right: -110px;
+        top: 80px;
+        width: 70%;
+    }
+}

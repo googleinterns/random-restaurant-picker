@@ -23,7 +23,7 @@ function query(queryStr) {
         .then((response) => {
             console.log(response);
             if (response.status === "OK")
-                redirectToResults();
+                redirectToURL('results.html');
             else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
             else if (response.status === "NO_REROLLS") throw "No re-rolls left";
@@ -57,6 +57,16 @@ function roll() {
             else throw "Unforeseen error";
         })
         .catch((error) => { pickEl.innerText = error; });
+}
+
+//Retrieve and display restaurant image
+function loadImage(photoUrl) {
+    let photoEl = document.getElementById("photo");
+    photoEl.innerHTML = "";
+
+    let img = document.createElement('img');
+    img.src = photoUrl;
+    photoEl.appendChild(img);
 }
 
 /*=========================
@@ -202,38 +212,6 @@ function getSearches() {
                 searchesEl.appendChild(createSearchElement(search));
             });
         });
-}
-
-/*=========================
-    HTML
-=========================*/
-// Form underline element
-$("input, textarea").blur(function() {
-    if ($(this).val() != "") {
-        $(this).addClass("active");
-    } else {
-        $(this).removeClass("active");
-    }
-});
-
-function redirectToResults() {
-    let smoothState = $('#main').smoothState().data('smoothState');
-    smoothState.load('/results.html');
-}
-
-function redirectToIndex() {
-    let smoothState = $('#main').smoothState().data('smoothState');
-    smoothState.load('/index.html');
-}
-
-//Retrieve and display restaurant image
-function loadImage(photoUrl) {
-    let photoEl = document.getElementById("photo");
-    photoEl.innerHTML = "";
-
-    let img = document.createElement('img');
-    img.src = photoUrl;
-    photoEl.appendChild(img);
 }
 
 /*=========================
