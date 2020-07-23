@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,9 +38,10 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+
 import org.mockito.Mock;
 import org.mockito.ArgumentCaptor;
-import static org.mockito.ArgumentMatchers.*;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -62,6 +65,8 @@ public final class QueryServletTest {
   HttpSession session;
   @Mock
   UrlOpener urlOpener;
+  @Mock
+  RequestDispatcher rd;
   
   @Before
   public void setUp() throws Exception {
@@ -69,7 +74,7 @@ public final class QueryServletTest {
   }
   
   @Test
-  public void POSTZeroResults() throws IOException{
+  public void POSTZeroResults() throws IOException, ServletException {
     //Submit a post request to query servlet that returns 0 results
     String json = "{'html_attributions' : [], 'results' : [], 'status' : 'ZERO_RESULTS'}";
     JsonElement apiResponse = new JsonParser().parse(json);
@@ -80,6 +85,10 @@ public final class QueryServletTest {
     when(request.getSession(true)).thenReturn(session);
     when(request.getParameter("priceLevel")).thenReturn("4");
     when(urlOpener.openUrl(anyString())).thenReturn(apiResponse);
+    when(request.getRequestDispatcher("/searches")).thenReturn(rd);
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    when(response.getWriter()).thenReturn(pw);
 
     //Run servlet with mock objects and collect data
     ArgumentCaptor<String> asString = ArgumentCaptor.forClass(String.class);
@@ -87,6 +96,7 @@ public final class QueryServletTest {
     new QueryServlet(urlOpener).doPost(request, response);
     verify(session, atLeast(1)).setAttribute(asString.capture(), asObject.capture());
     verify(urlOpener).openUrl(asString.capture());
+    verify(rd).include(any(), any());
 
     //Process results and check correctness
     String resultStatus = ((Response) asObject.getAllValues().get(0)).getStatus();
@@ -96,7 +106,7 @@ public final class QueryServletTest {
   }
 
   @Test
-  public void POSTValidResults() throws IOException{
+  public void POSTValidResults() throws IOException, ServletException {
     //Submit a post request to query servlet that returns results
     String json = "{\"html_attributions\":[],\"results\":[{\"business_status\":\"OPERATIONAL\",\"id\":\"8d44812b1137bf4dd53eada0252dcbc31f151898\",\"name\":\"Molcajetes Mexican Restaurant\",\"place_id\":\"ChIJz4ZjbCdRwokRJPxzM_Zs_jE\",\"rating\":4.7,\"vicinity\":\"520 West Side Ave, Jersey City\"}],\"status\":\"OK\"}";
     JsonElement apiResponse = new JsonParser().parse(json);
@@ -107,6 +117,10 @@ public final class QueryServletTest {
     when(request.getSession(true)).thenReturn(session);
     when(request.getParameter("priceLevel")).thenReturn("4");
     when(urlOpener.openUrl(anyString())).thenReturn(apiResponse);
+    when(request.getRequestDispatcher("/searches")).thenReturn(rd);
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    when(response.getWriter()).thenReturn(pw);
 
     //Run servlet with mock objects and collect data
     ArgumentCaptor<String> asString = ArgumentCaptor.forClass(String.class);
@@ -114,19 +128,20 @@ public final class QueryServletTest {
     new QueryServlet(urlOpener).doPost(request, response);
     verify(session, atLeast(1)).setAttribute(asString.capture(), asObject.capture());
     verify(urlOpener).openUrl(asString.capture());
+    verify(rd).include(any(), any());
 
     //Process results and check correctness
     String resultStatus = ((Response) asObject.getAllValues().get(0)).getStatus();
     int userPrice = ((User) asObject.getAllValues().get(1)).getPriceLevel();
-    Assert.assertEquals(resultStatus, "OK");
+    Assert.assertEquals(resultStatus, "NO_REROLLS");
     Assert.assertEquals(userPrice, 4);
   }
 
   @Test
   public void GETNoResults() throws IOException{
     //Submit a post request to query servlet that returns 0 results
-    List<Restaurant> restArr = new ArrayList<>();
-    Response apiResponse = new Response("ZERO_RESULTS", restArr);
+    List<Restaurant> restaurants = new ArrayList<>();
+    Response apiResponse = new Response("ZERO_RESULTS", restaurants);
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
     when(request.getSession(false)).thenReturn(session);
@@ -149,9 +164,9 @@ public final class QueryServletTest {
   @Test
   public void GETOneResults() throws IOException{
     //Submit a post request to query servlet that returns one result
-    List<Restaurant> restArr = new ArrayList<>();
-    restArr.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}));
-    Response apiResponse = new Response("OK", restArr);
+    List<Restaurant> restaurants = new ArrayList<>();
+    restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}));
+    Response apiResponse = new Response("OK", restaurants);
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
     when(request.getSession(false)).thenReturn(session);
@@ -177,10 +192,10 @@ public final class QueryServletTest {
   @Test
   public void GETMultipleResults() throws IOException{
     //Submit a post request to query servlet that returns 0 results
-    List<Restaurant> restArr = new ArrayList<>();
-    restArr.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}));
-    restArr.add(new Restaurant("Starbucks", 5, "OPERATIONAL", new Photo[]{}));
-    Response apiResponse = new Response("OK", restArr);
+    List<Restaurant> restaurants = new ArrayList<>();
+    restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}));
+    restaurants.add(new Restaurant("Starbucks", 5, "OPERATIONAL", new Photo[]{}));
+    Response apiResponse = new Response("OK", restaurants);
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
     when(request.getSession(false)).thenReturn(session);
@@ -200,5 +215,28 @@ public final class QueryServletTest {
     JsonObject pick = json.get("pick").getAsJsonObject();
     Assert.assertEquals(pick.get("businessStatus").getAsString(), "OPERATIONAL");
     Assert.assertEquals(json.get("status").getAsString(), "OK");
+  }
+
+  @Test
+  public void GETNullResult() throws IOException{
+    //Submit a post request to query servlet that returns 0 results
+    Response apiResponse = null;
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    when(request.getSession(false)).thenReturn(session);
+    when(session.getAttribute("response")).thenReturn(apiResponse);
+    when(response.getWriter()).thenReturn(pw);
+
+    //Run the servlet with mock objects
+    new QueryServlet().doGet(request, response);
+    verify(request).getSession(false);
+    verify(session).getAttribute("response");
+    verify(response).getWriter();
+
+    //Process data and check correctness
+    String results = sw.getBuffer().toString().trim();
+    JsonElement jsonEl = new JsonParser().parse(results);
+    JsonObject json = jsonEl.getAsJsonObject();
+    Assert.assertEquals(json.get("status").getAsString(), "NO_RESULTS");
   }
 }
