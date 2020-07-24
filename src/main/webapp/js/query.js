@@ -211,7 +211,6 @@ window.onclick = function(event) {
   }
 }
 
-
 /*
     FUNCTIONS RELATED TO THE ACCOUNTS PAGE
 */
@@ -282,7 +281,6 @@ function getSearches(){
     }
     
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        console.log(searches);
         let searchesEl = document.getElementById('cards');
         searches.forEach((search) => {
             let searchCard = createSearchElement(search);
@@ -316,14 +314,15 @@ function createSearchElement(search) {
     //creating the feedback element
     const feedbackElement = document.createElement('p3');
 
-    feedbacks = getFeedback(search);
-    let tempFeedbackElement = feedbacks[0];
+    updatedFeedbackComponents = getFeedback(search);
+    let tempFeedbackElement = updatedFeedbackComponents[0];
+    console.log(tempFeedbackElement);
     feedbackElement.innerText = tempFeedbackElement;
     newCardBody.appendChild(feedbackElement);
     newCardBody.appendChild(document.createElement('br'));
 
     // creating the buttons and filling in the feedback element 
-    let buttons = feedbacks[1];
+    let buttons = updatedFeedbackComponents[1];
     newCardBodyWithButtons = createSearchesButtons(search, buttons, newCardBody);
     newCardEl.appendChild(newCardBodyWithButtons);
     return newCardEl;
@@ -387,7 +386,6 @@ function createRestaurantElement(restaurantName) {
     userEl.name = "user-id";
     userEl.value = userID;
     userEl.hidden = true;
-    console.log(userID);
 
     let inputGroupEl = document.createElement('div');
     inputGroupEl.className = "input-group";
@@ -415,33 +413,42 @@ function getFeedback(search) {
     if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    let thisRestaurantsFeedback;
-    fetch(`/feedback?user=${userID}`, {method: 'GET'})
-    .then(response => response.json())
-    .then((feedbackList) => {
-        console.log(feedbackList);
-        for (feedback in feedbackList) {
-            console.log("this feedback " + feedback);
-            console.log("cur name " + feedback.restaurantName);
-            console.log("want this name " + search.name)
-            if (feedback.restaurantName == search.name) {
-                submitted = true;
-                thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
-            }
-        }
-    });
+    return getFeedbackElement(userID, search);
+}
+
+async function fetchFeedback(userID) {
+    try {
+        let response = await fetch(`/feedback?user=${userID}`, {
+            method: 'GET'
+        });
+        let feedbackList = await response.json();
+        return feedbackList;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function getFeedbackElement(userID, search) {
     let tempFeedbackElement;
     let buttons;
-    //feedback
-    if (!submitted) {
-        tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
-        buttons = true;
-    } else {
-        tempFeedbackElement = "Feedback" + thisRestaurantsFeedback;
-        buttons = false;
-    }
-    console.log("feedback " + tempFeedbackElement);
-    console.log("buttons " + buttons)
+    let thisRestaurantsFeedback;
+    let feedbackList = await fetchFeedback(userID);
+    feedbackList.forEach((feedback) => {
+        if (feedback.restaurantName == search.name) {
+            submitted = true;
+            thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
+        }
+        let tempFeedbackElement;
+        let buttons;
+        //feedback
+        if (!submitted) {
+            tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
+            buttons = true;
+        } else {
+            tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
+            buttons = false;
+        }
+    });
     return [tempFeedbackElement, buttons];
 }
 
