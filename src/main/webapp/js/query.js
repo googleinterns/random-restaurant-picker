@@ -275,6 +275,7 @@ function getSearches(){
     if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
+
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
         let searchesEl = document.getElementById('cards');
         searches.forEach((search) => {
@@ -283,18 +284,6 @@ function getSearches(){
         });
     });
 }
-
-/*=========================
-    HTML
-=========================*/
-// Form underline element    
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        let searchesEl = document.getElementById('cards');
-        searches.forEach((search) => {
-            let searchCard = createSearchElement(search);
-            searchesEl.appendChild(searchCard);
-        });
-    });
 
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
@@ -439,50 +428,39 @@ function createRestaurantElement(restaurantName) {
     return inputGroupEl;
 }
 
-function getFeedback(search) {
-    let tempFeedbackElement;
-    let buttons;
-    //feedback
-    if (!search.feedback.submitted) {
-        tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
-        buttons = true;
-    } else {
-        //search.feedback.notes? which rating? search.feedback.restaurantRating + notes
-        tempFeedbackElement = "Feedback" + search.feedback;
-        buttons = false;
+async function fetchFeedback() {
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
     }
+    let response = await fetch(`/feedback?user=${userID}`, {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        return data;
+    });
+    return response;
+}
+
+async function getFeedback(search) {
+    let buttons = true;
+    let tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
+    let fetchedFeedback = await fetchFeedback();
+    fetchedFeedback.forEach((feedback) => {
+        if (feedback.restaurantName == search.name) {
+            thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
+            buttons = false;
+            tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
+        }
+    });
     return [tempFeedbackElement, buttons];
 }
 
-function feedbackWindow(feedbackButton) {
-    fetch("/form.html")
-      .then((response) => response.text())
-      .then((data) => {
-          feedbackButton.appendChild(data);
-      })
-    var popup = document.getElementById("formPopup");
-    popup.classList.toggle("show");
-}
-
-$('#randomize-form').submit(function(event) {
-    const errorEl = document.getElementById("error");
-    errorEl.classList.add('hidden');
-
-    event.preventDefault();
-    let url = $(this).attr('action');
-    let lat = localStorage.getItem("lat");
-    let lng = localStorage.getItem("lng");
-    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}`;
-
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: queryStr,
-        success: function(response) {
-            query();
-        }
-    });
-});
+/*=========================
+    HTML
+=========================*/
+// Form underline element    
 
 $("input, textarea").blur(function() {
     if ($(this).val() != "") {
