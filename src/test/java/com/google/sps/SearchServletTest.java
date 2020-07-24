@@ -34,7 +34,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
 
 import org.mockito.Mock;
 import org.mockito.ArgumentCaptor;
@@ -73,7 +72,6 @@ public final class SearchServletTest {
   
   @Before
   public void setUp() throws Exception {
-    MockitoAnnotations.initMocks(this);
     helper.setUp();
   }
 
@@ -125,7 +123,7 @@ public final class SearchServletTest {
 
       //Process data and check correctness
       String results = sw.getBuffer().toString().trim();
-      JsonObject resultsObj = (new JsonParser().parse(results)).getAsJsonArray().get(0).getAsJsonObject();
+      JsonObject resultsObj = new JsonParser().parse(results).getAsJsonArray().get(0).getAsJsonObject();
       assertEquals(resultsObj.get("user").getAsString(), "2");
       assertEquals(resultsObj.get("keywords").getAsString(), "indian");
   }
