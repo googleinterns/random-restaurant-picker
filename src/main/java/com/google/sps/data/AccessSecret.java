@@ -13,9 +13,9 @@ public class AccessSecret {
   private AccessSecret(){}
 
   private String accessSecretVersion() {
-    String projectId = "team-38-step-2020";
-    String secretId = "API_KEY";
-    String versionId = "2";
+    final String projectId = "team-38-step-2020";
+    final String secretId = "API_KEY";
+    final String versionId = "2";
     return accessSecretVersion(projectId, secretId, versionId);
   }
 
