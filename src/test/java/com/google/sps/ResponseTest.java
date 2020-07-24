@@ -44,6 +44,6 @@ public final class ResponseTest {
 
     String actual = response.getStatus();
     String expected = "ZERO_RESULTS";
-    Assert.assertEquals(expected, actual);
+    assertEquals(expected, actual);
   }
 }

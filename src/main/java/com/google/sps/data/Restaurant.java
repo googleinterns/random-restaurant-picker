@@ -26,15 +26,15 @@ public final class Restaurant implements java.io.Serializable {
     @SerializedName(value = "businessStatus", alternate = "business_status")
     private final String businessStatus;
     @SerializedName(value = "priceLevel", alternate = "price_level")
-    private final int priceLevel;
+    private final int price;
     private final Photo[] photos;
 
-    public Restaurant(String name, double rating, String businessStatus, int priceLevel, Photo[] photos) {
+    public Restaurant(String name, double rating, String businessStatus, int price, Photo[] photos) {
         this.name = name;
         this.rating = rating;
         this.businessStatus = businessStatus;
         this.photos = photos;
-        this.priceLevel = priceLevel;
+        this.price = price;
     }
 
     public int getWeight() {
@@ -62,6 +62,6 @@ public final class Restaurant implements java.io.Serializable {
     }
 
     public int getPrice() {
-        return this.priceLevel;
+        return this.price;
     }
 }
