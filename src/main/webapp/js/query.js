@@ -297,6 +297,7 @@ function getSearches(){
     if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
+
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
         let searchesEl = document.getElementById('cards');
         searches.forEach(search => {
