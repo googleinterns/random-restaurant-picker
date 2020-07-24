@@ -279,7 +279,6 @@ function getSearches(){
     if(localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
         let searchesEl = document.getElementById('cards');
         searches.forEach((search) => {
@@ -314,17 +313,19 @@ function createSearchElement(search) {
     //creating the feedback element
     const feedbackElement = document.createElement('p3');
 
-    updatedFeedbackComponents = getFeedback(search);
-    let tempFeedbackElement = updatedFeedbackComponents[0];
-    console.log(tempFeedbackElement);
-    feedbackElement.innerText = tempFeedbackElement;
-    newCardBody.appendChild(feedbackElement);
-    newCardBody.appendChild(document.createElement('br'));
+    (async () => {
+        let updatedFeedbackElements = await getFeedback(search);
+        tempFeedbackElement = updatedFeedbackElements[0];
+        buttons = updatedFeedbackElements[1];
 
-    // creating the buttons and filling in the feedback element 
-    let buttons = updatedFeedbackComponents[1];
-    newCardBodyWithButtons = createSearchesButtons(search, buttons, newCardBody);
-    newCardEl.appendChild(newCardBodyWithButtons);
+        feedbackElement.innerText = tempFeedbackElement;
+        feedbackElement.innerText = tempFeedbackElement;
+        newCardBody.appendChild(feedbackElement);
+        newCardBody.appendChild(document.createElement('br'));
+        newCardBodyWithButtons = createSearchesButtons(search, buttons, newCardBody);
+        newCardEl.appendChild(newCardBodyWithButtons);
+    })()
+
     return newCardEl;
 }
 
@@ -407,46 +408,30 @@ function createRestaurantElement(restaurantName) {
     return inputGroupEl;
 }
 
-function getFeedback(search) {
+async function fetchFeedback() {
     let userID = 0;
-    let submitted = false;
     if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-    return getFeedbackElement(userID, search);
+    let response = await fetch(`/feedback?user=${userID}`, {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        return data;
+    });
+    return response;
 }
 
-async function fetchFeedback(userID) {
-    try {
-        let response = await fetch(`/feedback?user=${userID}`, {
-            method: 'GET'
-        });
-        let feedbackList = await response.json();
-        return feedbackList;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-async function getFeedbackElement(userID, search) {
-    let tempFeedbackElement;
-    let buttons;
-    let thisRestaurantsFeedback;
-    let feedbackList = await fetchFeedback(userID);
-    feedbackList.forEach((feedback) => {
+async function getFeedback(search) {
+    let buttons = true;
+    let tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
+    let fetchedFeedback = await fetchFeedback();
+    fetchedFeedback.forEach((feedback) => {
         if (feedback.restaurantName == search.name) {
-            submitted = true;
             thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
-        }
-        let tempFeedbackElement;
-        let buttons;
-        //feedback
-        if (!submitted) {
-            tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
-            buttons = true;
-        } else {
-            tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
             buttons = false;
+            tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
         }
     });
     return [tempFeedbackElement, buttons];
