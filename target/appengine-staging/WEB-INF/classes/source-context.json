@@ -4,16 +4,20 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> UI update
 =======
 >>>>>>> restaurant name carries through to feedback form
+=======
+>>>>>>> feedback servlet form submission completed, servlet is fully functional
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "84f97586b28f8b8bf41fbbb25a9da7e35bc1c37d"}}
 =======
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "052e942cd245b90bd0103b7db221497dabcec531"}}
 >>>>>>> c4ad722... restaurant name carries through to feedback form now!
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "70b98072a4c80cf11d93b22516f3377942fc7264"}}
@@ -35,3 +39,8 @@
 >>>>>>> UI update
 =======
 >>>>>>> restaurant name carries through to feedback form
+=======
+=======
+{"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "70b98072a4c80cf11d93b22516f3377942fc7264"}}
+>>>>>>> 92f5b50... fix feedback servlet, is fully functional now; remove debugging statements; update variable names
+>>>>>>> feedback servlet form submission completed, servlet is fully functional
