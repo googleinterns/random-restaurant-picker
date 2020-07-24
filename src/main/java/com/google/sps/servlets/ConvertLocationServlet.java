@@ -39,11 +39,11 @@ import java.net.URLConnection;
 public class ConvertLocationServlet extends HttpServlet {
     private UrlOpener urlOpener;
 
-    public ConvertLocationServlet(){
+    public ConvertLocationServlet() {
         this.urlOpener = new UrlOpener();
     }    
 
-    public ConvertLocationServlet(UrlOpener urlOpener){
+    public ConvertLocationServlet(UrlOpener urlOpener) {
         this.urlOpener = urlOpener;
     }
 
