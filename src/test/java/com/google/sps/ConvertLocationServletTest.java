@@ -32,7 +32,7 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.junit.Assert.assertEquals;
 
 import org.mockito.Mock;
@@ -61,11 +61,6 @@ public final class ConvertLocationServletTest {
   HttpSession session;
   @Mock
   UrlOpener urlOpener;
-  
-  @Before
-  public void setUp() throws Exception {
-    MockitoAnnotations.initMocks(this);
-  }
 
   @Test
   public void GETZeroResults() throws IOException{

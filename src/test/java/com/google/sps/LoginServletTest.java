@@ -71,11 +71,6 @@ public final class LoginServletTest {
   GoogleIdToken token;
   @Mock
   Payload payload;
-  
-  @Before
-  public void setUp() throws Exception {
-    MockitoAnnotations.initMocks(this);
-  }
 
   @Test
   public void GETTest() throws IOException, GeneralSecurityException {

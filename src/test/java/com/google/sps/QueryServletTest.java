@@ -38,7 +38,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.junit.Assert.assertEquals;
 
 import org.mockito.Mock;
@@ -68,11 +69,6 @@ public final class QueryServletTest {
   UrlOpener urlOpener;
   @Mock
   RequestDispatcher rd;
-  
-  @Before
-  public void setUp() throws Exception {
-    MockitoAnnotations.initMocks(this);
-  }
   
   @Test
   public void POSTZeroResults() throws IOException, ServletException {
