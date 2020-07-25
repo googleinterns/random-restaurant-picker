@@ -1,8 +1,0 @@
-indexes:
-
-- kind: savedSearch
-  ancestor: no
-  properties:
-  - name: user
-  - name: timestamp
-    direction: desc
