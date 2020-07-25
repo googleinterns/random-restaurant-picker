@@ -1,3 +1,7 @@
+/* ==========================================================================
+   SEARCH FORM
+   ========================================================================== */
+// AJAX form POST
 $("#randomize-form").submit(function(event) {
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
@@ -23,60 +27,13 @@ $("input, textarea").blur(function() {
     }
 });
 
-//This file handles the formatting for the form on RRP Homepage
-//This is done with a third-party formatting and styling package
+/* ==========================================================================
+   SELECT 2 (THIRD-PARTY)
+   ========================================================================== */
 (function($) {
     'use strict';
-    /*==================================================================
-        [ Daterangepicker ]*/
-    try {
-        $('.js-datepicker').daterangepicker({
-            "singleDatePicker": true,
-            "showDropdowns": true,
-            "autoUpdateInput": false,
-            locale: {
-                format: 'DD/MM/YYYY'
-            },
-        });
 
-        var myCalendar = $('.js-datepicker');
-        var isClick = 0;
-
-        $(window).on('click', function() {
-            isClick = 0;
-        });
-
-        $(myCalendar).on('apply.daterangepicker', function(ev, picker) {
-            isClick = 0;
-            $(this).val(picker.startDate.format('MM/DD/YYYY'));
-
-        });
-
-        $('.js-btn-calendar').on('click', function(e) {
-            e.stopPropagation();
-
-            if (isClick === 1) isClick = 0;
-            else if (isClick === 0) isClick = 1;
-
-            if (isClick === 1) {
-                myCalendar.focus();
-            }
-        });
-
-        $(myCalendar).on('click', function(e) {
-            e.stopPropagation();
-            isClick = 1;
-        });
-
-        $('.daterangepicker').on('click', function(e) {
-            e.stopPropagation();
-        });
-
-
-    } catch (er) { console.log(er); }
-    /*[ Select 2 Config ]
-        ===========================================================*/
-
+    //Select 2 Config
     try {
         var selectSimple = $('.js-select-simple');
 
