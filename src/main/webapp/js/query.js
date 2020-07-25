@@ -147,7 +147,7 @@ function onSignIn(googleUser) {
     fetch(`/login?id_token=${id_token}`)
         .then((response) => response.json())
         .then((data) => {
-            localStorage.setItem("user", data.sub);
+            localStorage.setItem("user", data.id);
             localStorage.setItem("loggedIn", true);
             addUserContent(profile.getName(), profile.getImageUrl());
             toggleAccountMenu();

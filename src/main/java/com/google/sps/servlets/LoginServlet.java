@@ -42,13 +42,14 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        response.setContentType("application/json");
+        response.setContentType("text/html");
         response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
         String idTokenString = request.getParameter("id_token");
         JsonObject json = new JsonObject();
         try {
             GoogleIdToken idToken = verifier.verify(idTokenString);
             Payload payload = idToken.getPayload();
+            String userId = payload.getSubject();
             json = new JsonParser().parse(payload.toString()).getAsJsonObject();
         } catch (GeneralSecurityException e) {
             System.out.println(e.getMessage());
