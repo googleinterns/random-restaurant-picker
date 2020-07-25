@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*=========================
-    RESTAURANT QUERY AND RE-ROLL
-=========================*/
-
+/* ==========================================================================
+   RESTAURANT QUERY AND RE-ROLL
+   ========================================================================== */
 function query(queryStr) {
     const errorEl = document.getElementById("error");
     fetch(`/query?${queryStr}`, { method: "POST" })
@@ -23,7 +22,7 @@ function query(queryStr) {
         .then((response) => {
             console.log(response);
             if (response.status === "OK")
-                redirectToURL('results.html');
+                redirectToUrl('results.html');
             else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
             else if (response.status === "NO_REROLLS") throw "No re-rolls left";
@@ -49,7 +48,6 @@ function roll() {
                 let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
                 localStorage.setItem("restaurantAddress", response.pick.vicinity);
                 loadImage(photoUrl);
-                // addMapScript(); // JANK ALERT: don't add maps script multiple times; fix this in the future
                 calculateAndDisplayRoute(directionsService, directionsRenderer);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
@@ -69,9 +67,9 @@ function loadImage(photoUrl) {
     photoEl.appendChild(img);
 }
 
-/*=========================
-    USER'S LOCATION AND ADDRESS
-=========================*/
+/* ==========================================================================
+   USER LOCATION AND ADDRESS
+   ========================================================================== */
 function getLocation() {
     if (navigator.geolocation)
         navigator.geolocation.getCurrentPosition(geoLocEnabled, geoLocFallback);
@@ -140,9 +138,9 @@ function convertLocation(location) {
         .catch((error) => console.log(error));
 }
 
-/*=========================
-    USER SIGN-IN
-=========================*/
+/* ==========================================================================
+   USER SIGN-IN
+   ========================================================================== */
 function onSignIn(googleUser) {
     let id_token = googleUser.getAuthResponse().id_token;
     let profile = googleUser.getBasicProfile();
@@ -195,9 +193,9 @@ window.onclick = function(event) {
     }
 };
 
-/*=========================
-    Retrieving SEARCHES
-=========================*/
+/* ==========================================================================
+   RETRIEVING SEARCHES
+   ========================================================================== */
 //Retrieve searches associated with the current user
 function getSearches() {
     let userID = 0;
@@ -214,9 +212,9 @@ function getSearches() {
         });
 }
 
-/*=========================
-    Directions to the Restaurant
- =========================*/
+/* ==========================================================================
+   DIRECTIONS TO THE RESTAURANT
+   ========================================================================== */
 let directionsRenderer;
 let directionsService;
 

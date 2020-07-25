@@ -1,5 +1,6 @@
-/* Loading Screen Styling */
-
+/* ==========================================================================
+   LOADING SCREEN STYLING
+   ========================================================================== */
 .loading-screen {
     position: relative;
     padding-left: 0;
@@ -23,12 +24,9 @@
     pointer-events: none;
 }
 
-/* Loading Screen Styling Ends */
-
-/* ================= */
-
-/* Heading Container Styling */
-
+/* ==========================================================================
+   HEADING CONTAINER STYLING
+   ========================================================================== */
 .heading-container {
     max-width: 800px;
     margin: auto;
@@ -82,8 +80,9 @@ footer ul li a:hover {
     z-index: 9;
 }
 
-/* Cool green stripe Styling */
-
+/* ==========================================================================
+   COOL GREEN STRIPE STYLING
+   ========================================================================== */
 .heading-container h1 span.green-heading-bg {
     display: inline;
     z-index: -1;
@@ -106,11 +105,9 @@ footer ul li a:hover {
     font-size: 100px;
 }
 
-/* Heading Styling Ends */
-
-/* ================= */
-
-
+/* ==========================================================================
+   MISCELLANEOUS
+   ========================================================================== */
 @media only screen and (max-width: 600px) {
     .heading-container h1 {
         font-size: 52px;
