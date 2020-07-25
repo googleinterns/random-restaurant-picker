@@ -147,7 +147,7 @@ function onSignIn(googleUser) {
     fetch(`/login?id_token=${id_token}`)
         .then((response) => response.json())
         .then((data) => {
-            localStorage.setItem("user", data.sub);
+            localStorage.setItem("user", data.id);
             localStorage.setItem("loggedIn", true);
             addUserContent(profile.getName(), profile.getImageUrl());
             toggleAccountMenu();
@@ -170,264 +170,46 @@ function toggleAccountMenu() {
 
 //Logs out of the account
 function signOut() {
-  var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log('User signed out.');
-  });
-  localStorage.setItem("user", 0);
-  toggleAccountMenu();
-}
-
-function backToHome() {
-    window.location.replace("index.html");
-}
-
-function toAccount() {
-    window.location.replace("account-info.html");
-}
-
-function toSearches() {
-    window.location.replace("past-searches.html");
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function() {
+        console.log("User signed out.");
+    });
+    localStorage.setItem("user", 0);
+    localStorage.setItem("loggedIn", false);
+    toggleAccountMenu();
 }
 
 function toggleShow() {
-  document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById("myDropdown").classList.toggle("show");
 }
 
-// Close the dropdown menu if the user clicks outside of it
+//Close account dropdown when clicking elsewhere
 window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    let dropdown = document.getElementById("myDropdown");
-      if (dropdown.classList.contains('show')) {
-        dropdown.classList.remove('show');
-      }
-  }
-}
-
-/*
-    FUNCTIONS RELATED TO THE ACCOUNTS PAGE
-*/
-
-function accountFunctions() {
-    getNumSearches();
-    getLastVisited();
-    getFavFood();
-    getNumReviews();
-}
-
-function getNumSearches() {
-    let count = 0;
-    let numSearchesEl = document.getElementById('num-searches');
-    if (localStorage.getItem("loggedIn")){
-        userID = localStorage.getItem("user");
-    }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        searches.forEach((search) => {
-            count += 1;
-        });
-    });
-    numSearchesEl.innerText = count;
-}
-
-function getLastVisited() {
-    let lastVisitedEl = document.getElementById('last-visited');
-    if (localStorage.getItem("loggedIn")){
-        userID = localStorage.getItem("user");
-    }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        lastVisitedEl.innerText = searches[0].name()});
-}
-
-function getFavFood() {
-    let food = document.getElementById('fav-food');
-    fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
-        if (foods[0].length == 0) {
-            food.appendChild('<textarea id="food-selection" placeholder="or foods :)"></textarea>');
-        } else {
-            food.innerText = foods[0];
+    if (!event.target.matches(".dropbtn")) {
+        let dropdownEl = document.getElementById("myDropdown");
+        if (dropdownEl.classList.contains("show")) {
+            dropdownEl.classList.remove("show");
         }
-    });
-}
-
-function getNumReviews() {
-    let count = 0;
-    let numFeedbackEl = document.getElementById('num-feedback');
-    if (localStorage.getItem("loggedIn")){
-        userID = localStorage.getItem("user");
     }
-    fetch(`/feedback?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((feedbackList) => {
-        feedbackList.forEach((feedback) => {
-            count += 1;
-        });
-    });
-    numFeedbackEl.innerText = count;
-}
+};
 
 /* ==========================================================================
    RETRIEVING SEARCHES
    ========================================================================== */
 //Retrieve searches associated with the current user
-function getSearches(){
-    let userID = 0;
-    if(localStorage.getItem("loggedIn")){
-        userID = localStorage.getItem("user");
-    }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        let searchesEl = document.getElementById('cards');
-        searches.forEach((search) => {
-            let searchCard = createSearchElement(search);
-            searchesEl.appendChild(searchCard);
-        });
-    });
-}
-
-function createSearchElement(search) {
-    const newCardEl = document.createElement('div');
-    newCardEl.className = 'card card-2';
-    const newCardBody = document.createElement('div');
-    newCardBody.className = 'card-body';
-    //creating the restaurant name element
-    const nameElement = document.createElement('p2');
-    nameElement.id = 'restaurant-name';
-    nameElement.innerText = search.name;
-    newCardBody.appendChild(nameElement);
-    newCardBody.appendChild(document.createElement('br'));
-
-    //creating the list of parameters
-    const paramElement = document.createElement('p3');
-    const tempParamElement = "Parameters: " + search.keywords;
-
-    // tempParamElement += radius;
-    paramElement.innerText = tempParamElement;
-    newCardBody.appendChild(paramElement);
-
-    newCardBody.appendChild(document.createElement('br'));
-
-    //creating the feedback element
-    const feedbackElement = document.createElement('p3');
-
-    (async () => {
-        let updatedFeedbackElements = await getFeedback(search);
-        tempFeedbackElement = updatedFeedbackElements[0];
-        buttons = updatedFeedbackElements[1];
-
-        feedbackElement.innerText = tempFeedbackElement;
-        feedbackElement.innerText = tempFeedbackElement;
-        newCardBody.appendChild(feedbackElement);
-        newCardBody.appendChild(document.createElement('br'));
-        newCardBodyWithButtons = createSearchesButtons(search, buttons, newCardBody);
-        newCardEl.appendChild(newCardBodyWithButtons);
-    })()
-
-    return newCardEl;
-}
-
-function createSearchesButtons(search, buttons, newCardBody) {
-    let feedbackButton = null;
-    let formEl = document.getElementById('searches-form');
-    if (buttons) {
-        let modal = document.getElementById('searchModal');
-        let span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
-            let restaurantContainerEl = document.getElementById("restaurant-name-container");
-            restaurantContainerEl.remove();
-            let submitButtonEl = document.getElementById("submit-button");
-            if (submitButtonEl != null) {
-                submitButtonEl.remove();
-            }
-            modal.style.display = "none";
-        }
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                let restaurantContainerEl = document.getElementById("restaurant-name-container");
-                restaurantContainerEl.remove();
-                let submitButtonEl = document.getElementById("submit-button");
-                if (submitButtonEl != null) {
-                    submitButtonEl.remove();
-                }
-                modal.style.display = "none";
-            }
-        }
-        feedbackButton = document.createElement('button');
-        feedbackButton.className = 'btn1 feedback';
-        feedbackButton.innerText = "Submit Feedback";
-        feedbackButton.addEventListener('click', () => {
-            let restaurantNameEl = createRestaurantElement(search.name);
-            formEl.appendChild(restaurantNameEl);
-            modal.style.display = "block";
-        });
-        newCardBody.appendChild(feedbackButton);
-    }
-    let searchButton = document.createElement('button');
-    searchButton.className = 'btn1 search';
-    searchButton.innerText = "Search with These Parameters Again";
-    newCardBody.appendChild(searchButton);
-    // searchButton.addEventListener('click', () => {
-    //     reroll()});
-    return newCardBody;
-}
-
-function createRestaurantElement(restaurantName) {
+function getSearches() {
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
-    let userEl = document.createElement('input');
-    userEl.className = "input--style-2";
-    userEl.type = "text";
-    userEl.id = "user-id";
-    userEl.name = "user-id";
-    userEl.value = userID;
-    userEl.hidden = true;
-
-    let inputGroupEl = document.createElement('div');
-    inputGroupEl.className = "input-group";
-    inputGroupEl.id = "restaurant-name-container";
-    let inputContainer = document.createElement('input');
-    inputContainer.className = "input--style-2";
-    inputContainer.type = "text";
-    inputContainer.id = "restaurant-name-fill";
-    inputContainer.name = "restaurant-name-fill";
-    inputContainer.value = restaurantName;
-    inputContainer.innerText = restaurantName;
-    inputGroupEl.appendChild(inputContainer);
-    inputGroupEl.appendChild(userEl);
-
-    let submitEl = document.createElement('input');
-    submitEl.type = "submit";
-    submitEl.id = "submit-button";
-    inputGroupEl.appendChild(submitEl);
-    return inputGroupEl;
-}
-
-async function fetchFeedback() {
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")){
-        userID = localStorage.getItem("user");
-    }
-    let response = await fetch(`/feedback?user=${userID}`, {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(data => {
-        return data;
-    });
-    return response;
-}
-
-async function getFeedback(search) {
-    let buttons = true;
-    let tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
-    let fetchedFeedback = await fetchFeedback();
-    fetchedFeedback.forEach((feedback) => {
-        if (feedback.restaurantName == search.name) {
-            thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
-            buttons = false;
-            tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
-        }
-    });
-    return [tempFeedbackElement, buttons];
+    fetch(`/searches?user=${userID}`, { method: "GET" })
+        .then((response) => response.json())
+        .then((searches) => {
+            const searchesEl = document.getElementById("cards");
+            searches.forEach((search) => {
+                searchesEl.appendChild(createSearchElement(search));
+            });
+        });
 }
 
 /* ==========================================================================

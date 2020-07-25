@@ -24,9 +24,9 @@ public class SearchItem {
     private String lng;
     private String radius;
     private long id;
-    private String name;
+    private UserFeedback feedback;
 
-    public SearchItem(String user, String date, String keywords, String lat, String lng, String radius, long id, String name){
+    public SearchItem(String user, String date, String keywords, String lat, String lng, String radius, long id){
         this.user = user;
         this.date = date;
         this.keywords = keywords;
@@ -34,6 +34,5 @@ public class SearchItem {
         this.lng = lng;
         this.radius = radius;
         this.id = id;
-        this.name = name;
     }
 }

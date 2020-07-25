@@ -20,8 +20,6 @@ import com.google.gson.Gson;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import java.util.ArrayList;
 import java.util.List;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -38,7 +36,6 @@ import com.google.appengine.api.datastore.FetchOptions;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.google.sps.data.SearchItem;
-import com.google.sps.data.Response;
 
 @WebServlet("/searches")
 public class SearchServlet extends HttpServlet {
@@ -53,7 +50,7 @@ public class SearchServlet extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
-        List<SearchItem> searches = new ArrayList<>();
+        List <SearchItem> searches = new ArrayList<>();
         for (Entity entity : results.asIterable()) {
             String userID = (String) entity.getProperty("user");
             String date = (String) entity.getProperty("date");
@@ -62,9 +59,8 @@ public class SearchServlet extends HttpServlet {
             String lat = (String) entity.getProperty("lat");
             String lng = (String) entity.getProperty("lng");
             long id = entity.getKey().getId();
-            String restaurantName = (String) entity.getProperty("restaurantName");
 
-            SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id, restaurantName);
+            SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id);
             searches.add(search);
         }
         response.setContentType("application/json;");
@@ -81,10 +77,6 @@ public class SearchServlet extends HttpServlet {
         String lng = request.getParameter("lng");
         long timestamp = System.currentTimeMillis();
 
-        HttpSession session = request.getSession(false);
-        Response newResponse = (Response) session.getAttribute("response");
-        String restaurantName = newResponse.getPick().getName();
-
         SimpleDateFormat formatter = new SimpleDateFormat("MMM d, 'at' HH:mm");
         Date date = new Date(System.currentTimeMillis());
         String formattedDate = formatter.format(date);
@@ -98,7 +90,6 @@ public class SearchServlet extends HttpServlet {
         searchEntity.setProperty("timestamp", timestamp);
         searchEntity.setProperty("lat", lat);
         searchEntity.setProperty("lng", lng);
-        searchEntity.setProperty("restaurantName", restaurantName);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(searchEntity);
