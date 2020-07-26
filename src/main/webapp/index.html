@@ -2,134 +2,166 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Random Restaurant Picker</title>
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
-    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/transition.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/button.css">
-    <link rel="stylesheet" href="css/form.css">
-    <link rel="stylesheet" href="css/banner.css">
-    <!-- Form -->
-    <link rel="stylesheet" href="third-party/mdi-font/css/material-design-iconic-font.min.css">
-    <link rel="stylesheet" href="third-party/select2/select2.min.css">
-    <link rel="stylesheet" href="third-party/datepicker/daterangepicker.css">
 </head>
 
 <body>
-    <div class="loading-container">
-        <div class="loading-screen">
-        </div>
-    </div>
-    <header class="main-navigation">
-        <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-        <div class="dropdown" id="account-menu">
-            <button onclick="toggleShow()" class="dropbtn">
-                <img id="profile-pic" src="">
-                <h3 id="user-name">name</h3>
-            </button>
-            <div id="myDropdown" class="dropdown-content">
-                <a href="#">Account</a>
-                <a href="#">History</a>
-                <a onclick="signOut()">Sign Out</a>
-            </div>
-        </div>
-    </header>
     <div data-barba="wrapper">
-        <!-- Only main container changes on link navigation -->
-        <main data-barba="container" data-barba-namespace="search">
-            <div id="page-container">
-                <div class="p-t-80" style="text-align:center">
-                    <h>Random Restaurant Picker</h>
+        <header class="header">
+            <div class="header-wrapper">
+                <div class="header-external-links" style="transform: translate(0px, 0px);">
+                    <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">
+                        <svg viewBox="0 0 50 50" width="50" height="50" class="menu-trigger-shape">
+                            <circle r="25" cx="25" cy="25"></circle>
+                        </svg>
+                        <span class="menu-trigger-bar"></span>
+                        <span class="menu-trigger-bar"></span>
+                        <span class="menu-trigger-bar"></span>
+                    </div>
                 </div>
-                <div class="page-wrapper p-t-40 font-robo">
-                    <div class="wrapper wrapper--w960">
-                        <div class="card card-2">
-                            <div class="card-body">
-                                <h2>Your location:</h2>
-                                </br>
-                                <p id="location-container"></p>
-                                </br>
-                                <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
-                                </br></br></br>
-                                <form id="randomize-form" action="/query" method="POST">
-                                    <div class="input-group">
-                                        <input class="input--style-2" type="text" name="searchTerms" id="searchTerms">
-                                        <label for="searchTerms">Search terms</label>
-                                        <div class="border"></div>
+            </div>
+            <nav class="header-nav">
+                <div class="menu" data-component="menu">
+                    <div class="menu-overlay" onclick="menuClose()"></div>
+                    <div class="menu-panel" style="transform: translate(110%, 0px);">
+                        <div class="menu-pages">
+                            <ul class="menu-pages-list">
+                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link " href="https://barba.js.org/features/user-friendly/">
+                                        Features
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/user-friendly/">
+                                                    <div class="menu-subpages-item-link-line">
+                                                    </div>
+                                                    <span class="menu-subpages-item-link-label">
+                                                        User friendly
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/easy-peasy/">
+                                                    <div class="menu-subpages-item-link-line">
+                                                    </div>
+                                                    <span class="menu-subpages-item-link-label">
+                                                        Easy peasy
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/smart/">
+                                                    <div class="menu-subpages-item-link-line">
+                                                    </div>
+                                                    <span class="menu-subpages-item-link-label">
+                                                        Smart
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/extensible/">
+                                                    <div class="menu-subpages-item-link-line">
+                                                    </div>
+                                                    <span class="menu-subpages-item-link-label">
+                                                        Extensible
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/futureproof/">
+                                                    <div class="menu-subpages-item-link-line">
+                                                    </div>
+                                                    <span class="menu-subpages-item-link-label">
+                                                        Futureproof
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/community/">
+                                                    <div class="menu-subpages-item-link-line">
+                                                    </div>
+                                                    <span class="menu-subpages-item-link-label">
+                                                        Community
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div class="row row-space">
-                                        <div class="col-2">
-                                            <div class="input-group">
-                                                <input class="input--style-2" type="text" name="radius" id="radius">
-                                                <label for="radius">Max distance (meters)</label>
-                                                <div class="border"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div>
-                                                <input type="radio" id="price0" name="priceLevel" value="0" checked>
-                                                <label for="price0">Any</label>
-                                                <input type="radio" id="price1" name="priceLevel" value="1">
-                                                <label for="price1">$</label>
-                                                <input type="radio" id="price2" name="priceLevel" value="2">
-                                                <label for="price2">$$</label>
-                                                <input type="radio" id="price3" name="priceLevel" value="3">
-                                                <label for="price3">$$$</label>
-                                                <input type="radio" id="price4" name="priceLevel" value="4">
-                                                <label for="price4">$$$$</label>
-                                            </div>
-                                        </div>
+                                </li>
+                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link " href="https://barba.js.org/examples/">
+                                        Examples
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/user-friendly/">
+                                                    <div class="menu-subpages-item-link-line">
+                                                    </div>
+                                                    <span class="menu-subpages-item-link-label">
+                                                        User friendly
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/easy-peasy/">
+                                                    <div class="menu-subpages-item-link-line">
+                                                    </div>
+                                                    <span class="menu-subpages-item-link-label">
+                                                        Easy peasy
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/smart/">
+                                                    <div class="menu-subpages-item-link-line">
+                                                    </div>
+                                                    <span class="menu-subpages-item-link-label">
+                                                        Smart
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div class="input-group">
-                                        <div class="rs-select2 js-select-simple select--no-search">
-                                            <select name="category">
-                                                <option value="">Category...</option>
-                                                <option>No preference</option>
-                                                <option>Dine-in</option>
-                                                <option>Fast Food</option>
-                                            </select>
-                                            <div class="select-dropdown"></div>
-                                        </div>
-                                    </div>
-                                    <div class="input-group">
-                                        <div class="rs-select2 js-select-simple select--no-search">
-                                            <select name="dietary-options">
-                                                <option value="">Dietary options...</option>
-                                                <option>Nothing specific</option>
-                                                <option>Vegetarian</option>
-                                                <option>Vegan</option>
-                                                <option>Kosher</option>
-                                                <option>Halal</option>
-                                                <option>Gluten-free</option>
-                                            </select>
-                                            <div class="select-dropdown"></div>
-                                        </div>
-                                    </div>
-                                    <div class="success-banner hidden" id="error"></div>
-                                    <div style="text-align:center">
-                                        <button class="btn style4" type="submit">Randomize</button>
-                                    </div>
-                                </form>
-                            </div>
+                                </li>
+                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link " href="https://barba.js.org/showcase/">
+                                        Showcases
+                                    </a>
+                                </li>
+                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link " href="https://barba.js.org/docs/getstarted/intro/">
+                                        Docs
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                <script src="https://unpkg.com/@barba/core"></script>
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
-                <script src="js/nav.js"></script>
-                <script src="js/query.js"></script>
-                <!-- Form -->
-                <script src="third-party/select2/select2.min.js"></script>
-                <script src="third-party/datepicker/moment.min.js"></script>
-                <script src="third-party/datepicker/daterangepicker.js"></script>
-                <script src="js/form.js"></script>
-        </main>
+            </nav>
+        </header>
+        <!-- Only main container changes on link navigation -->
+        <div data-barba="container" data-barba-namespace="search">
+            <main>
+                <button class="btn style4" onclick="redirectToUrl('results.html')">Randomize</button>
+            </main>
+        </div>
     </div>
+    <div class="transition">
+        <div class="transition-title"></div>
+        <div class="transition-background"></div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/nav.js"></script>
 </body>
 
 </html>
