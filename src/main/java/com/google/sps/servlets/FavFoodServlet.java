@@ -40,10 +40,15 @@ public final class FavFoodServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+    List<String> favFoodList = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+        String favFood = (String) entity.getProperty("food");
+        favFoodList.add(favFood);
+    }
+
     // Send the JSON as the response
     response.setContentType("application/json");
-    Gson gson = new Gson();
-    gson.toJson(gson.toJsonTree(results), gson.newJsonWriter(response.getWriter()));
+    response.getWriter().println(new Gson().toJson(favFoodList));
   }
 
   @Override
@@ -57,5 +62,7 @@ public final class FavFoodServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(foodEntity);
+
+    response.sendRedirect("/account-info.html");
   }
 }
