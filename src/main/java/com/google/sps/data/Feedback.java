@@ -33,24 +33,4 @@ public class Feedback {
         this.rrpRating = rrpRating;
         this.notes = notes;
     }
-
-    // public String getRestaurantName() {
-    //     return this.restaurantName;
-    // }
-
-    // public String restaurantRating() {
-    //     return this.restaurantRating;
-    // }
-
-    // public String rrpRating() {
-    //     return this.rrpRating;
-    // }
-
-    // public String notes() {
-    //     return this.notes;
-    // }
-
-    // public Boolean submitted() {
-    //     return this.submitted;
-    // }
 }

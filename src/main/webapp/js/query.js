@@ -319,7 +319,6 @@ function createSearchElement(search) {
         buttons = updatedFeedbackElements[1];
 
         feedbackElement.innerText = tempFeedbackElement;
-        feedbackElement.innerText = tempFeedbackElement;
         newCardBody.appendChild(feedbackElement);
         newCardBody.appendChild(document.createElement('br'));
         newCardBodyWithButtons = createSearchesButtons(search, buttons, newCardBody);
