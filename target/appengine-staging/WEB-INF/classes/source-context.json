@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "84f97586b28f8b8bf41fbbb25a9da7e35bc1c37d"}}
 =======
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "052e942cd245b90bd0103b7db221497dabcec531"}}
@@ -15,3 +16,6 @@
 =======
 {"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "2fd5f8c0dc27865d7a51bd4d765bfa005f4dd519"}}
 >>>>>>> d31a05d... Update account functions
+=======
+{"git": {"url": "https:\/\/github.com\/googleinterns\/random-restaurant-picker", "revisionId": "92f5b508bf3464476655ade79de71e4406e0911a"}}
+>>>>>>> ed35410... all elements are added to account page, need to work on layout
