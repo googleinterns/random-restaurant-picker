@@ -4,10 +4,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Random Restaurant Picker</title>
+    <!-- Global -->
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/button.css">
     <link rel="stylesheet" href="css/menu.css">
-    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/transition.css">
+    <!-- Local -->
+    <link rel="stylesheet" href="css/results/results.css">
+    <!-- Third-party -->
+    <link rel="stylesheet" href="css/third-party/normalize.css">
 </head>
 
 <body>
@@ -31,114 +36,119 @@
                     <div class="menu-panel" style="transform: translate(110%, 0px);">
                         <div class="menu-pages">
                             <ul class="menu-pages-list">
-                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                    <a class="menu-pages-item-link " href="https://barba.js.org/features/user-friendly/">
-                                        Features
+                                <li id="menu-roulette" class="menu-pages-item is-active" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link" href="index.html">
+                                        Restaurant Roulette
                                     </a>
                                     <div class="menu-pages-item-subpages menu-subpages">
                                         <ul class="menu-subpages-list">
                                             <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/user-friendly/">
-                                                    <div class="menu-subpages-item-link-line">
-                                                    </div>
-                                                    <span class="menu-subpages-item-link-label">
-                                                        User friendly
-                                                    </span>
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>About</span>
                                                 </a>
                                             </li>
-                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/easy-peasy/">
-                                                    <div class="menu-subpages-item-link-line">
-                                                    </div>
-                                                    <span class="menu-subpages-item-link-label">
-                                                        Easy peasy
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/smart/">
-                                                    <div class="menu-subpages-item-link-line">
-                                                    </div>
-                                                    <span class="menu-subpages-item-link-label">
-                                                        Smart
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/extensible/">
-                                                    <div class="menu-subpages-item-link-line">
-                                                    </div>
-                                                    <span class="menu-subpages-item-link-label">
-                                                        Extensible
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/futureproof/">
-                                                    <div class="menu-subpages-item-link-line">
-                                                    </div>
-                                                    <span class="menu-subpages-item-link-label">
-                                                        Futureproof
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/community/">
-                                                    <div class="menu-subpages-item-link-line">
-                                                    </div>
-                                                    <span class="menu-subpages-item-link-label">
-                                                        Community
-                                                    </span>
+                                            <li id="menu-result" class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Result</span>
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                    <a class="menu-pages-item-link " href="https://barba.js.org/examples/">
-                                        Examples
+                                    <a class="menu-pages-item-link" onclick="alert('TODO: implement this!')">
+                                        Food Finder
                                     </a>
                                     <div class="menu-pages-item-subpages menu-subpages">
                                         <ul class="menu-subpages-list">
                                             <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/user-friendly/">
-                                                    <div class="menu-subpages-item-link-line">
-                                                    </div>
-                                                    <span class="menu-subpages-item-link-label">
-                                                        User friendly
-                                                    </span>
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>About</span>
                                                 </a>
                                             </li>
                                             <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/easy-peasy/">
-                                                    <div class="menu-subpages-item-link-line">
-                                                    </div>
-                                                    <span class="menu-subpages-item-link-label">
-                                                        Easy peasy
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" href="https://barba.js.org/features/smart/">
-                                                    <div class="menu-subpages-item-link-line">
-                                                    </div>
-                                                    <span class="menu-subpages-item-link-label">
-                                                        Smart
-                                                    </span>
+                                                <a class="menu-subpages-item-link" href="results.html">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Result</span>
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
                                 <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                    <a class="menu-pages-item-link " href="https://barba.js.org/showcase/">
-                                        Showcases
+                                    <a class="menu-pages-item-link" onclick="alert('TODO: implement this!')">
+                                        Account
                                     </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Settings</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Search history</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Sign out</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                                 <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                    <a class="menu-pages-item-link " href="https://barba.js.org/docs/getstarted/intro/">
-                                        Docs
+                                    <a class="menu-pages-item-link">
+                                        Theme
                                     </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme1()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Royal Blue</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme2()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Summer Sky</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme3()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Islamic Green</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme4()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Yellow Orange</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme5()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Cinnabar</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme6()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Blue Violet</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
@@ -146,10 +156,79 @@
                 </div>
             </nav>
         </header>
-        <!-- Only main container changes on link navigation -->
+        <!-- Only data-barba container changes on link navigation -->
         <div data-barba="container" data-barba-namespace="results">
-            <main>
-                <button class="btn style4" onclick="redirectToUrl('index.html')">Back</button>
+            <svg>
+                <symbol viewBox="0 0 21 15" id="barba-arrow-next">
+                    <path d="M16.243 8.142H0v-2h16.385l-4.728-4.728L13.07 0l5.657 5.657 1.414 1.414-7.07 7.071-1.415-1.414 4.586-4.586z" fill-rule="evenodd"></path>
+                </symbol>
+                <symbol viewBox="0 0 21 15" id="barba-arrow-prev">
+                    <path d="M4.757 8.142H21v-2H4.615l4.728-4.728L7.93 0 2.272 5.657.858 7.07l7.07 7.071 1.415-1.414-4.586-4.586z" fill-rule="evenodd"></path>
+                </symbol>
+            </svg>
+            <main class="main">
+                <div class="main-wrapper">
+                    <ul class="results-nav">
+                        <li class="results-nav-el">
+                            <a onclick="backward()">
+                                <svg viewBox="0 0 21 15" class="arrow">
+                                    <use href="#barba-arrow-prev"></use>
+                                </svg>
+                                <span class="no-select" id="left-arrow">Reviews</span>
+                            </a>
+                        </li>
+                        <li class="results-nav-el">
+                            <a onclick="forward()">
+                                <span class="no-select" id="right-arrow">Directions</span>
+                                <svg viewBox="0 0 21 15" class="arrow">
+                                    <use href="#barba-arrow-next"></use>
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
+                    <h1 class="results-title" id="pick"></h1>
+                    <h2 id="info"></h2>
+                    <div class="results-wrapper" style="opacity: 1; transform: translate(0px, 0px);">
+                        <div class="box--images" style="opacity: 1; transform: translate(-50%, 0%);">
+                            <div class="results-box-body">
+                                <div id="photo"></div>
+                            </div>
+                        </div>
+                        <div class="box--directions" style="opacity: 1; transform: translate(-50%, 0%);">
+                            <div class="results-box-body">
+                                <div class="map-container">
+                                    <div id="map"></div>
+                                    <div id="directionsPanel"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box--reviews" style="opacity: 1; transform: translate(-50%, 0%);">
+                            <div class="results-box-body">
+                                <p class="results-box-body-text">
+                                    Insert reviews here
+                                </p>
+                                <br>
+                                <p class="results-box-body-text">
+                                    Insert form to leave a review here
+                                </p>
+                            </div>
+                            <div class="results-box-footer">
+                                <div class="button-wrapper">
+                                    <a onclick="alert('TODO: implement this!')" class="link-button" style="opacity: 1; transform: translate(0px, 0px);">Submit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-wrapper--back">
+                        <a href="index.html" class="link-button" style="opacity: 1; transform: translate(0px, 0px);">Back</a>
+                    </div>
+                    <div class="button-wrapper--roll">
+                        <a onclick="roll()" class="link-button" style="opacity: 1; transform: translate(0px, 0px);">Re-roll</a>
+                    </div>
+                    <!-- <div style="text-align:center">
+                        <a onclick="roll()" class="link-button" style="opacity: 1; transform: translate(0px, 0px);">Re-roll</a>
+                    </div> -->
+                </div>
             </main>
         </div>
     </div>
@@ -157,11 +236,17 @@
         <div class="transition-title"></div>
         <div class="transition-background"></div>
     </div>
+    <!-- Third-party -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://unpkg.com/@barba/core"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
+    <!-- Global -->
     <script src="js/menu.js"></script>
     <script src="js/nav.js"></script>
+    <script src="js/theme.js"></script>
+    <!-- Local -->
+    <script src="js/results/results.js"></script>
+    <script src="js/results/resultsNav.js"></script>
 </body>
 
 </html>

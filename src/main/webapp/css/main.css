@@ -1,6 +1,43 @@
 @charset "UTF-8";
 
-@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Space+Mono:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa&family=Source+Code+Pro:wght@400;700&family=Space+Mono:wght@400;700&display=swap");
+
+:root {
+  --main-color: #2e5bdc;
+  --main-color-background: rgba(46, 91, 220, 0.2);
+  --button-color: #5a82f1;
+  --font: "Comfortaa";
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+/* Prevent text selection */
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.main-wrapper {
+    position: absolute;
+    padding: 4rem;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 
 html.js {
     opacity: 0;
@@ -22,47 +59,9 @@ body.prevent-scroll {
     margin-left: calc(100vw - 100%);
 }
 
-.is-transitioning {
-    position: absolute;
-    width: 100%;
-    pointer-events: none;
-}
-
-@media only screen and (min-width: 64em) {
-    .is-transitioning {
-        overflow: hidden;
-    }
-}
-
-.site-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.site-content-inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-}
-
-.site-content-inner> :first-child {
-    margin-top: 0;
-}
-
-.site-content-inner> :last-child {
-    margin-bottom: 0;
-}
-
-.site-content-inner[data-barba-namespace='docs'] {
-    display: block;
-    padding: 0;
-}
-
 html {
     box-sizing: border-box;
+    font-size: calc(1em * 0.625);
 }
 
 *,
@@ -75,10 +74,6 @@ html {
     -webkit-tap-highlight-color: transparent;
 }
 
-img {
-    height: auto;
-}
-
 input:focus,
 select:focus,
 textarea:focus,
@@ -86,197 +81,32 @@ button:focus {
     outline: none;
 }
 
-html {
-    font-size: calc(1em * 0.625);
-}
-
 body {
-    font: 300 1.3rem/1.65 "Rubik", sans-serif;
+    font: 300 1.3rem/1.65 "Comfortaa", sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
 }
 
 @media only screen and (min-width: 48em) {
     body {
-        font: 300 1.6rem/1.65 "Rubik", sans-serif;
+        font: 300 1.6rem/1.65 "Comfortaa", sans-serif;
     }
 }
 
 @media only screen and (min-width: 64em) {
     body {
-        font: 300 1.8rem/1.65 "Rubik", sans-serif;
+        font: 300 1.8rem/1.65 "Comfortaa", sans-serif;
     }
 }
 
-.button,
-[class*='button--'] {
-    display: block;
-    padding: 1rem 3.8rem;
-    color: #5a82f1;
-    font-family: "Space Mono", monospace;
-    font-weight: 700;
-    letter-spacing: 0.1rem;
-    border: 0.2rem solid #5a82f1;
-    fill: #5a82f1;
-    border-radius: 0.4rem;
-    transition: background-color 0.4s, color 0.4s, border-color 0.4s;
-}
-
-.button:hover,
-[class*='button--']:hover {
-    color: white;
-    background: #5a82f1;
-}
-
-[class*='button--'][class*='--fill'] {
-    color: white;
-    background: #5a82f1;
-    fill: white;
-}
-
-[class*='button--'][class*='--fill']:not([class*='--black']):hover {
-    background: #2e5bdc;
-    border-color: #2e5bdc;
-}
-
-[class*='button--'][class*='--fill'][class*='--black'] {
-    background: black;
-    border-color: transparent;
-}
-
-[class*='button--'][class*='--github'] {
-    color: black;
-    font-size: 11px;
-    font-weight: 300;
-    transition: background-color 0.4s, color 0.4s, border-color 0.4s, transform 0.4s;
-}
-
-[class*='button--'][class*='--github'] span {
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    width: 160%;
-    margin-left: 1rem;
-    opacity: 0;
-    transform: translateY(-50%);
-    transition: opacity 0.4s ease-in-out;
-}
-
-.is-open [class*='button--'][class*='--github'] span {
-    opacity: 1;
-}
-
-[class*='button--'][class*='--rounded'] {
-    width: 5rem;
-    height: 5rem;
-    padding: 0.7rem;
-    border-radius: 50%;
-}
-
-.icon,
-[class*='icon--'] {
-    width: 3.2rem;
-    height: 3.2rem;
-    fill: inherit;
-}
-
-[class*='icon--'][class*='--barba'] {
-    fill: transparent;
-    stroke: white;
-    stroke-width: 0.1rem;
-}
-
-.partial-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.link {
-    position: relative;
-    color: #2e5bdc;
-}
-
-.link::before {
-    content: '';
-    position: absolute;
-    bottom: -0.5rem;
-    left: 0;
-    display: block;
-    width: 100%;
-    height: 0.2rem;
-    background-color: #2e5bdc;
-    transform-origin: center left;
-    transition: transform 0.3s ease-out;
-}
-
-.link:hover::before {
-    transform-origin: center right;
-    transform: scaleX(0);
-}
-
-[data-barba='container'] {
-    position: relative;
-    min-height: 100vh;
-}
-
-.homepage {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    padding: 4rem;
-    text-align: center;
-}
-
-.homepage-title {
-    max-width: 65rem;
+input {
+    outline: none;
     margin: 0;
-    margin-bottom: 2rem;
-    font-family: "Space Mono", monospace;
-    font-size: 1.6rem;
-    font-weight: 400;
-    line-height: 1.2;
-}
-
-@media only screen and (min-width: 37.5em) {
-    .homepage-title {
-        width: 80%;
-        font-size: 2.5rem;
-    }
-}
-
-.homepage-title .line {
-    overflow: hidden;
-}
-
-.homepage-title span {
-    display: inline-block;
-}
-
-.homepage-buttons {
-    display: flex;
-    flex-direction: column;
-}
-
-@media only screen and (min-width: 48em) {
-    .homepage-buttons {
-        flex-direction: row;
-    }
-
-    .homepage-buttons .button+.button {
-        margin-left: 2rem;
-    }
-}
-
-.homepage-buttons .button {
-    margin-top: 1rem;
-    border-radius: 10rem;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    width: 100%;
+    font-size: 14px;
+    font-family: inherit;
 }

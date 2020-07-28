@@ -38,14 +38,15 @@ function query(queryStr) {
 
 function roll() {
     const pickEl = document.getElementById("pick");
-    const ratingEl = document.getElementById("rating");
+    const infoEl = document.getElementById("info");
     fetch(`/query`, { method: "GET" })
         .then((response) => response.json())
         .then((response) => {
             if (response.status === "OK") {
                 pickEl.innerText = response.pick.name;
-                ratingEl.innerText = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                infoEl.innerText = convertPriceLevel(response.pick.priceLevel);
+                infoEl.innerText += " • " +  response.pick.rating + ' ★';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxheight=400&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
                 localStorage.setItem("restaurantAddress", response.pick.vicinity);
                 loadImage(photoUrl);
                 calculateAndDisplayRoute(directionsService, directionsRenderer);
@@ -55,6 +56,13 @@ function roll() {
             else throw "Unforeseen error";
         })
         .catch((error) => { pickEl.innerText = error; });
+}
+
+function convertPriceLevel(priceLevel) {
+    let priceLevelStr = "";
+    for (let i = 0; i <= priceLevel; i++)
+        priceLevelStr += "$";
+    return priceLevelStr;
 }
 
 //Retrieve and display restaurant image
@@ -136,80 +144,6 @@ function convertLocation(location) {
         .then((response) => response.json())
         .then((response) => { return response.results[0].formatted_address; })
         .catch((error) => console.log(error));
-}
-
-/* ==========================================================================
-   USER SIGN-IN
-   ========================================================================== */
-function onSignIn(googleUser) {
-    let id_token = googleUser.getAuthResponse().id_token;
-    let profile = googleUser.getBasicProfile();
-    fetch(`/login?id_token=${id_token}`)
-        .then((response) => response.json())
-        .then((data) => {
-            localStorage.setItem("user", data.id);
-            localStorage.setItem("loggedIn", true);
-            addUserContent(profile.getName(), profile.getImageUrl());
-            toggleAccountMenu();
-        }).catch((error) => {
-            console.log(error);
-        });
-}
-
-//Add user information to signed in UI
-function addUserContent(name, image) {
-    document.getElementById("user-name").innerText = name;
-    document.getElementById("profile-pic").src = image;
-}
-
-//Replaces the sign-in button with signed in UI
-function toggleAccountMenu() {
-    document.getElementById("account-menu").classList.toggle("show");
-    document.getElementById("sign-in").classList.toggle("hide");
-}
-
-//Logs out of the account
-function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function() {
-        console.log("User signed out.");
-    });
-    localStorage.setItem("user", 0);
-    localStorage.setItem("loggedIn", false);
-    toggleAccountMenu();
-}
-
-function toggleShow() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-//Close account dropdown when clicking elsewhere
-window.onclick = function(event) {
-    if (!event.target.matches(".dropbtn")) {
-        let dropdownEl = document.getElementById("myDropdown");
-        if (dropdownEl.classList.contains("show")) {
-            dropdownEl.classList.remove("show");
-        }
-    }
-};
-
-/* ==========================================================================
-   RETRIEVING SEARCHES
-   ========================================================================== */
-//Retrieve searches associated with the current user
-function getSearches() {
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    fetch(`/searches?user=${userID}`, { method: "GET" })
-        .then((response) => response.json())
-        .then((searches) => {
-            const searchesEl = document.getElementById("cards");
-            searches.forEach((search) => {
-                searchesEl.appendChild(createSearchElement(search));
-            });
-        });
 }
 
 /* ==========================================================================
