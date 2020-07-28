@@ -16,9 +16,6 @@ document.onkeydown = function(evt) {
 };
 
 function menuToggle() {
-    if (isTransitioning())
-        return;
-
     if (isMenuOpen())
         menuClose();
     else

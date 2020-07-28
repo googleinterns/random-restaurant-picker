@@ -4,7 +4,7 @@ function redirectToUrl(url) {
     barba.go(url)
 }
 
-function isTransitioning() { return document.body.classList.contains('is-transitioning') }
+function isTransitioning() { return document.querySelector('html').classList.contains('is-transitioning') }
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -14,7 +14,6 @@ function defaultTransition(currContainer, nextContainer) {
     const transitionTitle = document.querySelector('.transition-title');
     const transitionBackground = document.querySelector('.transition-background');
     transitionTitle.innerHTML = capitalizeFirstLetter(nextContainer.dataset.barbaNamespace);
-    // transitionTitle.innerHTML = "You're headed to...";
     return gsap
         .timeline({
             onComplete: () => {
@@ -105,68 +104,81 @@ function toResults(currContainer, nextContainer) {
         .then();
 }
 
+function contentAnimation(container) {
+    return gsap
+        .timeline()
+        .from(container.querySelector('.is-animated'), {
+            duration: 0.5,
+            translateY: 10,
+            opacity: 0,
+            stagger: 0.4
+        })
+}
 
-// function contentAnimation(container) {
-//     $(container.querySelector('.green-heading-bg')).addClass('show')
-//     return gsap
-//         .timeline()
-//         .from(container.querySelector('.is-animated'), {
-//             duration: 0.5,
-//             translateY: 10,
-//             opacity: 0,
-//             stagger: 0.4
-//         })
-// }
 
+
+/* ==========================================================================
+   GLOBAL (DEFAULT) HOOKS
+
+   These always run before their respective specific hook
+   ========================================================================== */
+barba.hooks.leave(async (data) => {
+    document.querySelector('html').classList.add('is-transitioning');
+    document.body.classList.add('prevent-scroll');
+    if (isMenuOpen())
+        menuClose();
+});
+barba.hooks.enter(async (data) => {
+    window.scrollTo(0, 0);
+});
+barba.hooks.afterEnter(async (data) => {
+    document.querySelector('html').classList.remove('is-transitioning');
+    document.body.classList.remove('prevent-scroll');
+});
+barba.hooks.once(async (data) => {
+    // TODO: use async once(data) for content animation
+    // await contentAnimation(data.next.container)
+});
+
+/* ==========================================================================
+   SPECIFIC HOOKS
+   ========================================================================== */
 $(function() {
     barba.init({
         preventRunning: true,
         transitions: [
-            // Default
+            // To Restaurant Roulette
             {
-                async leave(data) {
-                    document.body.classList.add('is-transitioning');
-                    document.body.classList.add('prevent-scroll');
-                    if (isMenuOpen())
-                        menuClose();
-                },
+                to: { namespace: ['Restaurant Roulette'] },
+                async enter(data) { await defaultTransition(data.current.container, data.next.container); },
 
-                async enter(data) {
-                    await defaultTransition(data.current.container, data.next.container);
-                    document.body.classList.remove('is-transitioning');
-                    document.body.classList.remove('prevent-scroll');
+                async beforeEnter(data) {
+                    $('head').append('<link rel="stylesheet" href="css/index/index.css">');
+                    $('head').append('<link rel="stylesheet" href="css/index/form.css">');
+                    $('head').append('<link rel="stylesheet" href="css/index/banner.css">');
+                    $.getScript("js/index/index.js");
+                    $.getScript("js/index/form.js");
+                    document.getElementById('menu-roulette').classList.add('is-active');
+                    document.getElementById('menu-result').classList.remove('is-active');
                 }
             },
             // To results
             {
                 to: { namespace: ['results'] },
-                async leave(data) {
-                    document.body.classList.add('is-transitioning');
-                    document.body.classList.add('prevent-scroll');
-                    if (isMenuOpen())
-                        menuClose();
-                },
-
                 async enter(data) {
                     await toResults(data.current.container, data.next.container);
-                    document.body.classList.remove('is-transitioning');
-                    document.body.classList.remove('prevent-scroll');
+                    await addMapScript();
+                    await roll();
+                },
+
+                async beforeEnter(data) {
+                    $('head').append('<link rel="stylesheet" href="css/results/results.css">');
+                    $.getScript("js/results/results.js");
+                    $.getScript("js/results/resultsNav.js");
+                    document.getElementById('menu-result').classList.add('is-active');
+                    document.getElementById('menu-roulette').classList.remove('is-active');
                 }
             }
-            // {
-            //     from: { namespace: ['search'] },
-            //     to: { namespace: ['results'] },
-            //     async leave(data) {
-            //         await pageTransitionIn()
-            //         data.current.container.remove()
-            //     },
-
-            //     async enter(data) {
-            //         await pageTransitionOut(data.next.container)
-            //     },
-
-            //     async once(data) { await contentAnimation(data.next.container); }
-            // }
         ]
     });
 });

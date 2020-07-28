@@ -1,3 +1,7 @@
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
 .header,
 [class*='header--'] {
     position: fixed;
@@ -9,7 +13,6 @@
 }
 
 @media only screen and (min-width: 48em) {
-
     .header,
     [class*='header--'] {
         background: transparent;
@@ -56,6 +59,10 @@
     }
 }
 
+/* ==========================================================================
+   MENU TRIGGER
+   ========================================================================== */
+
 .menu-trigger {
     position: relative;
     z-index: 999;
@@ -63,9 +70,10 @@
     width: 50px;
     height: 50px;
     margin: 0 1rem;
-    background-color: rgba(46, 91, 220, 0.2);
+    background-color: var(--main-color-background);
     border-radius: 50%;
     cursor: pointer;
+    transition: background-color 0.4s;
 }
 
 .menu-trigger-shape {
@@ -73,11 +81,11 @@
     top: 0;
     left: 0;
     fill: transparent;
-    stroke: #2e5bdc;
+    stroke: var(--main-color);
     stroke-width: 4px;
     stroke-dasharray: 160px;
     stroke-dashoffset: 160px;
-    transition: stroke-dashoffset 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: stroke-dashoffset 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), stroke 0.4s;
 }
 
 .is-open .menu-trigger-shape,
@@ -92,12 +100,10 @@
     overflow: hidden;
     width: 45%;
     height: 0.3rem;
-    background: #2e5bdc;
+    background: var(--main-color);
     transform: translate(-50%, -50%);
     transform-origin: center center;
-    transition: top 0.4s, transform 0.4s, opacity 0.4s ease-in-out;
-    /* stylelint-disable no-descending-specificity */
-    /* stylelint-enable no-descending-specificity */
+    transition: top 0.4s, transform 0.4s, opacity 0.4s ease-in-out, background-color 0.4s;
 }
 
 .modal.is-open .menu-trigger-bar:nth-child(1) {
@@ -136,6 +142,11 @@
     top: 50%;
     transform: translate(-50%, -50%) rotate(-45deg);
 }
+
+
+/* ==========================================================================
+   MENU
+   ========================================================================== */
 
 .menu {
     position: absolute;
@@ -243,33 +254,29 @@
     }
 }
 
-.menu-pages-item-title,
 .menu-pages-item-link {
-    color: #2e5bdc;
+    color: var(--main-color);
     font-size: 4rem;
     line-height: 1.2em;
     transition: color 0.2s ease-out;
+    cursor: pointer;
 }
 
-.menu-pages-item-title:hover,
-.menu-pages-item-title.is-active,
+.menu-pages-item.is-active .menu-pages-item-link {
+    pointer-events: none;
+}
+
 .menu-pages-item-link:hover,
-.menu-pages-item-link.is-active {
-    color: black;
+.menu-pages-item.is-active .menu-pages-item-link {
+    color: black !important;
 }
 
 @media screen and (max-height: 850px) {
 
-    .menu-pages-item-title,
     .menu-pages-item-link {
         font-size: 3rem;
         line-height: 1.2;
     }
-}
-
-.menu-pages-item-link,
-.menu-subpages-item-link {
-    text-decoration: none;
 }
 
 .menu-pages-list,
@@ -288,7 +295,7 @@
 }
 
 .menu-subpages-item {
-    font-size: 1.6rem;
+    font-size: 1.9rem;
     line-height: 1.2em;
 }
 
@@ -299,74 +306,31 @@
 .menu-subpages-item-link {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
-.menu-subpages-item-link-line {
+.menu-subpages-item.is-active .menu-subpages-item-link {
+    pointer-events: none;
+}
+
+.menu-subpages-item .menu-subpages-item-link-line {
     width: 0;
     height: 2px;
     margin-right: 10px;
     transition: width 0.2s ease-out;
-}
-
-.menu-subpages-item:nth-child(1) .menu-subpages-item-link-line {
-    background-color: #38d1f1;
-}
-
-.menu-subpages-item:nth-child(2) .menu-subpages-item-link-line {
-    background-color: #04bf0c;
-}
-
-.menu-subpages-item:nth-child(3) .menu-subpages-item-link-line {
-    background-color: #ffa543;
-}
-
-.menu-subpages-item:nth-child(4) .menu-subpages-item-link-line {
-    background-color: #ec4343;
-}
-
-.menu-subpages-item:nth-child(5) .menu-subpages-item-link-line {
-    background-color: #8c44d9;
-}
-
-.menu-subpages-item:nth-child(6) .menu-subpages-item-link-line {
-    background-color: #2e5bdc;
+    background-color: var(--main-color);
 }
 
 .menu-subpages-item.is-active .menu-subpages-item-link-line {
     width: 30px;
 }
 
-.menu-subpages-item-link-label {
+.menu-subpages-item span {
     color: #858585;
     transition: color 0.2s ease-out;
 }
 
-.menu-subpages-item:nth-child(1):hover .menu-subpages-item-link-label,
-.menu-subpages-item:nth-child(1).is-active .menu-subpages-item-link-label {
-    color: #38d1f1;
-}
-
-.menu-subpages-item:nth-child(2):hover .menu-subpages-item-link-label,
-.menu-subpages-item:nth-child(2).is-active .menu-subpages-item-link-label {
-    color: #04bf0c;
-}
-
-.menu-subpages-item:nth-child(3):hover .menu-subpages-item-link-label,
-.menu-subpages-item:nth-child(3).is-active .menu-subpages-item-link-label {
-    color: #ffa543;
-}
-
-.menu-subpages-item:nth-child(4):hover .menu-subpages-item-link-label,
-.menu-subpages-item:nth-child(4).is-active .menu-subpages-item-link-label {
-    color: #ec4343;
-}
-
-.menu-subpages-item:nth-child(5):hover .menu-subpages-item-link-label,
-.menu-subpages-item:nth-child(5).is-active .menu-subpages-item-link-label {
-    color: #8c44d9;
-}
-
-.menu-subpages-item:nth-child(6):hover .menu-subpages-item-link-label,
-.menu-subpages-item:nth-child(6).is-active .menu-subpages-item-link-label {
-    color: #2e5bdc;
+.menu-subpages-item:hover span,
+.menu-subpages-item.is-active span {
+    color: var(--main-color);
 }

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GENERAL BUTTONS
+   BUTTONS
    ========================================================================== */
 button {
     outline: none;
@@ -7,34 +7,39 @@ button {
     border: none;
 }
 
-.btn {
-    box-sizing: border-box;
-    appearance: none;
-    background-color: transparent;
-    border: 2px solid;
-    border-radius: 0.6em;
-    cursor: pointer;
-    font-size: 1rem;
-    font-size: 50px;
+.button,
+[class*='button--'] {
+    padding: 2rem 3rem;
+    color: var(--button-color);
+    font-size: 5rem;
+    font-family: var(--font);
+    border: 0.2rem solid var(--button-color);
+    border-radius: 10rem;
+    fill: var(--button-color);
     line-height: 1;
-    text-decoration: none;
-    font-family: "Comfortaa";
-    margin-top: 40px;
-    padding: 20px 30px;
+    cursor: pointer;
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s;
 }
 
-.btn:hover,
-.btn:focus {
-    color: #fff;
-    outline: 0;
+.button--small {
+    font-size: 16px;
+    margin-top: 0px;
+    padding: 1rem 1.6rem;
 }
 
-.btn:active {
-    animation: btn-animation 0.2s linear 0s alternate 2;
+.button:hover,
+[class*='button--']:hover {
+    color: white;
+    background: var(--button-color);
 }
 
-/* hover and click effects */
-@keyframes btn-animation {
+.button:active,
+[class*='button--']:active {
+    animation: btn-shrink 0.2s linear 0s alternate 2;
+}
+
+/* Click effect */
+@keyframes btn-shrink {
     from {
         transform: scale(1);
     }
@@ -44,108 +49,33 @@ button {
     }
 }
 
-.small {
-    font-size: 16px;
-    margin-top: 0px;
-    padding: 10px 16px;
-}
-
 /* ==========================================================================
-   BUTTON STYLES
+   LINK BUTTONS
    ========================================================================== */
-.style1 {
-    color: #e74c3c;
-    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+
+.link-button,
+[class*='link-button--'] {
+    padding: 1.4rem 4.8rem;
+    color: var(--button-color);
+    font-family: var(--font);
+    font-weight: 700;
+    letter-spacing: 0.1rem;
+    border: 0.2rem solid var(--button-color);
+    fill: var(--button-color);
+    border-radius: 10rem;
+    cursor: pointer;
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s;
 }
 
-.style1:hover {
-    box-shadow: 0 0 40px 40px #e74c3c inset;
+.link-button:hover,
+[class*='link-button--']:hover {
+    color: white;
+    background: var(--button-color);
 }
 
-.style2 {
-    border-radius: 3em;
-    border-color: #1abc9c;
-    color: #fff;
-    background-image: linear-gradient(to right, rgba(26, 188, 156, 0.6), rgba(26, 188, 156, 0.6) 5%, #1abc9c 5%, #1abc9c 10%, rgba(26, 188, 156, 0.6) 10%, rgba(26, 188, 156, 0.6) 15%, #1abc9c 15%, #1abc9c 20%, rgba(26, 188, 156, 0.6) 20%, rgba(26, 188, 156, 0.6) 25%, #1abc9c 25%, #1abc9c 30%, rgba(26, 188, 156, 0.6) 30%, rgba(26, 188, 156, 0.6) 35%, #1abc9c 35%, #1abc9c 40%, rgba(26, 188, 156, 0.6) 40%, rgba(26, 188, 156, 0.6) 45%, #1abc9c 45%, #1abc9c 50%, rgba(26, 188, 156, 0.6) 50%, rgba(26, 188, 156, 0.6) 55%, #1abc9c 55%, #1abc9c 60%, rgba(26, 188, 156, 0.6) 60%, rgba(26, 188, 156, 0.6) 65%, #1abc9c 65%, #1abc9c 70%, rgba(26, 188, 156, 0.6) 70%, rgba(26, 188, 156, 0.6) 75%, #1abc9c 75%, #1abc9c 80%, rgba(26, 188, 156, 0.6) 80%, rgba(26, 188, 156, 0.6) 85%, #1abc9c 85%, #1abc9c 90%, rgba(26, 188, 156, 0.6) 90%, rgba(26, 188, 156, 0.6) 95%, #1abc9c 95%, #1abc9c 100%);
-    background-position: 0 0;
-    background-size: 100%;
-    transition: background 300ms ease-in-out;
-}
-
-.style2:hover {
-    background-position: 100px;
-}
-
-.style3 {
-    border-color: #3498db;
-    color: #fff;
-    box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
-    transition: all 150ms ease-in-out;
-}
-
-.style3:hover {
-    color: #3498db;
-    box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
-}
-
-.style4 {
-    border-color: #4885ed;
-    color: #4885ed;
-    background-image: linear-gradient(45deg, #4885ed 50%, transparent 50%);
-    background-position: 100%;
-    background-size: 400%;
-    transition: background 300ms ease-in-out;
-}
-
-.style4:hover {
-    background-position: 0;
-}
-
-.style5 {
-    border-color: #8e44ad;
-    border-radius: 0;
-    color: #8e44ad;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    transition: color 150ms ease-in-out;
-}
-
-.style5:after {
-    content: '';
-    position: absolute;
-    display: block;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 100%;
-    background: #8e44ad;
-    z-index: -1;
-    transition: width 150ms ease-in-out;
-}
-
-.style5:hover {
-    color: #fff;
-}
-
-.style5:hover:after {
-    width: 110%;
-}
-
-.style6 {
-    border-radius: 3em;
-    border-color: #2ecc71;
-    color: #2ecc71;
-    background-image: linear-gradient(to bottom, transparent 50%, #2ecc71 50%);
-    background-position: 0% 0%;
-    background-size: 210%;
-    transition: background 150ms ease-in-out, color 150ms ease-in-out;
-}
-
-.style6:hover {
-    color: #fff;
-    background-position: 0 100%;
+.link-button--large {
+    padding: 1.6rem 6.2rem;
+    font-size: 3rem;
 }
 
 /* ==========================================================================
@@ -165,7 +95,6 @@ input[type=radio]+label {
     line-height: 20px;
     color: #333;
     text-align: center;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
     vertical-align: middle;
     cursor: pointer;
     background-color: #f5f5f5;
@@ -175,12 +104,11 @@ input[type=radio]+label {
     background-image: -o-linear-gradient(top, #fff, #e6e6e6);
     background-image: linear-gradient(to bottom, #fff, #e6e6e6);
     background-repeat: repeat-x;
-    border: 1px solid #ccc;
+    border: 0.3px solid #ccc;
+    border-radius: 10rem;
     border-color: #e6e6e6 #e6e6e6 #bfbfbf;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
     border-bottom-color: #b3b3b3;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
     -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -193,4 +121,33 @@ input[type=radio]:checked+label {
     -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
     background-color: #e0e0e0;
+}
+
+/* ==========================================================================
+   BUTTON WRAPPERS
+   ========================================================================== */
+
+.button-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.button-wrapper [class*='link-button']+[class*='link-button'] {
+    margin-left: 2rem;
+}
+
+.button-wrapper--back {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    left: 0%;
+    padding: 4rem;
+}
+
+.button-wrapper--roll {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    left: 42.5%;
+    padding: 4rem;
 }

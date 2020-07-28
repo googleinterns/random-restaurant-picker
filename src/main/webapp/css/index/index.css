@@ -1,0 +1,47 @@
+/* ==========================================================================
+   TITLE
+   ========================================================================== */
+.search-title {
+    color: var(--main-color);
+    font-family: "Space Mono", monospace;
+    font-size: 3.2rem;
+    font-weight: 400;
+    padding: 2rem;
+    margin: 0;
+    text-align: center;
+    transition: color 0.4s;
+}
+
+@media only screen and (min-width: 48em) {
+    .search-title {
+        top: -5rem;
+        font-size: 5rem;
+    }
+}
+
+@media only screen and (min-width: 100em) {
+    .search-title {
+        font-size: 7rem;
+    }
+}
+
+/* ==========================================================================
+   MAPS
+   ========================================================================== */
+.map-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#map {
+    width: 25vw;
+    height: 35vh;
+    ;
+}
+
+#directionsPanel {
+    width: 25vw;
+    height: 35vh;
+    overflow: scroll;
+}

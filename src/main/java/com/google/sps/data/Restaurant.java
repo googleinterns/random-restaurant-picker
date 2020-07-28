@@ -23,14 +23,17 @@ public final class Restaurant implements java.io.Serializable {
     private transient int weight = 0;
     private final String name;
     private final double rating;
+    @SerializedName(value = "priceLevel", alternate = "price_level")
+    private final int priceLevel;
     @SerializedName(value = "businessStatus", alternate = "business_status")
     private final String businessStatus;
     private final String vicinity;
     private final Photo[] photos;
 
-    public Restaurant(String name, double rating, String businessStatus, Photo[] photos, String vicinity) {
+    public Restaurant(String name, double rating, int priceLevel, String businessStatus, Photo[] photos, String vicinity) {
         this.name = name;
         this.rating = rating;
+        this.priceLevel = priceLevel;
         this.businessStatus = businessStatus;
         this.photos = photos;
         this.vicinity = vicinity;
@@ -50,6 +53,10 @@ public final class Restaurant implements java.io.Serializable {
 
     public double getRating() {
         return this.rating;
+    }
+
+    public double getPriceLevel() {
+        return this.priceLevel;
     }
 
     public String getBusinessStatus() {
