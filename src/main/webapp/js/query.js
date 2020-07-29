@@ -203,7 +203,7 @@ window.onclick = function(event) {
 /*=========================
     Retrieving SEARCHES
 =========================*/
-//Retrieve searches associated with the current user
+// Retrieve searches associated with the current user
 function getSearches() {
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
@@ -220,6 +220,7 @@ function getSearches() {
     });
 }
 
+// Creates the search card with the inputted search's name, keywords inputted by the user, and the feedback/reroll button (if necessary)
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
     newCardEl.className = 'card card-2';
@@ -322,15 +323,12 @@ function createRestaurantElement(restaurantName) {
     inputContainer.value = restaurantName;
     inputContainer.innerText = restaurantName;
     inputGroupEl.appendChild(inputContainer);
-<<<<<<< HEAD
-=======
     inputGroupEl.appendChild(userEl);
 
     let submitEl = document.createElement('input');
     submitEl.type = "submit";
     submitEl.id = "submit-button";
     inputGroupEl.appendChild(submitEl);
->>>>>>> 290377c... userID info added; still working on accessing restaurant name
     return inputGroupEl;
 }
 
@@ -339,7 +337,6 @@ async function fetchFeedback() {
     if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
-<<<<<<< HEAD
     let response = await fetch(`/feedback?user=${userID}`, {
         method: 'GET'
     })
@@ -361,35 +358,6 @@ async function getFeedback(search) {
             tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
         }
     });
-=======
-    let thisRestaurantsFeedback;
-    fetch(`/feedback?user=${userID}`, {method: 'GET'})
-    .then(response => response.json())
-    .then((feedbackList) => {
-        console.log(feedbackList);
-        for (feedback in feedbackList) {
-            console.log("this feedback " + feedback);
-            console.log("cur name " + feedback.restaurantName);
-            console.log("want this name " + search.name)
-            if (feedback.restaurantName == search.name) {
-                submitted = true;
-                thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
-            }
-        }
-    });
-    let tempFeedbackElement;
-    let buttons;
-    //feedback
-    if (!submitted) {
-        tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
-        buttons = true;
-    } else {
-        tempFeedbackElement = "Feedback" + thisRestaurantsFeedback;
-        buttons = false;
-    }
-    console.log("feedback " + tempFeedbackElement);
-    console.log("buttons " + buttons)
->>>>>>> 290377c... userID info added; still working on accessing restaurant name
     return [tempFeedbackElement, buttons];
 }
 
