@@ -18,7 +18,7 @@ $("#randomize-form").submit((event) => {
 });
 
 // Form underline element
-$("input, textarea").blur(function() {
+$("input, textarea").blur(() => {
     if ($(this).val() != "") {
         $(this).addClass("active");
     } else {
