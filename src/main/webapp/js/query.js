@@ -286,6 +286,7 @@ function getSearches(){
     });
 }
 
+// Creates the search card with the inputted search's name, keywords inputted by the user, and the feedback/reroll button (if necessary)
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
     newCardEl.className = 'card card-2';
