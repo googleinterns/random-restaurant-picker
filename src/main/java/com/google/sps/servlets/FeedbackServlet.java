@@ -73,10 +73,11 @@ public class FeedbackServlet extends HttpServlet {
             Feedback feedback = new Feedback(userID, restaurantName, restaurantRating, rrpRating, notes);
             feedbackList.add(feedback);
         }
+        
         response.setContentType("application/json");
         response.getWriter().println(new Gson().toJson(feedbackList));
     }
-    
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String user = request.getParameter("user-id");
