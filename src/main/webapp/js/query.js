@@ -279,7 +279,7 @@ function getNumReviews() {
 //Retrieve searches associated with the current user
 function getSearches(){
     let userID = 0;
-    if(localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
