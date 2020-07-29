@@ -288,11 +288,11 @@ function getNumReviews() {
     });
 }
 
-/* ==========================================================================
-   RETRIEVING SEARCHES
-   ========================================================================== */
+/*=========================
+    Retrieving SEARCHES
+=========================*/
 // Retrieve searches associated with the current user
-function getSearches(){
+function getSearches() {
     let userID = 0;
     if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
@@ -308,7 +308,7 @@ function getSearches(){
     });
 }
 
-// Create the card containing the search's information
+// Creates the search card with the inputted search's name, keywords inputted by the user, and the feedback/reroll button (if necessary)
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
     newCardEl.className = 'card card-2';
