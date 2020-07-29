@@ -39,7 +39,7 @@ function contentAnimation(container) {
         .from(mainNavigation, { duration: .5, translateY: -10, opacity: 0 })
 }
 
-$(function() {
+$(() => {
     barba.init({
         preventRunning: true,
         transitions: [{

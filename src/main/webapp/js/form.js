@@ -1,8 +1,7 @@
 /* ==========================================================================
    SEARCH FORM
    ========================================================================== */
-// AJAX form POST
-$("#randomize-form").submit(function(event) {
+$("#randomize-form").submit((event) => {
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
 
@@ -30,10 +29,8 @@ $("input, textarea").blur(function() {
 /* ==========================================================================
    SELECT 2 (THIRD-PARTY)
    ========================================================================== */
-(function($) {
+(($) => {
     'use strict';
-
-    //Select 2 Config
     try {
         var selectSimple = $('.js-select-simple');
 
