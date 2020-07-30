@@ -14,6 +14,13 @@
 
 package com.google.sps;
 
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.Assert.assertEquals;
+
 import com.google.sps.servlets.ConvertLocationServlet;
 import com.google.sps.data.UrlOpener;
 
@@ -27,13 +34,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.junit.Assert.assertEquals;
 
 import org.mockito.Mock;
 import org.mockito.ArgumentCaptor;
@@ -63,7 +63,7 @@ public final class ConvertLocationServletTest {
   UrlOpener urlOpener;
 
   @Test
-  public void GETZeroResults() throws IOException{
+  public void getZeroResults() throws IOException{
     //Submit a post request to ConvertLocationServlet that has zero results
     //Actual JSON response
     String json = "{\"plus_code\":{\"global_code\":\"8MJ57PJR+22\"},\"results\":[],\"status\":\"ZERO_RESULTS\"}";
@@ -90,7 +90,7 @@ public final class ConvertLocationServletTest {
   }
 
   @Test
-  public void GETValidResults() throws IOException{
+  public void getValidResults() throws IOException{
     //Submit a post request to ConvertLocationServlet that has zero results
     //Actual response abridged for readability
     String json = "{\"results\":[{\"formatted_address\":\"220 S Thayer St, Ann Arbor, MI 48104, USA\",\"place_id\":\"ChIJKQkrYECuPIgRVL8htvW27eM\",\"types\":[\"street_address\"]},{\"formatted_address\":\"208 S Thayer St, Ann Arbor, MI 48104, USA\",\"place_id\":\"EikyMDggUyBUaGF5ZXIgU3QsIEFubiBBcmJvciwgTUkgNDgxMDQsIFVTQSIbEhkKFAoSCTH47V5ArjyIEYGV766E3_UFENAB\",\"types\":[\"street_address\"]}],\"status\":\"OK\"}";
