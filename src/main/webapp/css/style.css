@@ -122,36 +122,36 @@ body.fade-out {
     transition: none;
 }
 
-#sign-in{
+#sign-in {
     position: fixed;
     right: 30px;
     top: 30px;
 }
 
 /* ==========================================================================
-   Logged in Account
+   LOGGED IN ACCOUNT
    ========================================================================== */
-
 .dropbtn {
-  background-color: white;
-  color: darkgray;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 40px;
-  width: 200px;
+    background-color: white;
+    color: darkgray;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+    width: 200px;
 }
 
-.dropbtn > * {
-  pointer-events: none;
+.dropbtn>* {
+    pointer-events: none;
 }
 
-.dropbtn:hover, .dropbtn:focus {
-  background-color: lightgray;
+.dropbtn:hover,
+.dropbtn:focus {
+    background-color: lightgray;
 }
 
 .dropdown {
@@ -163,19 +163,19 @@ body.fade-out {
 }
 
 .dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
 
 .dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
 }
 
 .dropdown-content a:hover {
@@ -190,7 +190,7 @@ body.fade-out {
     display: none;
 }
 
-#profile-pic{
+#profile-pic {
     border-radius: 50%;
     height: 36px;
     width: 36px;
@@ -198,7 +198,28 @@ body.fade-out {
     vertical-align: middle;
 }
 
-#user-name{
-  padding: 16px;
-  font-size: 16px;
+#user-name {
+    padding: 16px;
+    font-size: 16px;
+}
+
+/* ==========================================================================
+   MAPS
+   ========================================================================== */
+.map-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#map {
+    width: 25vw;
+    height: 35vh;
+    ;
+}
+
+#directionsPanel {
+    width: 25vw;
+    height: 35vh;
+    overflow: scroll;
 }
