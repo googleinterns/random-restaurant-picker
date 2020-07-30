@@ -14,7 +14,7 @@
 
 /*=========================
     RESTAURANT QUERY AND RE-ROLL
-=========================*/
+ ========================*/
 $("#randomize-form").submit(function(event) {
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
@@ -79,7 +79,7 @@ function reroll() {
 
 /*=========================
     USER'S LOCATION AND ADDRESS
-=========================*/
+ =========================*/
 function getLocation() {
     if (navigator.geolocation)
         navigator.geolocation.getCurrentPosition(geoLocEnabled, geoLocFallback);
@@ -263,7 +263,7 @@ function loadImage(photoUrl) {
  =========================*/
  let directionsRenderer;
  let directionsService;
-function addMapScript(){
+function addMapScript() {
     let script = document.createElement('script');
     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw&callback=initMap';
     script.defer = true;
@@ -294,7 +294,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
       destination: end,
       travelMode: "DRIVING"
     },
-    function(response, status) {
+    (response, status) => {
       if (status === "OK") {
         directionsRenderer.setDirections(response);
       } else {
