@@ -30,7 +30,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import com.google.sps.data.Feedback;
+import com.google.sps.data.UserFeedback;
 import com.google.sps.data.SearchItem;
 
 import java.io.InputStream;
@@ -63,14 +63,14 @@ public class FeedbackServlet extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
-        List<Feedback> feedbackList = new ArrayList<>();
+        List<UserFeedback> feedbackList = new ArrayList<>();
         for (Entity entity : results.asIterable()) {
             String userID = (String) entity.getProperty("user");
             String restaurantName = (String) entity.getProperty("restaurantName");
             String restaurantRating = (String) entity.getProperty("restaurantRating");
             String rrpRating = (String) entity.getProperty("rrpRating");
             String notes = (String) entity.getProperty("notes");
-            Feedback feedback = new Feedback(userID, restaurantName, restaurantRating, rrpRating, notes);
+            UserFeedback feedback = new UserFeedback(userID, restaurantName, restaurantRating, rrpRating, notes);
             feedbackList.add(feedback);
         }
         

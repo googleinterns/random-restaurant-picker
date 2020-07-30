@@ -339,7 +339,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
     if (buttons) {
         let modal = document.getElementById('searchModal');
         let span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
+        span.onclick = () => {
             let restaurantContainerEl = document.getElementById("restaurant-name-container");
             restaurantContainerEl.remove();
             let submitButtonEl = document.getElementById("submit-button");
@@ -349,7 +349,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
             modal.style.display = "none";
         }
         // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
+        window.onclick = event => {
             if (event.target == modal) {
                 let restaurantContainerEl = document.getElementById("restaurant-name-container");
                 restaurantContainerEl.remove();
@@ -415,7 +415,7 @@ function createRestaurantElement(restaurantName) {
 
 async function fetchFeedback() {
     let userID = 0;
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     let response = await fetch(`/feedback?user=${userID}`, {
