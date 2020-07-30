@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.AccessSecret;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,6 @@ public class ConvertLocationServlet extends HttpServlet {
         String apiKey = (AccessSecret.getInstance()).getKey();
         String lat = request.getParameter("lat");
         String lng = request.getParameter("lng");
-        String apiKey = "AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw";
         String sURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&result_type=street_address&key=" + apiKey;
         
         // Connect to the URL using java's native library

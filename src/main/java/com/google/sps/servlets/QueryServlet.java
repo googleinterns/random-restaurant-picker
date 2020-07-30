@@ -27,6 +27,7 @@ import java.io.IOException;
 import com.google.sps.data.Response;
 import com.google.sps.data.Restaurant;
 import com.google.sps.data.User;
+import com.google.sps.data.AccessSecret;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -71,16 +72,13 @@ public class QueryServlet extends HttpServlet {
         URLConnection conn = new URL(urlStr).openConnection();
         conn.connect();
 
-        System.out.println(urlStr);
         JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
         JsonObject responseJson = jsonElement.getAsJsonObject();
-        System.out.println(responseJson.toString());
         Response response = gson.fromJson(responseJson, Response.class);
 
         HttpSession session = servletRequest.getSession(true);
         if (response.getStatus().equals("OK"))
             response.pick();
-        System.out.println(response.getPick().toString());
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
         servletResponse.setContentType("application/json");
