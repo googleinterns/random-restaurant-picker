@@ -241,6 +241,9 @@ function getLastVisited() {
 
 function getFavFood() {
     let foodHolder = document.getElementById('fav-food');
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
         if (foods.length == 0) {
             console.log("hello");

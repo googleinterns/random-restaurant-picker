@@ -35,9 +35,10 @@ public final class FavFoodServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("FavFood");
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    String user = request.getParameter("user");
+    Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
+    Query query = new Query("FavFood").setFilter(propertyFilter);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService().addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     List<String> favFoodList = new ArrayList<>();
@@ -55,10 +56,12 @@ public final class FavFoodServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     String food = request.getParameter("fav-food");
+    long timestamp = System.currentTimeMillis();
 
     // creates Entity for the food
     Entity foodEntity = new Entity("FavFood");
     foodEntity.setProperty("food", food);
+    foodEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(foodEntity);
