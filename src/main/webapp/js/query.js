@@ -40,7 +40,7 @@ function query(queryStr) {
 function roll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
-    fetch(`/query`, { method: "GET" })
+    return fetch(`/query`, { method: "GET" })
         .then((response) => response.json())
         .then((response) => {
             if (response.status === "OK") {
@@ -80,7 +80,7 @@ function getLocation() {
 }
 
 // Geolocation is supported and enabled
-function geoLocEnabled(position) {
+async function geoLocEnabled(position) {
     let locationEl = document.getElementById("location-container");
     let pos = {
         lat: position.coords.latitude,
@@ -92,7 +92,7 @@ function geoLocEnabled(position) {
 }
 
 // Use inaccurate IP-based geolocation instead
-function geoLocFallback() {
+async function geoLocFallback() {
     let locationEl = document.getElementById("location-container");
     fetch("/geolocate", {method: "POST"}).then(response => response.json()).then(response => {
         try{
@@ -128,7 +128,7 @@ function convertLocation(location) {
     return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then(response => response.json())
         .then((response) => { return response.results[0].formatted_address; })
-        .catch((error) => console.log(error));
+        .catch((error) => {return "Couldn't convert the address"});
 }
 
 /* ==========================================================================
