@@ -250,6 +250,9 @@ function getLastVisited() {
 
 function getFavFood() {
     let food = document.getElementById('fav-food');
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
         if (foods[0].length == 0) {
             food.appendChild('<textarea id="food-selection" placeholder="or foods :)"></textarea>');
