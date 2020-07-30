@@ -1,0 +1,112 @@
+@charset "UTF-8";
+
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa&family=Source+Code+Pro:wght@400;700&family=Space+Mono:wght@400;700&display=swap");
+
+:root {
+  --main-color: #2e5bdc;
+  --main-color-background: rgba(46, 91, 220, 0.2);
+  --button-color: #5a82f1;
+  --font: "Comfortaa";
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+/* Prevent text selection */
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.main-wrapper {
+    position: absolute;
+    padding: 4rem;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+html.js {
+    opacity: 0;
+}
+
+html.js.wf-active,
+html.js.wf-inactive,
+html.js.ready {
+    opacity: 1;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+body.prevent-scroll {
+    overflow: hidden;
+    height: 100vh;
+    margin-left: calc(100vw - 100%);
+}
+
+html {
+    box-sizing: border-box;
+    font-size: calc(1em * 0.625);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+body {
+    font: 300 1.3rem/1.65 "Comfortaa", sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
+@media only screen and (min-width: 48em) {
+    body {
+        font: 300 1.6rem/1.65 "Comfortaa", sans-serif;
+    }
+}
+
+@media only screen and (min-width: 64em) {
+    body {
+        font: 300 1.8rem/1.65 "Comfortaa", sans-serif;
+    }
+}
+
+input {
+    outline: none;
+    margin: 0;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    width: 100%;
+    font-size: 14px;
+    font-family: inherit;
+}
