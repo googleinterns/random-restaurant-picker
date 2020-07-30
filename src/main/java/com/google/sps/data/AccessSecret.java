@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.lang.Throwable;
 
 public class AccessSecret {
-  private String key = null;
+  private String key;
   private static AccessSecret instance = new AccessSecret();
 
-  private AccessSecret(){}
+  private AccessSecret() {}
 
   private String accessSecretVersion() {
     final String projectId = "team-38-step-2020";
@@ -24,21 +24,21 @@ public class AccessSecret {
       SecretVersionName secretVersionName = SecretVersionName.of(projectId, secretId, versionId);
       AccessSecretVersionResponse response = client.accessSecretVersion(secretVersionName);
       return response.getPayload().getData().toStringUtf8();
-    } catch(IOException e){
+    } catch(IOException e) {
         e.printStackTrace(System.out);
         return null;
     }
   }
 
   public String getKey() {
-    if(this.key != null){
+    if(this.key != null) {
         return this.key;
     }
     this.key = accessSecretVersion();
     return this.key;
   }
 
-  public static AccessSecret getInstance(){
+  public static AccessSecret getInstance() {
       return instance;
   }
 }

@@ -109,7 +109,7 @@ function geoLocFallback() {
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address) => { locationEl.innerText = address; });
-        } catch(error){
+        } catch(error) {
             throw "Location not found";
             geoLocHardcoded();
         }

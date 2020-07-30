@@ -37,10 +37,10 @@ import org.apache.http.util.EntityUtils;
 @WebServlet("/geolocate")
 public class GeoLocateServlet extends HttpServlet {
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String apiKey = (AccessSecret.getInstance()).getKey();
         String urlStr = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + apiKey;
-        
+
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(urlStr);
         String json = "{'considerIp' : 'true'}";
@@ -48,14 +48,15 @@ public class GeoLocateServlet extends HttpServlet {
         httpPost.setEntity(entity);
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-type", "application/json");
-        try{
+        try {
             HttpResponse output = httpClient.execute(httpPost);
             String outputString = EntityUtils.toString(output.getEntity());
             JsonElement jsonElement = new JsonParser().parse(outputString);
             JsonObject responseJson = jsonElement.getAsJsonObject();
             response.getWriter().println(responseJson);
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 }

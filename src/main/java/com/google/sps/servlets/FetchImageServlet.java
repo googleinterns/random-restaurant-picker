@@ -15,6 +15,7 @@
 package com.google.sps.servlets;
 
 import com.google.sps.data.AccessSecret;
+import com.google.common.io.ByteStreams;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,12 +48,8 @@ public class FetchImageServlet extends HttpServlet {
 
         OutputStream os = response.getOutputStream();
         InputStream is = conn.getInputStream();
-        byte[] buffer = new byte[1024];
-        int bytesRead;
         response.setContentType(conn.getContentType());
-        while ((bytesRead = is.read(buffer)) != -1) {
-            os.write(buffer, 0, bytesRead);
-        }
+        ByteStreams.copy(is, os);
         os.close();
         is.close();
     }
