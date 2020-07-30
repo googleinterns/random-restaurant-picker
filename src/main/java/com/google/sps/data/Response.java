@@ -44,8 +44,7 @@ public final class Response implements java.io.Serializable {
     public void pick() {
         if(results.size() > 0){
             int randIdx = (results.size() > 1) ? new Random().nextInt(results.size() - 1) : 0;
-            pick = results.get(randIdx);
-            results.remove(randIdx);
+            this.pick = results.get(randIdx); results.remove(randIdx);
         }
         if (results.size() == 0)
             status = "NO_REROLLS";

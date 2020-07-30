@@ -97,7 +97,7 @@ function geoLocEnabled(position) {
 }
 
 // Use inaccurate IP-based geolocation instead
-function geoLocFallback() {
+async function geoLocFallback() {
     let locationEl = document.getElementById("location-container");
     $.ajax({
         type: "POST",
@@ -108,6 +108,7 @@ function geoLocFallback() {
                 lat: response.location.lat,
                 lng: response.location.lng,
             };
+            console.log(pos.lat);
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address) => { locationEl.innerText = address; });
@@ -122,6 +123,7 @@ function geoLocFallback() {
             geoLocHardcoded(); // DEBUG
         }
     });
+    return Promise.resolve("");
 }
 
 // TODO: remove this entirely; fallback should be to leave form blank instead
@@ -142,12 +144,12 @@ function convertLocation(location) {
     return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then((response) => response.json())
         .then((response) => { return response.results[0].formatted_address; })
-        .catch((error) => console.log(error));
+        .catch((error) => {return "Couldn't convert the address"});
 }
 
 /*=========================
     USER SIGN-IN
-=========================*/
+ =========================*/
 function onSignIn(googleUser) {
     let id_token = googleUser.getAuthResponse().id_token;
     let profile = googleUser.getBasicProfile();
@@ -202,7 +204,7 @@ window.onclick = function(event) {
 
 /*=========================
     Retrieving SEARCHES
-=========================*/
+ =========================*/
 //Retrieve searches associated with the current user
 function getSearches() {
     let userID = 0;
@@ -221,7 +223,7 @@ function getSearches() {
 
 /*=========================
     HTML
-=========================*/
+ =========================*/
 // Form underline element
 $("input, textarea").blur(function() {
     if ($(this).val() != "") {
@@ -233,14 +235,15 @@ $("input, textarea").blur(function() {
 
 // TODO: make this more seamless
 //Loads the results page
-function resultsPage(name, rating, photoUrl) {
-    fetch(`../results.html`)
-        .then((html) => html.text())
+async function resultsPage(name, rating, photoUrl) {
+    return fetch(`../results.html`)
+        .then((response) => response.text())
         .then((html) => {
             document.getElementById("page-container").innerHTML = html;
             document.getElementById("pick").innerText = name;
             document.getElementById("rating").innerText = rating;
             loadImage(photoUrl);
+            return "";
         });
 }
 
