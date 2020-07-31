@@ -15,6 +15,22 @@
 /* ==========================================================================
    RESTAURANT QUERY AND RE-ROLL
    ========================================================================== */
+$("#randomize-form").submit(function(event) {
+    const errorEl = document.getElementById("error");
+    errorEl.classList.add("hidden");
+
+    event.preventDefault();
+    let url = $(this).attr("action");
+    let lat = localStorage.getItem("lat");
+    let lng = localStorage.getItem("lng");
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
+    }
+    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}&user=${userID}`;
+    query(queryStr);
+});
+
 function query(queryStr) {
     const errorEl = document.getElementById("error");
     fetch(`/query?${queryStr}`, { method: "POST" })
@@ -36,7 +52,7 @@ function query(queryStr) {
         });
 }
 
-function roll() {
+function reroll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
     fetch(`/query`, { method: "GET" })
@@ -198,7 +214,7 @@ function toggleShow() {
 }
 
 // Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
+window.onclick = event => {
   if (!event.target.matches('.dropbtn')) {
     let dropdown = document.getElementById("myDropdown");
       if (dropdown.classList.contains('show')) {
@@ -439,14 +455,13 @@ async function fetchFeedback() {
     if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
-    let response = await fetch(`/feedback?user=${userID}`, {
+    return fetch(`/feedback?user=${userID}`, {
         method: 'GET'
     })
     .then(response => response.json())
     .then(data => {
         return data;
     });
-    return response;
 }
 
 async function getFeedback(search) {
@@ -495,69 +510,6 @@ function resultsPage(name, rating, photoUrl) {
     searchButton.addEventListener('click', () => {
         reroll()});
     return newCardBody;
-}
-
-// Function to append restaurant name to modal form to force it to follow through to feedback
-function createRestaurantElement(restaurantName) {
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    let userEl = document.createElement('input');
-    userEl.className = "input--style-2";
-    userEl.type = "text";
-    userEl.id = "user-id";
-    userEl.name = "user-id";
-    userEl.value = userID;
-    userEl.hidden = true;
-
-    let inputGroupEl = document.createElement('div');
-    inputGroupEl.className = "input-group";
-    inputGroupEl.id = "restaurant-name-container";
-    let inputContainer = document.createElement('input');
-    inputContainer.className = "input--style-2";
-    inputContainer.type = "text";
-    inputContainer.id = "restaurant-name-fill";
-    inputContainer.name = "restaurant-name-fill";
-    inputContainer.value = restaurantName;
-    inputContainer.innerText = restaurantName;
-    inputGroupEl.appendChild(inputContainer);
-    inputGroupEl.appendChild(userEl);
-
-    let submitEl = document.createElement('input');
-    submitEl.type = "submit";
-    submitEl.id = "submit-button";
-    inputGroupEl.appendChild(submitEl);
-    return inputGroupEl;
-}
-
-async function fetchFeedback() {
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    let response = await fetch(`/feedback?user=${userID}`, {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(data => {
-        return data;
-    });
-    return response;
-}
-
-async function getFeedback(search) {
-    let buttons = true;
-    let tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
-    let fetchedFeedback = await fetchFeedback();
-    fetchedFeedback.forEach((feedback) => {
-        if (feedback.restaurantName == search.name) {
-            thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
-            buttons = false;
-            tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
-        }
-    });
-    return [tempFeedbackElement, buttons];
 }
 
 /* ==========================================================================
