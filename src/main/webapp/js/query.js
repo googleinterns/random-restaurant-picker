@@ -12,37 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*=========================
-    RESTAURANT QUERY AND RE-ROLL
-=========================*/
-$("#randomize-form").submit(function(event) {
-    const errorEl = document.getElementById("error");
-    errorEl.classList.add("hidden");
-
-    event.preventDefault();
-    let url = $(this).attr("action");
-    let lat = localStorage.getItem("lat");
-    let lng = localStorage.getItem("lng");
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}&user=${userID}`;
-    query(queryStr);
-});
-
+/* ==========================================================================
+   RESTAURANT QUERY AND RE-ROLL
+   ========================================================================== */
 function query(queryStr) {
     const errorEl = document.getElementById("error");
-    fetch(`/query?${queryStr}`, { method: "POST"})
+    fetch(`/query?${queryStr}`, { method: "POST" })
         .then((response) => response.json())
         .then((response) => {
-            if (response.status === "OK") {
-                let name = response.pick.name;
-                let rating = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
-                errorEl.innerText = name;
-                resultsPage(name, rating, photoUrl);
-            } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
+            console.log(response);
+            if (response.status === "OK")
+                redirectToUrl('results.html');
+            else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
             else if (response.status === "NO_REROLLS") throw "No re-rolls left";
             else throw "Unforeseen error";
@@ -55,7 +36,7 @@ function query(queryStr) {
         });
 }
 
-function reroll() {
+function roll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
     fetch(`/query`, { method: "GET" })
@@ -65,7 +46,9 @@ function reroll() {
                 pickEl.innerText = response.pick.name;
                 ratingEl.innerText = response.pick.rating + ' ★';
                 let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                localStorage.setItem("restaurantAddress", response.pick.vicinity);
                 loadImage(photoUrl);
+                calculateAndDisplayRoute(directionsService, directionsRenderer);
             } else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
             else if (response.status === "NO_REROLLS") throw "No re-rolls left";
@@ -74,9 +57,19 @@ function reroll() {
         .catch((error) => { pickEl.innerText = error; });
 }
 
-/*=========================
-    USER'S LOCATION AND ADDRESS
-=========================*/
+//Retrieve and display restaurant image
+function loadImage(photoUrl) {
+    let photoEl = document.getElementById("photo");
+    photoEl.innerHTML = "";
+
+    let img = document.createElement('img');
+    img.src = photoUrl;
+    photoEl.appendChild(img);
+}
+
+/* ==========================================================================
+   USER LOCATION AND ADDRESS
+   ========================================================================== */
 function getLocation() {
     if (navigator.geolocation)
         navigator.geolocation.getCurrentPosition(geoLocEnabled, geoLocFallback);
@@ -145,9 +138,9 @@ function convertLocation(location) {
         .catch((error) => console.log(error));
 }
 
-/*=========================
-    USER SIGN-IN
-=========================*/
+/* ==========================================================================
+   USER SIGN-IN
+   ========================================================================== */
 function onSignIn(googleUser) {
     let id_token = googleUser.getAuthResponse().id_token;
     let profile = googleUser.getBasicProfile();
@@ -158,7 +151,7 @@ function onSignIn(googleUser) {
             localStorage.setItem("loggedIn", true);
             addUserContent(profile.getName(), profile.getImageUrl());
             toggleAccountMenu();
-        }).catch((error) =>{
+        }).catch((error) => {
             console.log(error);
         });
 }
@@ -245,44 +238,16 @@ function getLastVisited() {
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        for (search of searches) {
-            lastVisitedEl.innerText = search.name;
-            break;
-        }
-    });
+        lastVisitedEl.innerText = searches[0].name()});
 }
 
 function getFavFood() {
-    let foodHolder = document.getElementById('fav-food');
+    let food = document.getElementById('fav-food');
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
-        if (foods.length == 0) {
-            console.log("hello");
-            let favFoodFormEl = document.createElement('form');
-            favFoodFormEl.action = "/fav-food";
-            favFoodFormEl.method = "POST";
-            favFoodFormEl.id = "fav-food-form";
-
-            let favFoodInputEl = document.createElement('textarea');
-            favFoodInputEl.id = "food-selection";
-            favFoodInputEl.placeholder = "or foods :)";
-
-            let formInputHolderEl = document.createElement('div');
-            formInputHolderEl.class = "input-group";
-
-            let inputButtonEl = document.createElement('input');
-            inputButtonEl.type = "submit";
-
-            formInputHolderEl.appendChild(favFoodInputEl);
-            favFoodFormEl.appendChild(formInputHolderEl);
-            favFoodFormEl.appendChild(inputButtonEl);
-            foodHolder.appendChild(favFoodFormEl);
+        if (foods[0].length == 0) {
+            food.appendChild('<textarea id="food-selection" placeholder="or foods :)"></textarea>');
         } else {
-            for (food of foods) {
-                let foodTextEl = document.createElement('p');
-                foodTextEl.innerText = food;
-                foodHolder.appendChild(foodTextEl);
-                break;
-            }
+            food.innerText = foods[0];
         }
     });
 }
@@ -301,9 +266,9 @@ function getNumReviews() {
     });
 }
 
-/*=========================
-    Retrieving SEARCHES
-=========================*/
+/* ==========================================================================
+   RETRIEVING SEARCHES
+   ========================================================================== */
 //Retrieve searches associated with the current user
 function getSearches(){
     let userID = 0;
@@ -470,37 +435,199 @@ async function getFeedback(search) {
     return [tempFeedbackElement, buttons];
 }
 
-/*=========================
-    HTML
-=========================*/
-// Form underline element
-$("input, textarea").blur(function() {
-    if ($(this).val() != "") {
-        $(this).addClass("active");
-    } else {
-        $(this).removeClass("active");
-    }
-});
+//Create the card containing the search's information
+function createSearchElement(search) {
+    const newCardEl = document.createElement('div');
+    newCardEl.className = 'card card-2';
+    const newCardBody = document.createElement('div');
+    newCardBody.className = 'card-body';
+    //creating the restaurant name element
+    const nameElement = document.createElement('p2');
+    nameElement.id = 'restaurant-name';
+    nameElement.innerText = search.name;
+    newCardBody.appendChild(nameElement);
+    newCardBody.appendChild(document.createElement('br'));
 
-// TODO: make this more seamless
-//Loads the results page
-function resultsPage(name, rating, photoUrl) {
-    fetch(`../results.html`)
-        .then((html) => html.text())
-        .then((html) => {
-            document.getElementById("page-container").innerHTML = html;
-            document.getElementById("pick").innerText = name;
-            document.getElementById("rating").innerText = rating;
-            loadImage(photoUrl);
-        });
+    //creating the list of parameters
+    const paramElement = document.createElement('p3');
+    const tempParamElement = "Parameters: " + search.keywords;
+
+    // tempParamElement += radius;
+    paramElement.innerText = tempParamElement;
+    newCardBody.appendChild(paramElement);
+
+    newCardBody.appendChild(document.createElement('br'));
+
+    //creating the feedback element
+    const feedbackElement = document.createElement('p3');
+
+    (async () => {
+        let updatedFeedbackElements = await getFeedback(search);
+        tempFeedbackElement = updatedFeedbackElements[0];
+        buttons = updatedFeedbackElements[1];
+
+        feedbackElement.innerText = tempFeedbackElement;
+        newCardBody.appendChild(feedbackElement);
+        newCardBody.appendChild(document.createElement('br'));
+        newCardBodyWithButtons = createSearchesButtons(search, buttons, newCardBody);
+        newCardEl.appendChild(newCardBodyWithButtons);
+    })()
+
+    return newCardEl;
 }
 
-//Retrieve and display restaurant image
-function loadImage(photoUrl) {
-    let photoEl = document.getElementById("photo");
-    photoEl.innerHTML = "";
+// Create feedback button (if feedback is not already submitted) and and search again button
+function createSearchesButtons(search, buttons, newCardBody) {
+    let feedbackButton = null;
+    let formEl = document.getElementById('searches-form');
+    if (buttons) {
+        let modal = document.getElementById('searchModal');
+        let span = document.getElementsByClassName("close")[0];
+        span.onclick = () => {
+            let restaurantContainerEl = document.getElementById("restaurant-name-container");
+            restaurantContainerEl.remove();
+            let submitButtonEl = document.getElementById("submit-button");
+            if (submitButtonEl != null) {
+                submitButtonEl.remove();
+            }
+            modal.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = event => {
+            if (event.target == modal) {
+                let restaurantContainerEl = document.getElementById("restaurant-name-container");
+                restaurantContainerEl.remove();
+                let submitButtonEl = document.getElementById("submit-button");
+                if (submitButtonEl != null) {
+                    submitButtonEl.remove();
+                }
+                modal.style.display = "none";
+            }
+        }
+        feedbackButton = document.createElement('button');
+        feedbackButton.className = 'btn1 feedback';
+        feedbackButton.innerText = "Submit Feedback";
+        feedbackButton.addEventListener('click', () => {
+            let restaurantNameEl = createRestaurantElement(search.name);
+            formEl.appendChild(restaurantNameEl);
+            modal.style.display = "block";
+        });
+        newCardBody.appendChild(feedbackButton);
+    }
+    let searchButton = document.createElement('button');
+    searchButton.className = 'btn1 search';
+    searchButton.innerText = "Search with These Parameters Again";
+    newCardBody.appendChild(searchButton);
+    searchButton.addEventListener('click', () => {
+        reroll()});
+    return newCardBody;
+}
 
-    let img = document.createElement('img');
-    img.src = photoUrl;
-    photoEl.appendChild(img);
+//Function to append restaurant name to modal form to force it to follow through to feedback
+function createRestaurantElement(restaurantName) {
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
+    }
+    let userEl = document.createElement('input');
+    userEl.className = "input--style-2";
+    userEl.type = "text";
+    userEl.id = "user-id";
+    userEl.name = "user-id";
+    userEl.value = userID;
+    userEl.hidden = true;
+
+    let inputGroupEl = document.createElement('div');
+    inputGroupEl.className = "input-group";
+    inputGroupEl.id = "restaurant-name-container";
+    let inputContainer = document.createElement('input');
+    inputContainer.className = "input--style-2";
+    inputContainer.type = "text";
+    inputContainer.id = "restaurant-name-fill";
+    inputContainer.name = "restaurant-name-fill";
+    inputContainer.value = restaurantName;
+    inputContainer.innerText = restaurantName;
+    inputGroupEl.appendChild(inputContainer);
+    inputGroupEl.appendChild(userEl);
+
+    let submitEl = document.createElement('input');
+    submitEl.type = "submit";
+    submitEl.id = "submit-button";
+    inputGroupEl.appendChild(submitEl);
+    return inputGroupEl;
+}
+
+async function fetchFeedback() {
+    let userID = 0;
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
+    }
+    let response = await fetch(`/feedback?user=${userID}`, {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        return data;
+    });
+    return response;
+}
+
+async function getFeedback(search) {
+    let buttons = true;
+    let tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
+    let fetchedFeedback = await fetchFeedback();
+    fetchedFeedback.forEach((feedback) => {
+        if (feedback.restaurantName == search.name) {
+            thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
+            buttons = false;
+            tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
+        }
+    });
+    return [tempFeedbackElement, buttons];
+}
+
+/* ==========================================================================
+   DIRECTIONS TO THE RESTAURANT
+   ========================================================================== */
+let directionsRenderer;
+let directionsService;
+
+function addMapScript() {
+    let script = document.createElement('script');
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw&callback=initMap';
+    script.defer = true;
+    script.async = true;
+    document.head.appendChild(script);
+}
+
+function initMap() {
+    directionsRenderer = new google.maps.DirectionsRenderer();
+    directionsService = new google.maps.DirectionsService();
+    let lat = localStorage.getItem("lat")
+    let lng = localStorage.getItem("lng")
+    var map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 16,
+        center: { lat: parseFloat(lat), lng: parseFloat(lng) }
+    });
+    directionsRenderer.setMap(map);
+    directionsRenderer.setPanel(document.getElementById("directionsPanel"));
+    calculateAndDisplayRoute(directionsService, directionsRenderer);
+}
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+    let start = localStorage.getItem("lat") + "," + localStorage.getItem("lng");
+    let end = localStorage.getItem("restaurantAddress");
+    directionsService.route({
+            origin: start,
+            destination: end,
+            travelMode: "DRIVING"
+        },
+        function(response, status) {
+            if (status === "OK") {
+                directionsRenderer.setDirections(response);
+            } else {
+                window.alert("Directions request failed due to " + status);
+            }
+        }
+    );
 }
