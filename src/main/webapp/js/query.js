@@ -291,10 +291,10 @@ function getNumReviews() {
     });
 }
 
-/*=========================
-    Retrieving SEARCHES
-=========================*/
-//Retrieve searches associated with the current user
+/* ==========================================================================
+   RETRIEVING SEARCHES
+   ========================================================================== */
+// Retrieve searches associated with the current user
 function getSearches(){
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
@@ -309,7 +309,7 @@ function getSearches(){
     });
 }
 
-//Create the card containing the search's information
+// Create the card containing the search's information
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
     newCardEl.className = 'card card-2';
@@ -367,7 +367,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
             modal.style.display = "none";
         }
         // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
+        window.onclick = event => {
             if (event.target == modal) {
                 let restaurantContainerEl = document.getElementById("restaurant-name-container");
                 restaurantContainerEl.remove();
