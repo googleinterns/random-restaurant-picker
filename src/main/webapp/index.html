@@ -24,6 +24,18 @@
 <body>
     <div data-barba="wrapper">
         <header class="header">
+            <div class="header-wrapper">
+                <div class="header-external-links" style="transform: translate(0px, 0px);">
+                    <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">
+                        <svg viewBox="0 0 50 50" width="50" height="50" class="menu-trigger-shape">
+                            <circle r="25" cx="25" cy="25"></circle>
+                        </svg>
+                        <span class="menu-trigger-bar"></span>
+                        <span class="menu-trigger-bar"></span>
+                        <span class="menu-trigger-bar"></span>
+                    </div>
+                </div>
+            </div>
             <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
             <div class="dropdown" id="account-menu">
                 <button onclick="toggleShow()" class="dropbtn">
@@ -35,18 +47,6 @@
                     <a onclick="toAccount()">Account</a>
                     <a onclick="toSearches()">History</a>
                     <a onclick="signOut()">Sign Out</a>
-                </div>
-            </div>
-            <div class="header-wrapper">
-                <div class="header-external-links" style="transform: translate(0px, 0px);">
-                    <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">
-                        <svg viewBox="0 0 50 50" width="50" height="50" class="menu-trigger-shape">
-                            <circle r="25" cx="25" cy="25"></circle>
-                        </svg>
-                        <span class="menu-trigger-bar"></span>
-                        <span class="menu-trigger-bar"></span>
-                        <span class="menu-trigger-bar"></span>
-                    </div>
                 </div>
             </div>
             <nav class="header-nav">
