@@ -27,6 +27,7 @@ import java.io.IOException;
 import com.google.sps.data.Response;
 import com.google.sps.data.Restaurant;
 import com.google.sps.data.User;
+import com.google.sps.data.AccessSecret;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -42,9 +43,8 @@ import java.util.ArrayList;
 
 @WebServlet("/query")
 public class QueryServlet extends HttpServlet {
-
-    private final String apiKey = "AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc";
     private final Gson gson = new GsonBuilder().create();
+    private Response response;
     private User user;
 
     @Override
@@ -62,13 +62,13 @@ public class QueryServlet extends HttpServlet {
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException, ServletException {
+        String apiKey = (AccessSecret.getInstance()).getKey();
         String lat = servletRequest.getParameter("lat");
         String lon = servletRequest.getParameter("lng");
         String radius = servletRequest.getParameter("radius");
         String type = "restaurant";
         String searchTerms = servletRequest.getParameter("searchTerms");
         String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
-
         URLConnection conn = new URL(urlStr).openConnection();
         conn.connect();
 
@@ -79,6 +79,7 @@ public class QueryServlet extends HttpServlet {
         HttpSession session = servletRequest.getSession(true);
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
+        servletResponse.setContentType("application/json");
         servletResponse.getWriter().println(gson.toJson(response));
         //TODO: make this a separate class or function, doesn't need a servlet to handle storing
         servletRequest.getRequestDispatcher("/searches").include(servletRequest, servletResponse);
