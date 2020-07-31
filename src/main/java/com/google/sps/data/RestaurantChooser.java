@@ -24,35 +24,35 @@ import java.util.HashMap;
 import java.util.Random;
 
 public final class RestaurantChooser {
-    public static void chooseRestaurant(Response response, int requestedPrice){
-        if(response.getResults().size() == 0){
+    public static void chooseRestaurant(Response response, int requestedPrice) {
+        if (response.getResults().size() == 0) {
             response.setStatus("ZERO_RESULTS");
             return;
         }
         HashMap<String, Integer> restaurantScores = new HashMap<>();
         int score; 
         int total = 0;
-        for(Restaurant restaurant : response.getResults()){
+        for (Restaurant restaurant : response.getResults()) {
             score = 1;
-            if(requestedPrice == 0 || requestedPrice == restaurant.getPrice())
+            if (requestedPrice == 0 || requestedPrice == restaurant.getPrice())
                 score += 50;
-            else if(Math.abs(requestedPrice - restaurant.getPrice()) <= 1)
+            else if (Math.abs(requestedPrice - restaurant.getPrice()) <= 1)
                 score += 25;
-            else if(Math.abs(requestedPrice - restaurant.getPrice()) <= 2)
+            else if (Math.abs(requestedPrice - restaurant.getPrice()) <= 2)
                 score += 12;
-            else if(Math.abs(requestedPrice - restaurant.getPrice()) <= 3)
+            else if (Math.abs(requestedPrice - restaurant.getPrice()) <= 3)
                 score += 6;
             restaurantScores.put(restaurant.getName(), score);
             total += score;
         }
         int selectedNum = new Random().nextInt(total);
         int value = 0;
-        for(String key : restaurantScores.keySet()){
+        for (String key : restaurantScores.keySet()) {
             value += restaurantScores.get(key);
-            if(selectedNum <= value){
+            if (selectedNum <= value) {
                 response.setPick(response.getResults().stream().filter(p -> p.getName().equals(key)).findFirst().orElse(null));
                 response.getResults().remove(response.getPick());
-                if(response.getResults().size() == 0)
+                if (response.getResults().size() == 0)
                     response.setStatus("ZERO_RESULTS");
                 return;
             }

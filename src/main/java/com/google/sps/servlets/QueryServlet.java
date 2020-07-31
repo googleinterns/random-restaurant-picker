@@ -57,7 +57,7 @@ public class QueryServlet extends HttpServlet {
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
-        if(response == null)
+        if (response == null)
             servletResponse.getWriter().println(gson.toJson(new Response("NO_RESULTS", null)));
         else if (response.getStatus().equals("OK"))
             RestaurantChooser.chooseRestaurant(response, user.getPriceLevel());
@@ -76,7 +76,7 @@ public class QueryServlet extends HttpServlet {
 
         //Adds the diet options to the search: causes the search to return multiple types
         String dietaryOptions = servletRequest.getParameter("dietary-options");
-        if(!dietaryOptions.equals("Nothing specific"))
+        if (!dietaryOptions.equals("Nothing specific"))
             searchTerms = searchTerms + "+" + dietaryOptions;
 
         String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
