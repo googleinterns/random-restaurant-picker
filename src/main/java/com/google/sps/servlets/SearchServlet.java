@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.GsonBuilder;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -51,7 +52,7 @@ public class SearchServlet extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
-        List <SearchItem> searches = new ArrayList<>();
+        List<SearchItem> searches = new ArrayList<>();
         for (Entity entity : results.asIterable()) {
             String userID = (String) entity.getProperty("user");
             String date = (String) entity.getProperty("date");

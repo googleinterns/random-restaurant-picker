@@ -37,7 +37,7 @@ public final class ResponseTest {
     // pick() is called once, which should update the response status to NO_REROLLS.
 
     List<Restaurant> restaurants = new ArrayList<>();
-    restaurants.add(new Restaurant("McDonald's", 4.5, "OPERATIONAL", new Photo[]{}));
+    restaurants.add(new Restaurant("McDonald's", 4.5, "OPERATIONAL", new Photo[]{}, "165 Michigan Avenue, Chicago"));
     Response response = new Response("OK", restaurants);
     response.pick();
 
