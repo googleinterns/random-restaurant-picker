@@ -20,7 +20,6 @@ function query(queryStr) {
     fetch(`/query?${queryStr}`, { method: "POST" })
         .then((response) => response.json())
         .then((response) => {
-            console.log(response);
             if (response.status === "OK")
                 redirectToUrl('results.html');
             else if (response.status === "INVALID_REQUEST") throw "Invalid request";
@@ -45,7 +44,7 @@ function roll() {
             if (response.status === "OK") {
                 pickEl.innerText = response.pick.name;
                 ratingEl.innerText = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=';
                 localStorage.setItem("restaurantAddress", response.pick.vicinity);
                 loadImage(photoUrl);
                 calculateAndDisplayRoute(directionsService, directionsRenderer);
@@ -58,12 +57,13 @@ function roll() {
 }
 
 //Retrieve and display restaurant image
-function loadImage(photoUrl) {
+async function loadImage(photoUrl) {
     let photoEl = document.getElementById("photo");
     photoEl.innerHTML = "";
 
     let img = document.createElement('img');
-    img.src = photoUrl;
+    let url = encodeURIComponent(photoUrl);
+    img.src = `/image?url=${url}`;
     photoEl.appendChild(img);
 }
 
@@ -92,11 +92,8 @@ function geoLocEnabled(position) {
 // Use inaccurate IP-based geolocation instead
 function geoLocFallback() {
     let locationEl = document.getElementById("location-container");
-    $.ajax({
-        type: "POST",
-        url: 'https://www.googleapis.com/geolocation/v1/geolocate?key=' + 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc', // TODO: use safe API key storage!!!
-        data: { considerIp: 'true' },
-        success: function(response) {
+    fetch("/geolocate", {method: "POST"}).then(response => response.json()).then(response => {
+        try{
             let pos = {
                 lat: response.location.lat,
                 lng: response.location.lng,
@@ -104,15 +101,9 @@ function geoLocFallback() {
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address) => { locationEl.innerText = address; });
-        },
-        error: function(xhr) {
-            if (xhr.status == 404)
-                console.log("No results");
-            if (xhr.status == 403)
-                console.log("Usage limits exceeded");
-            if (xhr.status == 400)
-                console.log("API key is invalid or JSON parsing error");
-            geoLocHardcoded(); // DEBUG
+        } catch(error) {
+            throw "Location not found";
+            geoLocHardcoded();
         }
     });
 }
@@ -133,7 +124,7 @@ function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
     return fetch(`/convert?lat=${lat}&lng=${long}`)
-        .then((response) => response.json())
+        .then(response => response.json())
         .then((response) => { return response.results[0].formatted_address; })
         .catch((error) => console.log(error));
 }
