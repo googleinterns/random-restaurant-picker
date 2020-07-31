@@ -57,7 +57,7 @@ function roll() {
         .catch((error) => { pickEl.innerText = error; });
 }
 
-//Retrieve and display restaurant image
+// Retrieve and display restaurant image
 function loadImage(photoUrl) {
     let photoEl = document.getElementById("photo");
     photoEl.innerHTML = "";
@@ -156,19 +156,19 @@ function onSignIn(googleUser) {
         });
 }
 
-//Add user information to signed in UI
+// Add user information to signed in UI
 function addUserContent(name, image) {
     document.getElementById("user-name").innerText = name;
     document.getElementById("profile-pic").src = image;
 }
 
-//Replaces the sign-in button with signed in UI
+// Replaces the sign-in button with signed in UI
 function toggleAccountMenu() {
     document.getElementById("account-menu").classList.toggle("show");
     document.getElementById("sign-in").classList.toggle("hide");
 }
 
-//Logs out of the account
+// Logs out of the account
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
@@ -178,17 +178,17 @@ function signOut() {
   toggleAccountMenu();
 }
 
-//Redirects to search page
+// Redirects to search page
 function backToHome() {
     window.location.replace("index.html");
 }
 
-//Redirects to user's account information page
+// Redirects to user's account information page
 function toAccount() {
     window.location.replace("account-info.html");
 }
 
-//Redirects to past searches page
+// Redirects to past searches page
 function toSearches() {
     window.location.replace("past-searches.html");
 }
@@ -297,7 +297,7 @@ function getNumReviews() {
 /* ==========================================================================
    RETRIEVING SEARCHES
    ========================================================================== */
-//Retrieve searches associated with the current user
+// Retrieve searches associated with the current user
 function getSearches(){
     let userID = 0;
     if (localStorage.getItem("loggedIn")){
@@ -312,13 +312,13 @@ function getSearches(){
     });
 }
 
-//Create the card containing the search's information
+// Create the card containing the search's information
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
     newCardEl.className = 'card card-2';
     const newCardBody = document.createElement('div');
     newCardBody.className = 'card-body';
-    //creating the restaurant name element
+    // creating the restaurant name element
     const nameElement = document.createElement('p2');
     nameElement.id = 'restaurant-name';
     nameElement.innerText = search.name;
@@ -326,11 +326,10 @@ function createSearchElement(search) {
     newCardBody.appendChild(nameElement);
     newCardBody.appendChild(document.createElement('br'));
 
-    //creating the list of parameters
+    // creating the list of parameters
     const paramElement = document.createElement('p3');
     const tempParamElement = "Parameters: " + search.keywords;
 
-    // tempParamElement += radius;
     paramElement.innerText = tempParamElement;
     newCardBody.appendChild(paramElement);
 
@@ -371,7 +370,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
             modal.style.display = "none";
         }
         // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
+        window.onclick = event => {
             if (event.target == modal) {
                 let restaurantContainerEl = document.getElementById("restaurant-name-container");
                 restaurantContainerEl.remove();
@@ -401,7 +400,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
     return newCardBody;
 }
 
-//Function to append restaurant name to modal form to force it to follow through to feedback
+// Function to append restaurant name to modal form to force it to follow through to feedback
 function createRestaurantElement(restaurantName) {
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
@@ -437,7 +436,7 @@ function createRestaurantElement(restaurantName) {
 
 async function fetchFeedback() {
     let userID = 0;
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     let response = await fetch(`/feedback?user=${userID}`, {
@@ -478,7 +477,7 @@ $("input, textarea").blur(function() {
 });
 
 // TODO: make this more seamless
-//Loads the results page
+// Loads the results page
 function resultsPage(name, rating, photoUrl) {
     fetch(`../results.html`)
         .then((html) => html.text())
@@ -498,7 +497,7 @@ function resultsPage(name, rating, photoUrl) {
     return newCardBody;
 }
 
-//Function to append restaurant name to modal form to force it to follow through to feedback
+// Function to append restaurant name to modal form to force it to follow through to feedback
 function createRestaurantElement(restaurantName) {
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
