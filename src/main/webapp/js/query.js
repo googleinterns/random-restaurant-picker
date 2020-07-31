@@ -105,7 +105,6 @@ function geoLocFallback() {
                 lat: response.location.lat,
                 lng: response.location.lng,
             };
-            console.log(response);
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address) => { locationEl.innerText = address; });
