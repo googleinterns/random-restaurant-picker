@@ -440,6 +440,7 @@ async function getFeedback(search) {
             thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
             buttons = false;
             tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
+            return [tempFeedbackElement, buttons];
         }
     });
     return [tempFeedbackElement, buttons];
