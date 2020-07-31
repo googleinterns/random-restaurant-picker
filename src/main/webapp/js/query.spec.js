@@ -1,6 +1,104 @@
 /*=========================
+    RESTAURANT QUERY AND RE-ROLL
+ =========================*/
+describe("Test the query function", ()=>{
+    let dummyElement;
+
+    beforeEach(() => {
+        dummyElement = document.createElement('div');
+        
+    });
+});
+
+describe("Test the reroll function", () => {
+    let dummyPick;
+    let dummyRating;
+    let htmlResponse;
+
+    beforeEach(() => {
+        htmlResponse = new Response('{\"pick\":{\"name\":\"Chipotle\",\"rating\":\"4.5\",\"photos\":[\"photo1\",\"photo2\"]},\"results\":[{\"name\":\"Qdoba\",\"rating\":\"4\",\"photos\":[\"photo1\",\"photo2\"]}],\"status\":\"OK\"}');
+        dummyPick = document.createElement('div');
+        dummyRating = document.createElement('div');
+        spyOn(window, 'reroll').and.callThrough();
+        spyOn(document, 'getElementById').and.returnValues(dummyPick, dummyRating);
+        spyOn(window, 'loadImage');
+    });
+
+    it("Test that reRoll works properly", async () => {
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(htmlResponse));
+        let x = await reroll();
+        expect(reroll).toHaveBeenCalled();
+        expect(fetch).toHaveBeenCalled();
+        expect(document.getElementById).toHaveBeenCalledTimes(2);
+        expect(loadImage).toHaveBeenCalled();
+        expect(dummyPick.innerText).toEqual("Chipotle");
+        expect(dummyRating.innerText).toEqual("4.5 ★");
+    });
+
+    it("Test reroll when an invalid request error is returned", async () => {
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "INVALID_REQUEST"}')));
+        let x = await reroll();
+        expect(reroll).toHaveBeenCalled();
+        expect(fetch).toHaveBeenCalled();
+        expect(document.getElementById).toHaveBeenCalledTimes(2);
+        expect(loadImage).toHaveBeenCalledTimes(0);
+        expect(dummyPick.innerText).toEqual("Invalid request");
+    });
+
+    it("Test reroll when a zero results error is returned", async () => {
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "ZERO_RESULTS"}')));
+        let x = await reroll();
+        expect(reroll).toHaveBeenCalled();
+        expect(fetch).toHaveBeenCalled();
+        expect(document.getElementById).toHaveBeenCalledTimes(2);
+        expect(loadImage).toHaveBeenCalledTimes(0);
+        expect(dummyPick.innerText).toEqual("No results");
+    });
+
+    it("Test reroll when a no rerolls error is returned", async () => {
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "NO_REROLLS"}')));
+        let x = await reroll();
+        expect(reroll).toHaveBeenCalled();
+        expect(fetch).toHaveBeenCalled();
+        expect(document.getElementById).toHaveBeenCalledTimes(2);
+        expect(loadImage).toHaveBeenCalledTimes(0);
+        expect(dummyPick.innerText).toEqual("No re-rolls left");
+    });
+
+    it("Test reroll when an unknown error is returned", async () => {
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "UNKNOWN_ERROR"}')));
+        let x = await reroll();
+        expect(reroll).toHaveBeenCalled();
+        expect(fetch).toHaveBeenCalled();
+        expect(document.getElementById).toHaveBeenCalledTimes(2);
+        expect(loadImage).toHaveBeenCalledTimes(0);
+        expect(dummyPick.innerText).toEqual("Unforeseen error");
+    });
+});
+
+/*=========================
     USER'S LOCATION AND ADDRESS
  =========================*/
+describe("Test the geoLocEnabled function", () => {
+    let dummyElement;
+
+    beforeEach(() => {
+        dummyElement = document.createElement('div');
+        spyOn(document, 'getElementById').and.returnValue(dummyElement);
+        spyOn(window, 'geoLocEnabled').and.callThrough();
+        spyOn(localStorage, 'setItem');
+    });
+
+    it("Test that the function runs correctly", async () => {
+        spyOn(window, 'convertLocation').and.returnValue(Promise.resolve("155 W 51st St, New York, NY 10019"));
+        let x = await geoLocEnabled({coords: {latitude: 40, longitude: -80}});
+        expect(geoLocEnabled).toHaveBeenCalled();
+        expect(convertLocation).toHaveBeenCalled();
+        expect(localStorage.setItem).toHaveBeenCalledTimes(2);
+        expect(dummyElement.innerText).toEqual("155 W 51st St, New York, NY 10019");
+    });
+});
+
 describe("Test the geoLocFallback function", () => {
     let dummyElement;
 
@@ -9,7 +107,7 @@ describe("Test the geoLocFallback function", () => {
         dummyElement = document.createElement('div');
         spyOn(window, 'geoLocFallback').and.callThrough();
         spyOn(document, 'getElementById').and.returnValue(dummyElement);
-        spyOn(window, 'convertLocation').and.returnValue("155 W 51st St, New York, NY 10019");
+        spyOn(window, 'convertLocation').and.returnValue(Promise.resolve("155 W 51st St, New York, NY 10019"));
         spyOn(window, 'geoLocHardcoded');
         spyOn(localStorage, 'setItem');
     });
@@ -29,7 +127,43 @@ describe("Test the geoLocFallback function", () => {
         expect(convertLocation).toHaveBeenCalled();
         expect(dummyElement.innerText).toEqual("155 W 51st St, New York, NY 10019");
         expect(geoLocHardcoded).toHaveBeenCalledTimes(0);
-        expect(setItem).toHaveBeenCalledTimes(2);
+        expect(localStorage.setItem).toHaveBeenCalledTimes(2);
+    });
+
+    it("Test the function when server returns a 404 error", async () => {
+        jasmine.Ajax.stubRequest('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc').andReturn({
+            "status": 404,
+            "contentType": "application/json"
+        });
+        spyOn(console, 'log');
+        let x = await geoLocFallback();
+        expect(geoLocFallback).toHaveBeenCalled();
+        expect(console.log).toHaveBeenCalledWith("No results");
+        expect(geoLocHardcoded).toHaveBeenCalled();
+    });
+
+    it("Test the function when server returns a 400 error", async () => {
+        jasmine.Ajax.stubRequest('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc').andReturn({
+            "status": 400,
+            "contentType": "application/json"
+        });
+        spyOn(console, 'log');
+        let x = await geoLocFallback();
+        expect(geoLocFallback).toHaveBeenCalled();
+        expect(console.log).toHaveBeenCalledWith("API key is invalid or JSON parsing error");
+        expect(geoLocHardcoded).toHaveBeenCalled();
+    });
+
+    it("Test the function when server returns a 403 error", async () => {
+        jasmine.Ajax.stubRequest('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc').andReturn({
+            "status": 403,
+            "contentType": "application/json"
+        });
+        spyOn(console, 'log');
+        let x = await geoLocFallback();
+        expect(geoLocFallback).toHaveBeenCalled();
+        expect(console.log).toHaveBeenCalledWith("Usage limits exceeded");
+        expect(geoLocHardcoded).toHaveBeenCalled();
     });
 });
 

@@ -55,10 +55,10 @@ function query(queryStr) {
         });
 }
 
-function reroll() {
+async function reroll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
-    fetch(`/query`, { method: "GET" })
+    return fetch(`/query`, { method: "GET" })
         .then((response) => response.json())
         .then((response) => {
             if (response.status === "OK") {
@@ -85,7 +85,7 @@ function getLocation() {
 }
 
 // Geolocation is supported and enabled
-function geoLocEnabled(position) {
+async function geoLocEnabled(position) {
     let locationEl = document.getElementById("location-container");
     let pos = {
         lat: position.coords.latitude,
@@ -108,10 +108,11 @@ async function geoLocFallback() {
                 lat: response.location.lat,
                 lng: response.location.lng,
             };
-            console.log(pos.lat);
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
-            convertLocation(pos).then((address) => { locationEl.innerText = address; });
+            convertLocation(pos).then((address) => { 
+                locationEl.innerText = address; 
+            });
         },
         error: function(xhr) {
             if (xhr.status == 404)
@@ -123,7 +124,6 @@ async function geoLocFallback() {
             geoLocHardcoded(); // DEBUG
         }
     });
-    return Promise.resolve("");
 }
 
 // TODO: remove this entirely; fallback should be to leave form blank instead
