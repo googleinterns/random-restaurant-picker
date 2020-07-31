@@ -1,7 +1,7 @@
 /* ==========================================================================
    SEARCH FORM
    ========================================================================== */
-$("#randomize-form").submit((event) => {
+$("#randomize-form").submit(function(event) {
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
 
