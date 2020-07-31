@@ -99,5 +99,5 @@ function convertLocation(location) {
     return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then((response) => response.json())
         .then((response) => { return response.results[0].formatted_address; })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error)); // TODO: make this error visible to the user
 }

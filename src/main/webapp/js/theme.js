@@ -13,7 +13,7 @@ function theme2() {
     document.documentElement.style.setProperty('--button-color', '#38d1f1');
 }
 
-// Islamic Green
+// Light Green
 function theme3() {
     document.documentElement.style.setProperty('--main-color', '#04bf0c');
     document.documentElement.style.setProperty('--main-color-background', 'rgba(4, 191, 12, 0.2)');
