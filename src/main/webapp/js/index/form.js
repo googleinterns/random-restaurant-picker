@@ -14,7 +14,6 @@ $("#randomize-form").submit(function(event) {
         userID = localStorage.getItem("user");
     }
     let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}&user=${userID}`;
-    console.log(queryStr);
     query(queryStr);
 });
 
