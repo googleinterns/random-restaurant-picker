@@ -1,7 +1,7 @@
 /* ==========================================================================
    SEARCH FORM
    ========================================================================== */
-$("#randomize-form").submit((event) => {
+$("#randomize-form").submit(function(event) {
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
 
@@ -19,7 +19,7 @@ $("#randomize-form").submit((event) => {
 });
 
 // Form underline element
-$("input, textarea").blur(() => {
+$("input, textarea").blur(function() {
     if ($(this).val() != "") {
         $(this).addClass("active");
     } else {
