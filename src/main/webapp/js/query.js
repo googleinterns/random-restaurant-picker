@@ -15,7 +15,7 @@
 /*=========================
     RESTAURANT QUERY AND RE-ROLL
 =========================*/
-$("#randomize-form").submit(function(event) {
+$("#randomize-form").submit(function(event){
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
 
@@ -33,7 +33,7 @@ $("#randomize-form").submit(function(event) {
 
 function query(queryStr) {
     const errorEl = document.getElementById("error");
-    fetch(`/query?${queryStr}`, { method: "POST"})
+    return fetch(`/query?${queryStr}`, { method: "POST"})
         .then((response) => response.json())
         .then((response) => {
             if (response.status === "OK") {

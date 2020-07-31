@@ -3,10 +3,61 @@
  =========================*/
 describe("Test the query function", ()=>{
     let dummyElement;
+    let htmlReponse;
 
     beforeEach(() => {
+        htmlResponse = new Response('{\"pick\":{\"name\":\"Chipotle\",\"rating\":\"4.5\",\"photos\":[\"photo1\",\"photo2\"]},\"results\":[{\"name\":\"Qdoba\",\"rating\":\"4\",\"photos\":[\"photo1\",\"photo2\"]}],\"status\":\"OK\"}');
         dummyElement = document.createElement('div');
-        
+        spyOn(document, 'getElementById').and.returnValue(dummyElement);
+        spyOn(window, 'query').and.callThrough();
+        spyOn(window, 'resultsPage');
+    });
+
+    it("Tese the query funciton works properly", async () => {
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(htmlResponse));
+        let x = await query("string");
+        expect(fetch).toHaveBeenCalledWith('/query?string', { method: 'POST' });
+        expect(resultsPage).toHaveBeenCalled();
+        expect(dummyElement.innerText).toEqual("Chipotle");
+    });
+
+    it("Tese the query function when an invalid request is returned", async () => {
+        dummyElement.classList.add("success-banner");
+        dummyElement.classList.add("hidden");
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "INVALID_REQUEST"}')));
+        let x = await query("string");
+        expect(fetch).toHaveBeenCalledWith('/query?string', { method: 'POST' });
+        expect(dummyElement.innerText).toEqual("Invalid request");
+        expect(dummyElement.classList.contains("error-banner")).toBeTruthy();
+        expect(dummyElement.classList.contains("hidden")).toBeFalsy();
+        expect(dummyElement.classList.contains("success-banner")).toBeFalsy();
+        expect(resultsPage).toHaveBeenCalledTimes(0);
+    });
+
+     it("Tese the query function when zero results are returned", async () => {
+        dummyElement.classList.add("success-banner");
+        dummyElement.classList.add("hidden");
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "ZERO_RESULTS"}')));
+        let x = await query("string");
+        expect(fetch).toHaveBeenCalledWith('/query?string', { method: 'POST' });
+        expect(dummyElement.innerText).toEqual("No results");
+        expect(dummyElement.classList.contains("error-banner")).toBeTruthy();
+        expect(dummyElement.classList.contains("hidden")).toBeFalsy();
+        expect(dummyElement.classList.contains("success-banner")).toBeFalsy();
+        expect(resultsPage).toHaveBeenCalledTimes(0);
+    });
+
+    it("Tese the query function when no rerolls are returned", async () => {
+        dummyElement.classList.add("success-banner");
+        dummyElement.classList.add("hidden");
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "NO_REROLLS"}')));
+        let x = await query("string");
+        expect(fetch).toHaveBeenCalledWith('/query?string', { method: 'POST' });
+        expect(dummyElement.innerText).toEqual("No re-rolls left");
+        expect(dummyElement.classList.contains("error-banner")).toBeTruthy();
+        expect(dummyElement.classList.contains("hidden")).toBeFalsy();
+        expect(dummyElement.classList.contains("success-banner")).toBeFalsy();
+        expect(resultsPage).toHaveBeenCalledTimes(0);
     });
 });
 
