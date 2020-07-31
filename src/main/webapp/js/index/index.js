@@ -61,11 +61,16 @@ function geoLocEnabled(position) {
 // Use inaccurate IP-based geolocation instead
 function geoLocFallback() {
     let locationEl = document.getElementById("location-container");
-    $.ajax({
-        type: "POST",
-        url: 'https://www.googleapis.com/geolocation/v1/geolocate?key=' + 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc', // TODO: use safe API key storage!!!
-        data: { considerIp: 'true' },
-        success: function(response) {
+    fetch('https://www.googleapis.com/geolocation/v1/geolocate?key=' + 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ considerIp: 'true' })
+        })
+        .then(response => response.json())
+        .then((response) => {
             let pos = {
                 lat: response.location.lat,
                 lng: response.location.lng,
@@ -73,17 +78,7 @@ function geoLocFallback() {
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address) => { locationEl.innerText = address; });
-        },
-        error: function(xhr) {
-            if (xhr.status == 404)
-                console.log("No results");
-            if (xhr.status == 403)
-                console.log("Usage limits exceeded");
-            if (xhr.status == 400)
-                console.log("API key is invalid or JSON parsing error");
-            geoLocHardcoded(); // DEBUG
-        }
-    });
+        });
 }
 
 // TODO: remove this entirely; fallback should be to leave form blank instead
