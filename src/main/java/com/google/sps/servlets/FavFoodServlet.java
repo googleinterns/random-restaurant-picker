@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns comments */
+/** Servlet that returns the user's inputted favorite food */
 @WebServlet("/fav-food")
 public final class FavFoodServlet extends HttpServlet {
 
