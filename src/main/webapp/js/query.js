@@ -38,7 +38,7 @@ function query(queryStr) {
         });
 }
 
-function roll() {
+function reroll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
     fetch(`/query`, { method: "GET" })
