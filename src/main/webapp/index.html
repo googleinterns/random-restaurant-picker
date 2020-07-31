@@ -9,17 +9,34 @@
     <link rel="stylesheet" href="css/button.css">
     <link rel="stylesheet" href="css/menu.css">
     <link rel="stylesheet" href="css/transition.css">
+    <link rel="stylesheet" href="css/login.css">
     <!-- Local -->
     <link rel="stylesheet" href="css/index/index.css">
     <link rel="stylesheet" href="css/index/form.css">
     <link rel="stylesheet" href="css/index/banner.css">
     <!-- Third-party -->
     <link rel="stylesheet" href="css/third-party/normalize.css">
+    <!-- Google Sign-in -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="http://758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
 </head>
 
 <body>
     <div data-barba="wrapper">
         <header class="header">
+            <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
+            <div class="dropdown" id="account-menu">
+                <button onclick="toggleShow()" class="dropbtn">
+                    <img id="profile-pic" src="">
+                    <h3 id="user-name">name</h3>
+                </button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a onclick="backToHome()">Home</a>
+                    <a onclick="toAccount()">Account</a>
+                    <a onclick="toSearches()">History</a>
+                    <a onclick="signOut()">Sign Out</a>
+                </div>
+            </div>
             <div class="header-wrapper">
                 <div class="header-external-links" style="transform: translate(0px, 0px);">
                     <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">
@@ -229,6 +246,7 @@
     <script src="js/menu.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/theme.js"></script>
+    <script src="js/login.js"></script>
     <!-- Local -->
     <script src="js/index/index.js"></script>
     <script src="js/index/form.js"></script>

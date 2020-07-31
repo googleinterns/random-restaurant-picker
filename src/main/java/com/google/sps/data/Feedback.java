@@ -16,23 +16,21 @@ package com.google.sps.data;
 
 import java.util.ArrayList;
 
-public class SearchItem {
-    private String user;
-    private String date;
-    private String keywords;
-    private String lat;
-    private String lng;
-    private String radius;
-    private long id;
-    private UserFeedback feedback;
+public class Feedback {
+    private String user; 
+    private String restaurantName;
+    // the user's rating of the restaurant
+    private String restaurantRating;
+    // the user's rating of how closely the selected restaurant matched their inputted parameters
+    private String rrpRating;
+    // the user's personal notes on the restaurant 
+    private String notes;
 
-    public SearchItem(String user, String date, String keywords, String lat, String lng, String radius, long id){
+    public Feedback(String user, String restaurantName, String restaurantRating, String rrpRating, String notes){
         this.user = user;
-        this.date = date;
-        this.keywords = keywords;
-        this.lat = lat;
-        this.lng = lng;
-        this.radius = radius;
-        this.id = id;
+        this.restaurantName = restaurantName;
+        this.restaurantRating = restaurantRating;
+        this.rrpRating = rrpRating;
+        this.notes = notes;
     }
 }
