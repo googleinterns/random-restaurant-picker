@@ -357,7 +357,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
     if (buttons) {
         let modal = document.getElementById('searchModal');
         let span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
+        span.onclick = () => {
             let restaurantContainerEl = document.getElementById("restaurant-name-container");
             restaurantContainerEl.remove();
             let submitButtonEl = document.getElementById("submit-button");
