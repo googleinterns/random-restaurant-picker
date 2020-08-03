@@ -26,6 +26,20 @@
         <header class="header">
             <div class="header-wrapper">
                 <div class="header-external-links" style="transform: translate(0px, 0px);">
+                    <div class="login-button">
+                        <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
+                        <div class="dropdown" id="account-menu">
+                            <button onclick="toggleShow()" class="dropbtn">
+                                <img id="profile-pic" src="">
+                                <h3 id="user-name">name</h3>
+                            </button>
+                            <div id="myDropdown" class="dropdown-content">
+                                <a href="#">Account</a>
+                                <a href="#">History</a>
+                                <a onclick="signOut()">Sign Out</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">
                         <svg viewBox="0 0 50 50" width="50" height="50" class="menu-trigger-shape">
                             <circle r="25" cx="25" cy="25"></circle>
@@ -34,19 +48,6 @@
                         <span class="menu-trigger-bar"></span>
                         <span class="menu-trigger-bar"></span>
                     </div>
-                </div>
-            </div>
-            <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-            <div class="dropdown" id="account-menu">
-                <button onclick="toggleShow()" class="dropbtn">
-                    <img id="profile-pic" src="">
-                    <h3 id="user-name">name</h3>
-                </button>
-                <div id="myDropdown" class="dropdown-content">
-                    <a onclick="backToHome()">Home</a>
-                    <a onclick="toAccount()">Account</a>
-                    <a onclick="toSearches()">History</a>
-                    <a onclick="signOut()">Sign Out</a>
                 </div>
             </div>
             <nav class="header-nav">
@@ -69,27 +70,6 @@
                                             </li>
                                             <li id="menu-result" class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
                                                 <a class="menu-subpages-item-link" href="results.html">
-                                                    <div class="menu-subpages-item-link-line"></div>
-                                                    <span>Result</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                    <a class="menu-pages-item-link" onclick="alert('TODO: implement this!')">
-                                        Food Finder
-                                    </a>
-                                    <div class="menu-pages-item-subpages menu-subpages">
-                                        <ul class="menu-subpages-list">
-                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
-                                                    <div class="menu-subpages-item-link-line"></div>
-                                                    <span>About</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
                                                     <div class="menu-subpages-item-link-line"></div>
                                                     <span>Result</span>
                                                 </a>
