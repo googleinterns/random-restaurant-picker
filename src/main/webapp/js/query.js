@@ -15,7 +15,7 @@
 /* ==========================================================================
    RESTAURANT QUERY AND RE-ROLL
    ========================================================================== */
-$("#randomize-form").submit(function(event) {
+$("#randomize-form").submit(event => {
     const errorEl = document.getElementById("error");
     errorEl.classList.add("hidden");
 
@@ -312,7 +312,7 @@ function getSearches(){
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
         let searchesEl = document.getElementById('cards');
-        searches.forEach((search) => {
+        searches.forEach(search => {
             let searchCard = createSearchElement(search);
             searchesEl.appendChild(searchCard);
         });
@@ -367,7 +367,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
     if (buttons) {
         let modal = document.getElementById('searchModal');
         let span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
+        span.onclick = () => {
             let restaurantContainerEl = document.getElementById("restaurant-name-container");
             restaurantContainerEl.remove();
             let submitButtonEl = document.getElementById("submit-button");
@@ -474,7 +474,7 @@ async function getFeedback(search) {
     HTML
 =========================*/
 // Form underline element
-$("input, textarea").blur(function() {
+$("input, textarea").blur(() => {
     if ($(this).val() != "") {
         $(this).addClass("active");
     } else {
