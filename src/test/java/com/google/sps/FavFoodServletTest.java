@@ -83,7 +83,7 @@ public final class FavFoodServletTest {
   @Test
   public void POSTTest() throws IOException{
       when(request.getParameter("user")).thenReturn("1");
-      when(request.getParameter("food")).thenReturn("ice cream");
+      when(request.getParameter("fav-food")).thenReturn("ice cream");
 
       new FavFoodServlet().doPost(request, response);
 
@@ -100,7 +100,7 @@ public final class FavFoodServletTest {
       Entity foodEntity = new Entity("FavFood");
       foodEntity.setProperty("user", "2");
       foodEntity.setProperty("food", "pizza");
-      foodEntity.setProperty("timestamp", 20000);
+      foodEntity.setProperty("timestamp", 112030394);
       ds.put(foodEntity);
 
       //Handle calls to the mock objects
@@ -116,9 +116,10 @@ public final class FavFoodServletTest {
 
       //Process data and check correctness
       String results = sw.getBuffer().toString().trim();
-      JsonObject resultsObj = new JsonParser().parse(results).getAsJsonArray().get(0).getAsJsonObject();
-      assertEquals(resultsObj.get("user").getAsString(), "2");
-      assertEquals(resultsObj.get("food").getAsString(), "pizza");
+      JsonArray resultsArray = new JsonParser().parse(results).getAsJsonArray();
+      String foodItem = resultsArray.get(0).getAsString();
+
+      assertEquals(resultsArray.get(0).getAsString(), "pizza");
   }
 
   @Test

@@ -82,10 +82,10 @@ public final class FeedbackServletTest {
 
   @Test
   public void POSTTest() throws IOException{
-      when(request.getParameter("user")).thenReturn("1");
-      when(request.getParameter("restaurantName")).thenReturn("Starbucks");
-      when(request.getParameter("restaurantRating")).thenReturn("Pretty good");
-      when(request.getParameter("rrpRating")).thenReturn("It met one or two");
+      when(request.getParameter("user-id")).thenReturn("1");
+      when(request.getParameter("restaurant-name-fill")).thenReturn("Starbucks");
+      when(request.getParameter("restaurant-rating")).thenReturn("Pretty good");
+      when(request.getParameter("rrp-rating")).thenReturn("It met one or two");
       when(request.getParameter("notes")).thenReturn("yay coffee");
 
       new FeedbackServlet().doPost(request, response);

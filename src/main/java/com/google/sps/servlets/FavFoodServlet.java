@@ -52,6 +52,7 @@ public final class FavFoodServlet extends HttpServlet {
 
     // Send the JSON as the response
     response.setContentType("application/json");
+    System.out.println(new Gson().toJson(favFoodList));
     response.getWriter().println(new Gson().toJson(favFoodList));
   }
 

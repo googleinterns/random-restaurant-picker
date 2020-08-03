@@ -93,7 +93,7 @@ public final class SearchServletTest {
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
       List<Entity> results = ds.prepare(new Query("savedSearch")).asList(FetchOptions.Builder.withDefaults());
       assertEquals(1, ds.prepare(new Query("savedSearch")).countEntities());
-      assertEquals((String)results.get(0).getProperty("keywords"), "coffee");
+      assertEquals("coffee", (String) results.get(0).getProperty("keywords"));
   }
 
   @Test
