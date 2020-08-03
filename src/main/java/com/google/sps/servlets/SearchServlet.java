@@ -29,7 +29,6 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -51,6 +50,7 @@ public class SearchServlet extends HttpServlet {
         String user = request.getParameter("user");
         Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
         Query query = new Query("savedSearch").setFilter(propertyFilter).addSort("timestamp", SortDirection.DESCENDING);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
         PreparedQuery results = datastore.prepare(query);
 
@@ -67,7 +67,7 @@ public class SearchServlet extends HttpServlet {
             SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id);
             searches.add(search);
         }
-        response.setContentType("application/json;");
+        response.setContentType("application/json");
         response.getWriter().println(new Gson().toJson(searches));
     }
 

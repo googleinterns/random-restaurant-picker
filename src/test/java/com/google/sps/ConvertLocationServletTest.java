@@ -20,6 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.google.sps.servlets.ConvertLocationServlet;
 import com.google.sps.data.UrlOpener;
@@ -86,7 +87,7 @@ public final class ConvertLocationServletTest {
     JsonElement jsonEl = new JsonParser().parse(results);
     JsonObject jsonResponse = jsonEl.getAsJsonObject();
     assertEquals(jsonResponse.get("status").getAsString(), "ZERO_RESULTS");
-    assertEquals(asString.getValue(), "https://maps.googleapis.com/maps/api/geocode/json?latlng=40.84,74.01&result_type=street_address&key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw");
+    assertTrue(asString.getValue().startsWith(("https://maps.googleapis.com/maps/api/geocode/json?latlng=40.84,74.01&result_type=street_address&key=")));
   }
 
   @Test
@@ -118,6 +119,6 @@ public final class ConvertLocationServletTest {
     String address = results.get(0).getAsJsonObject().get("formatted_address").getAsString();
     assertEquals(jsonResponse.get("status").getAsString(), "OK");
     assertEquals(address, "220 S Thayer St, Ann Arbor, MI 48104, USA");
-    assertEquals(asString.getValue(), "https://maps.googleapis.com/maps/api/geocode/json?latlng=42.28,-83.74&result_type=street_address&key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw");
+    assertTrue(asString.getValue().startsWith("https://maps.googleapis.com/maps/api/geocode/json?latlng=42.28,-83.74&result_type=street_address&key="));
   }
 }

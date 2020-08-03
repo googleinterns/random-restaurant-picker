@@ -14,7 +14,7 @@
 
 package com.google.sps;
 
-import com.google.sps.servlets.SearchServlet;
+import com.google.sps.servlets.FeedbackServlet;
 import com.google.sps.data.UrlOpener;
 
 import javax.servlet.http.HttpServlet;
@@ -60,7 +60,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
 @RunWith(MockitoJUnitRunner.class)
-public final class SearchServletTest {
+public final class FeedbackServletTest {
   private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig().setDefaultHighRepJobPolicyUnappliedJobPercentage(0));
   
   @Mock
@@ -82,33 +82,31 @@ public final class SearchServletTest {
 
   @Test
   public void POSTTest() throws IOException{
-      when(request.getParameter("lat")).thenReturn("40");
-      when(request.getParameter("lng")).thenReturn("-80");
       when(request.getParameter("user")).thenReturn("1");
-      when(request.getParameter("radius")).thenReturn("1000");
-      when(request.getParameter("searchTerms")).thenReturn("coffee");
+      when(request.getParameter("restaurantName")).thenReturn("Starbucks");
+      when(request.getParameter("restaurantRating")).thenReturn("Pretty good");
+      when(request.getParameter("rrpRating")).thenReturn("It met one or two");
+      when(request.getParameter("notes")).thenReturn("yay coffee");
 
-      new SearchServlet().doPost(request, response);
+      new FeedbackServlet().doPost(request, response);
 
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-      List<Entity> results = ds.prepare(new Query("savedSearch")).asList(FetchOptions.Builder.withDefaults());
-      assertEquals(1, ds.prepare(new Query("savedSearch")).countEntities());
-      assertEquals((String)results.get(0).getProperty("keywords"), "coffee");
+      List<Entity> results = ds.prepare(new Query("Feedback")).asList(FetchOptions.Builder.withDefaults());
+      assertEquals(1, ds.prepare(new Query("Feedback")).countEntities());
+      assertEquals((String)results.get(0).getProperty("notes"), "yay coffee");
   }
 
   @Test
   public void GETOneMatching() throws IOException{
       //Test that the servlet retrieves items from the datastore
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-      Entity searchEntity = new Entity("savedSearch");
-      searchEntity.setProperty("user", "2");
-      searchEntity.setProperty("radius", "1000");
-      searchEntity.setProperty("date", "Jul 17, at 13:21");
-      searchEntity.setProperty("keywords", "indian");
-      searchEntity.setProperty("timestamp", 112030394);
-      searchEntity.setProperty("lat", "40");
-      searchEntity.setProperty("lng", "-80");
-      ds.put(searchEntity);
+      Entity feedbackEntity = new Entity("Feedback");
+      feedbackEntity.setProperty("user", "2");
+      feedbackEntity.setProperty("restaurantName", "Mellow Mushroom");
+      feedbackEntity.setProperty("restaurantRating", "Pretty good");
+      feedbackEntity.setProperty("rrpRating", "It met all of them");
+      feedbackEntity.setProperty("notes", "yay pizza");
+      ds.put(feedbackEntity);
 
       //Handle calls to the mock objects
       when(request.getParameter("user")).thenReturn("2");
@@ -117,7 +115,7 @@ public final class SearchServletTest {
       when(response.getWriter()).thenReturn(pw);
 
       //Run the servlet and verify functions are called
-      new SearchServlet().doGet(request, response);
+      new FeedbackServlet().doGet(request, response);
       verify(response).setContentType("application/json");
       verify(response).getWriter();
 
@@ -125,7 +123,7 @@ public final class SearchServletTest {
       String results = sw.getBuffer().toString().trim();
       JsonObject resultsObj = new JsonParser().parse(results).getAsJsonArray().get(0).getAsJsonObject();
       assertEquals(resultsObj.get("user").getAsString(), "2");
-      assertEquals(resultsObj.get("keywords").getAsString(), "indian");
+      assertEquals(resultsObj.get("notes").getAsString(), "yay pizza");
   }
 
   @Test
@@ -138,7 +136,7 @@ public final class SearchServletTest {
       when(response.getWriter()).thenReturn(pw);
 
       //Run the servlet and verify functions are called
-      new SearchServlet().doGet(request, response);
+      new FeedbackServlet().doGet(request, response);
       verify(response).setContentType("application/json");
       verify(response).getWriter();
 
@@ -152,15 +150,13 @@ public final class SearchServletTest {
       //Test that the servlet when an item in the datastore doesn't
       //match the user request that was processed
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-      Entity searchEntity = new Entity("savedSearch");
-      searchEntity.setProperty("user", "2");
-      searchEntity.setProperty("radius", "1000");
-      searchEntity.setProperty("date", "Jul 17, at 13:21");
-      searchEntity.setProperty("keywords", "indian");
-      searchEntity.setProperty("timestamp", 112030394);
-      searchEntity.setProperty("lat", "40");
-      searchEntity.setProperty("lng", "-80");
-      ds.put(searchEntity);
+      Entity feedbackEntity = new Entity("Feedback");
+      feedbackEntity.setProperty("user", "2");
+      feedbackEntity.setProperty("restaurantName", "Whit's");
+      feedbackEntity.setProperty("restaurantRating", "Pretty good");
+      feedbackEntity.setProperty("rrpRating", "It met one or two");
+      feedbackEntity.setProperty("notes", "yay ice cream");
+      ds.put(feedbackEntity);
 
       //Handle calls to the mock objects
       when(request.getParameter("user")).thenReturn("3");
@@ -169,7 +165,7 @@ public final class SearchServletTest {
       when(response.getWriter()).thenReturn(pw);
 
       //Run the servlet and verify functions are called
-      new SearchServlet().doGet(request, response);
+      new FeedbackServlet().doGet(request, response);
       verify(response).setContentType("application/json");
       verify(response).getWriter();
 
@@ -183,25 +179,21 @@ public final class SearchServletTest {
       //Test that the servlet returns the items in correct order
       //when two matching entities are in the datastore
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-      Entity searchEntity = new Entity("savedSearch");
-      searchEntity.setProperty("user", "2");
-      searchEntity.setProperty("radius", "1000");
-      searchEntity.setProperty("date", "Jul 17, at 13:21");
-      searchEntity.setProperty("keywords", "indian");
-      searchEntity.setProperty("timestamp", 112030394);
-      searchEntity.setProperty("lat", "40");
-      searchEntity.setProperty("lng", "-80");
-      ds.put(searchEntity);
+      Entity feedbackEntity1 = new Entity("Feedback");
+      feedbackEntity1.setProperty("user", "2");
+      feedbackEntity1.setProperty("restaurantName", "Mr. Sushi");
+      feedbackEntity1.setProperty("restaurantRating", "Pretty good");
+      feedbackEntity1.setProperty("rrpRating", "It met one or two");
+      feedbackEntity1.setProperty("notes", "yay sushi");
+      ds.put(feedbackEntity1);
 
-      Entity searchEntity2 = new Entity("savedSearch");
-      searchEntity2.setProperty("user", "2");
-      searchEntity2.setProperty("radius", "2500");
-      searchEntity2.setProperty("date", "Jul 17, at 13:28");
-      searchEntity2.setProperty("keywords", "mexican");
-      searchEntity2.setProperty("timestamp", 122030394);
-      searchEntity2.setProperty("lat", "40");
-      searchEntity2.setProperty("lng", "-80");
-      ds.put(searchEntity2);
+      Entity feedbackEntity2 = new Entity("Feedback");
+      feedbackEntity2.setProperty("user", "2");
+      feedbackEntity2.setProperty("restaurantName", "First Watch");
+      feedbackEntity2.setProperty("restaurantRating", "Pretty good");
+      feedbackEntity2.setProperty("rrpRating", "It met one or two");
+      feedbackEntity2.setProperty("notes", "yay brunch");
+      ds.put(feedbackEntity2);
 
       //Handle calls to the mock objects
       when(request.getParameter("user")).thenReturn("2");
@@ -210,7 +202,7 @@ public final class SearchServletTest {
       when(response.getWriter()).thenReturn(pw);
 
       //Run the servlet and verify functions are called
-      new SearchServlet().doGet(request, response);
+      new FeedbackServlet().doGet(request, response);
       verify(response).setContentType("application/json");
       verify(response).getWriter();
 
@@ -218,7 +210,7 @@ public final class SearchServletTest {
       String results = sw.getBuffer().toString().trim();
       JsonObject resultsObj1 = (new JsonParser().parse(results)).getAsJsonArray().get(0).getAsJsonObject();
       JsonObject resultsObj2 = (new JsonParser().parse(results)).getAsJsonArray().get(1).getAsJsonObject();
-      assertEquals(resultsObj1.get("keywords").getAsString(), "mexican");
-      assertEquals(resultsObj2.get("keywords").getAsString(), "indian");
+      assertEquals(resultsObj1.get("notes").getAsString(), "yay sushi");
+      assertEquals(resultsObj2.get("notes").getAsString(), "yay brunch");
   }
 }
