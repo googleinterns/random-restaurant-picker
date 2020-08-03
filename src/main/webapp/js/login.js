@@ -24,7 +24,7 @@ function onSignIn(googleUser) {
             localStorage.setItem("user", data.sub);
             localStorage.setItem("loggedIn", true);
             addUserContent(profile.getName(), profile.getImageUrl());
-            toggleAccountMenu();
+            showAccountMenu();
         }).catch((error) => {
             console.log(error);
         });
@@ -32,14 +32,23 @@ function onSignIn(googleUser) {
 
 //Add user information to signed in UI
 function addUserContent(name, image) {
-    document.getElementById("user-name").innerText = name;
+    // document.getElementById("user-name").innerText = name;
     document.getElementById("profile-pic").src = image;
 }
 
 //Replaces the sign-in button with signed in UI
-function toggleAccountMenu() {
-    document.getElementById("account-menu").classList.toggle("show");
-    document.getElementById("sign-in").classList.toggle("hide");
+function showAccountMenu() {
+    document.getElementById("account-menu").classList.add("show");
+    document.getElementById("account-menu").classList.remove("hide");
+    document.getElementById("sign-in").classList.add("hide");
+    document.getElementById("sign-in").classList.remove("show");
+}
+
+function hideAccountMenu() {
+    document.getElementById("account-menu").classList.add("hide");
+    document.getElementById("account-menu").classList.remove("show");
+    document.getElementById("sign-in").classList.add("show");
+    document.getElementById("sign-in").classList.remove("hide");
 }
 
 //Logs out of the account
@@ -49,36 +58,7 @@ function signOut() {
         console.log('User signed out.');
     });
     localStorage.setItem("user", 0);
-    toggleAccountMenu();
-}
-
-//Redirects to search page
-function backToHome() {
-    window.location.replace("index.html");
-}
-
-//Redirects to user's account information page
-function toAccount() {
-    window.location.replace("account-info.html");
-}
-
-//Redirects to past searches page
-function toSearches() {
-    window.location.replace("past-searches.html");
-}
-
-function toggleShow() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-    if (!event.target.matches('.dropbtn')) {
-        let dropdown = document.getElementById("myDropdown");
-        if (dropdown.classList.contains('show')) {
-            dropdown.classList.remove('show');
-        }
-    }
+    hideAccountMenu();
 }
 
 /*

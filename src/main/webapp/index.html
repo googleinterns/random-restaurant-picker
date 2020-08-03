@@ -28,16 +28,8 @@
                 <div class="header-external-links" style="transform: translate(0px, 0px);">
                     <div class="login-button">
                         <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-                        <div class="dropdown" id="account-menu">
-                            <button onclick="toggleShow()" class="dropbtn">
-                                <img id="profile-pic" src="">
-                                <h3 id="user-name">name</h3>
-                            </button>
-                            <div id="myDropdown" class="dropdown-content">
-                                <a href="#">Account</a>
-                                <a href="#">History</a>
-                                <a onclick="signOut()">Sign Out</a>
-                            </div>
+                        <div class="hide" id="account-menu">
+                            <img id="profile-pic" src="" style="max-width:50px; max-height:50px; width: auto; height: auto;">
                         </div>
                     </div>
                     <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">
@@ -56,7 +48,7 @@
                     <div class="menu-panel" style="transform: translate(110%, 0px);">
                         <div class="menu-pages">
                             <ul class="menu-pages-list">
-                                <li id="menu-roulette" class="menu-pages-item is-active" style="opacity: 1; transform: translate(0px, 0px);">
+                                <li id="menu-roulette" class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
                                     <a class="menu-pages-item-link" href="index.html">
                                         Restaurant Roulette
                                     </a>
@@ -78,21 +70,15 @@
                                     </div>
                                 </li>
                                 <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                    <a class="menu-pages-item-link" onclick="alert('TODO: implement this!')">
+                                    <a class="menu-pages-item-link" href="account-info.html">
                                         Account
                                     </a>
                                     <div class="menu-pages-item-subpages menu-subpages">
                                         <ul class="menu-subpages-list">
                                             <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                <a class="menu-subpages-item-link" href="past-searches.html">
                                                     <div class="menu-subpages-item-link-line"></div>
-                                                    <span>Settings</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
-                                                    <div class="menu-subpages-item-link-line"></div>
-                                                    <span>Search history</span>
+                                                    <span>Past searches</span>
                                                 </a>
                                             </li>
                                             <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
