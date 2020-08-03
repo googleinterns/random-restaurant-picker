@@ -44,12 +44,12 @@ function toggleAccountMenu() {
 
 //Logs out of the account
 function signOut() {
-  var auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log('User signed out.');
-  });
-  localStorage.setItem("user", 0);
-  toggleAccountMenu();
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function() {
+        console.log('User signed out.');
+    });
+    localStorage.setItem("user", 0);
+    toggleAccountMenu();
 }
 
 //Redirects to search page
@@ -68,17 +68,17 @@ function toSearches() {
 }
 
 function toggleShow() {
-  document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById("myDropdown").classList.toggle("show");
 }
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    let dropdown = document.getElementById("myDropdown");
-      if (dropdown.classList.contains('show')) {
-        dropdown.classList.remove('show');
-      }
-  }
+    if (!event.target.matches('.dropbtn')) {
+        let dropdown = document.getElementById("myDropdown");
+        if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+        }
+    }
 }
 
 /*
@@ -95,10 +95,10 @@ function accountFunctions() {
 function getNumSearches() {
     let count = 0;
     let numSearchesEl = document.getElementById('num-searches');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+    fetch(`/searches?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((searches) => {
         searches.forEach((search) => {
             count += 1;
         });
@@ -108,10 +108,10 @@ function getNumSearches() {
 
 function getLastVisited() {
     let lastVisitedEl = document.getElementById('last-visited');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+    fetch(`/searches?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((searches) => {
         for (search of searches) {
             lastVisitedEl.innerText = search.name;
             break;
@@ -121,7 +121,7 @@ function getLastVisited() {
 
 function getFavFood() {
     let foodHolder = document.getElementById('fav-food');
-    fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
+    fetch(`/fav-food?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((foods) => {
         if (foods.length == 0) {
             console.log("hello");
             let favFoodFormEl = document.createElement('form');
@@ -157,14 +157,14 @@ function getFavFood() {
 function getNumReviews() {
     let count = 0;
     let numFeedbackEl = document.getElementById('num-feedback');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
-    fetch(`/feedback?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((feedbackList) => {
+    fetch(`/feedback?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((feedbackList) => {
         feedbackList.forEach((feedback) => {
             count += 1;
         });
-    numFeedbackEl.innerText = count;
+        numFeedbackEl.innerText = count;
     });
 }
 
@@ -172,12 +172,12 @@ function getNumReviews() {
    RETRIEVING SEARCHES
    ========================================================================== */
 //Retrieve searches associated with the current user
-function getSearches(){
+function getSearches() {
     let userID = 0;
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
-    fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
+    fetch(`/searches?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((searches) => {
         let searchesEl = document.getElementById('cards');
         searches.forEach((search) => {
             let searchCard = createSearchElement(search);
@@ -271,7 +271,8 @@ function createSearchesButtons(search, buttons, newCardBody) {
     searchButton.innerText = "Search with These Parameters Again";
     newCardBody.appendChild(searchButton);
     searchButton.addEventListener('click', () => {
-        reroll()});
+        reroll()
+    });
     return newCardBody;
 }
 
@@ -311,16 +312,16 @@ function createRestaurantElement(restaurantName) {
 
 async function fetchFeedback() {
     let userID = 0;
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     let response = await fetch(`/feedback?user=${userID}`, {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(data => {
-        return data;
-    });
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        });
     return response;
 }
 
@@ -379,12 +380,12 @@ async function fetchFeedback() {
         userID = localStorage.getItem("user");
     }
     let response = await fetch(`/feedback?user=${userID}`, {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(data => {
-        return data;
-    });
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        });
     return response;
 }
 
