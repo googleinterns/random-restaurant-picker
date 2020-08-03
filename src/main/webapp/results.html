@@ -22,6 +22,7 @@
 </head>
 
 <body>
+<<<<<<< HEAD
     <div class="loading-container">
         <div class="loading-screen">
         </div>
@@ -47,6 +48,138 @@
                 <div class="heading-container">
                     <h2 class="is-animated">You're headed to:</h2>
                     <h1 class="is-animated" id="pick"></h1>
+=======
+    <div data-barba="wrapper">
+        <header class="header">
+            <div class="header-wrapper">
+                <div class="header-external-links" style="transform: translate(0px, 0px);">
+                    <div class="login-button">
+                        <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
+                        <div class="dropdown" id="account-menu">
+                            <button onclick="toggleShow()" class="dropbtn">
+                                <img id="profile-pic" src="">
+                                <h3 id="user-name">name</h3>
+                            </button>
+                            <div id="myDropdown" class="dropdown-content">
+                                <a href="#">Account</a>
+                                <a href="#">History</a>
+                                <a onclick="signOut()">Sign Out</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">
+                        <svg viewBox="0 0 50 50" width="50" height="50" class="menu-trigger-shape">
+                            <circle r="25" cx="25" cy="25"></circle>
+                        </svg>
+                        <span class="menu-trigger-bar"></span>
+                        <span class="menu-trigger-bar"></span>
+                        <span class="menu-trigger-bar"></span>
+                    </div>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="menu" data-component="menu">
+                    <div class="menu-overlay" onclick="menuClose()"></div>
+                    <div class="menu-panel" style="transform: translate(110%, 0px);">
+                        <div class="menu-pages">
+                            <ul class="menu-pages-list">
+                                <li id="menu-roulette" class="menu-pages-item is-active" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link" href="index.html">
+                                        Restaurant Roulette
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>About</span>
+                                                </a>
+                                            </li>
+                                            <li id="menu-result" class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="results.html">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Result</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link" onclick="alert('TODO: implement this!')">
+                                        Account
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Settings</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Search history</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Sign out</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link">
+                                        Theme
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme1()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Royal Blue</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme2()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Summer Sky</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme3()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Light Green</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme4()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Yellow Orange</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme5()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Cinnabar</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme6()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Blue Violet</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+>>>>>>> 7340b70... add login button to newUI
                 </div>
                 </br>
                 </br>
