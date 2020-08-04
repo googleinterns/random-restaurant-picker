@@ -167,7 +167,6 @@ $(() => {
                 to: { namespace: ['results'] },
                 async enter(data) {
                     await toResults(data.current.container, data.next.container);
-                    await addMapScript();
                     await roll();
                 },
 
@@ -175,6 +174,7 @@ $(() => {
                     $('head').append('<link rel="stylesheet" href="css/results/results.css">');
                     $.getScript("js/results/results.js");
                     $.getScript("js/results/resultsNav.js");
+                    $.getScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyDbEPugXWcqo1q6b-X_pd09a0Zaj3trDOw&callback=initMap");
                     // document.getElementById('menu-result').classList.add('is-active');
                     // document.getElementById('menu-roulette').classList.remove('is-active');
                 }
