@@ -283,6 +283,10 @@ input[type="date"i] {
     padding-bottom: 40px;
 }
 
+.card-2 {
+    margin-bottom: 10px;
+}
+
 @media (max-width: 767px) {
     .card {
         display: block;
