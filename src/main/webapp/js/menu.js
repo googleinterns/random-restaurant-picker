@@ -1,3 +1,4 @@
+const headerTriggers = document.querySelector('.header-external-links')
 const menuTrigger = document.querySelector('.menu-trigger')
 const menu = document.querySelector('.menu')
 const menuPanel = '.menu-panel'
@@ -23,6 +24,7 @@ function menuToggle() {
 }
 
 function menuOpen() {
+    headerTriggers.classList.add('is-open');
     menuTrigger.classList.add('is-open');
     document.body.classList.add('prevent-scroll');
     menu.classList.add('is-open'); // Add page blur
@@ -51,6 +53,7 @@ function menuOpen() {
 }
 
 function menuClose() {
+    headerTriggers.classList.remove('is-open');
     menuTrigger.classList.remove('is-open');
     document.body.classList.remove('prevent-scroll');
     menu.classList.remove('is-open'); // Remove page blur

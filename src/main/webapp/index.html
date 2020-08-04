@@ -28,8 +28,9 @@
                 <div class="header-external-links" style="transform: translate(0px, 0px);">
                     <div class="login-button">
                         <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-                        <div class="hide" id="account-menu">
-                            <img id="profile-pic" src="" style="max-width:50px; max-height:50px; width: auto; height: auto;">
+                        <div class="account-trigger hide" id="account-menu">
+                            <img class="rounded" id="profile-pic" src="" style="max-width:50px; max-height:50px; width: auto; height: auto;">
+                            <span id="account-name"></span>
                         </div>
                     </div>
                     <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">

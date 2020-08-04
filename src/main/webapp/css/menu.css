@@ -1,9 +1,42 @@
 /* ==========================================================================
    LOGIN BUTTON (TODO: make this fit better on the page)
    ========================================================================== */
-/*.login-button {
-    padding-right: 5rem;
-}*/
+.account-trigger {
+    position: relative;
+    color: black;
+    font-size: 2rem;
+    font-weight: 300;
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s, transform 0.4s;
+}
+
+.is-open .account-trigger {
+    transform: translateX(calc(-100vw + 170px));
+}
+
+@media only screen and (min-width: 48em) {
+    .is-open .account-trigger {
+        transform: translateX(-300px);
+    }
+}
+
+.account-trigger span {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: 250%;
+    margin-left: 1rem;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: opacity 0.4s ease-in-out;
+}
+
+.is-open .account-trigger span {
+    opacity: 1;
+}
+
+.rounded {
+    border-radius: 50%;
+}
 
 /* ==========================================================================
    HEADER
