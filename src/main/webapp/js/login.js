@@ -32,7 +32,7 @@ function onSignIn(googleUser) {
 
 //Add user information to signed in UI
 function addUserContent(name, image) {
-    // document.getElementById("user-name").innerText = name;
+    document.getElementById("account-name").innerText = name;
     document.getElementById("profile-pic").src = image;
 }
 
