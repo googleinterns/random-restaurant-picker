@@ -306,73 +306,10 @@ async function getFeedback(search) {
     let fetchedFeedback = await fetchFeedback();
     fetchedFeedback.forEach((feedback) => {
         if (feedback.restaurantName == search.name) {
-            thisRestaurantsFeedback = feedback.notes;
+            thisRestaurantsFeedback = feedback.userRestaurantRating + "; " + feedback.userSearchRating + "; " + feedback.notes;
             buttons = false;
             tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
             return [tempFeedbackElement, buttons];
-        }
-    });
-    return [tempFeedbackElement, buttons];
-}
-
-//Function to append restaurant name to modal form to force it to follow through to feedback
-function createRestaurantElement(restaurantName) {
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    let userEl = document.createElement('input');
-    userEl.className = "input--style-2";
-    userEl.type = "text";
-    userEl.id = "user-id";
-    userEl.name = "user-id";
-    userEl.value = userID;
-    userEl.hidden = true;
-
-    let inputGroupEl = document.createElement('div');
-    inputGroupEl.className = "input-group";
-    inputGroupEl.id = "restaurant-name-container";
-    let inputContainer = document.createElement('input');
-    inputContainer.className = "input--style-2";
-    inputContainer.type = "text";
-    inputContainer.id = "restaurant-name-fill";
-    inputContainer.name = "restaurant-name-fill";
-    inputContainer.value = restaurantName;
-    inputContainer.innerText = restaurantName;
-    inputGroupEl.appendChild(inputContainer);
-    inputGroupEl.appendChild(userEl);
-
-    let submitEl = document.createElement('input');
-    submitEl.type = "submit";
-    submitEl.id = "submit-button";
-    inputGroupEl.appendChild(submitEl);
-    return inputGroupEl;
-}
-
-async function fetchFeedback() {
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    let response = await fetch(`/feedback?user=${userID}`, {
-            method: 'GET'
-        })
-        .then(response => response.json())
-        .then(data => {
-            return data;
-        });
-    return response;
-}
-
-async function getFeedback(search) {
-    let buttons = true;
-    let tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
-    let fetchedFeedback = await fetchFeedback();
-    fetchedFeedback.forEach((feedback) => {
-        if (feedback.restaurantName == search.name) {
-            thisRestaurantsFeedback = feedback.notes;
-            buttons = false;
-            tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
         }
     });
     return [tempFeedbackElement, buttons];
