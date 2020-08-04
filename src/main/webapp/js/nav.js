@@ -188,6 +188,7 @@ $(() => {
                 },
 
                 async beforeEnter(data) {
+                    $('head').append('<link rel="stylesheet" href="css/index/form.css">');
                     $.getScript("js/login.js");
                 }
             },
@@ -200,6 +201,7 @@ $(() => {
                 },
 
                 async beforeEnter(data) {
+                    $('head').append('<link rel="stylesheet" href="css/index/form.css">');
                     $.getScript("js/login.js");
                 }
             }
