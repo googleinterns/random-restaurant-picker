@@ -55,7 +55,7 @@ public final class Restaurant implements java.io.Serializable {
         return this.rating;
     }
 
-    public double getPriceLevel() {
+    public int getPriceLevel() {
         return this.priceLevel;
     }
 

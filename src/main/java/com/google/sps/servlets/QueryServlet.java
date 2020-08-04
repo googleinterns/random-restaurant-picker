@@ -66,7 +66,6 @@ public class QueryServlet extends HttpServlet {
         String lon = servletRequest.getParameter("lng");
         String radius = servletRequest.getParameter("radius");
         int priceLevel = Integer.parseInt(servletRequest.getParameter("priceLevel"));
-        System.out.println(priceLevel);
         String type = "restaurant";
         String searchTerms = servletRequest.getParameter("searchTerms");
         String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;

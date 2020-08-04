@@ -62,8 +62,10 @@ public class SearchServlet extends HttpServlet {
             String lng = (String) entity.getProperty("lng");
             long id = entity.getKey().getId();
             String restaurantName = (String) entity.getProperty("restaurantName");
+            String restaurantRating = (String) entity.getProperty("restaurantRating");
+            String restaurantPriceLevel = (String) entity.getProperty("restaurantPriceLevel");
 
-            SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id, restaurantName);
+            SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id, restaurantName, restaurantRating, restaurantPriceLevel);
             searches.add(search);
         }
         response.setContentType("application/json;");
@@ -83,6 +85,8 @@ public class SearchServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         Response newResponse = (Response) session.getAttribute("response");
         String restaurantName = newResponse.getPick().getName();
+        String restaurantRating = "" + newResponse.getPick().getRating();
+        String restaurantPriceLevel = "" + newResponse.getPick().getPriceLevel();
 
         SimpleDateFormat formatter = new SimpleDateFormat("MMM d, 'at' HH:mm");
         Date date = new Date(System.currentTimeMillis());
@@ -98,6 +102,8 @@ public class SearchServlet extends HttpServlet {
         searchEntity.setProperty("lat", lat);
         searchEntity.setProperty("lng", lng);
         searchEntity.setProperty("restaurantName", restaurantName);
+        searchEntity.setProperty("restaurantRating", restaurantRating);
+        searchEntity.setProperty("restaurantPriceLevel", restaurantPriceLevel);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(searchEntity);

@@ -68,7 +68,7 @@ function signOut() {
 function accountFunctions() {
     getNumSearches();
     getLastVisited();
-    getFavFood();
+    // getFavFood();
     getNumReviews();
 }
 
@@ -146,6 +146,13 @@ function getSearches() {
     });
 }
 
+function convertPriceLevel(priceLevel) {
+    let priceLevelStr = "";
+    for (let i = 0; i <= priceLevel; i++)
+        priceLevelStr += "$";
+    return priceLevelStr;
+}
+
 //Create the card containing the search's information
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
@@ -158,6 +165,14 @@ function createSearchElement(search) {
     nameElement.innerText = search.name;
 
     newCardBody.appendChild(nameElement);
+    newCardBody.appendChild(document.createElement('br'));
+
+    //creating the restaurant rating and price level
+    const infoEl = document.createElement('p3');
+    infoEl.id = 'restaurant-info';
+    infoEl.innerText = search.rating + "★ • " + convertPriceLevel(search.priceLevel);
+
+    newCardBody.appendChild(infoEl);
     newCardBody.appendChild(document.createElement('br'));
 
     //creating the list of parameters
@@ -226,13 +241,13 @@ function createSearchesButtons(search, buttons, newCardBody) {
         });
         newCardBody.appendChild(feedbackButton);
     }
-    let searchButton = document.createElement('button');
-    searchButton.className = 'btn1 search';
-    searchButton.innerText = "Search with These Parameters Again";
-    newCardBody.appendChild(searchButton);
-    searchButton.addEventListener('click', () => {
-        reroll()
-    });
+    // let searchButton = document.createElement('button');
+    // searchButton.className = 'btn1 search';
+    // searchButton.innerText = "Search with These Parameters Again";
+    // newCardBody.appendChild(searchButton);
+    // searchButton.addEventListener('click', () => {
+    //     reroll()
+    // });
     return newCardBody;
 }
 
@@ -291,7 +306,7 @@ async function getFeedback(search) {
     let fetchedFeedback = await fetchFeedback();
     fetchedFeedback.forEach((feedback) => {
         if (feedback.restaurantName == search.name) {
-            thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
+            thisRestaurantsFeedback = feedback.notes;
             buttons = false;
             tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
             return [tempFeedbackElement, buttons];
@@ -355,7 +370,7 @@ async function getFeedback(search) {
     let fetchedFeedback = await fetchFeedback();
     fetchedFeedback.forEach((feedback) => {
         if (feedback.restaurantName == search.name) {
-            thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
+            thisRestaurantsFeedback = feedback.notes;
             buttons = false;
             tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
         }
