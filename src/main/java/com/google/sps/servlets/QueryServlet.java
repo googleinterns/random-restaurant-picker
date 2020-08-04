@@ -52,11 +52,11 @@ public class QueryServlet extends HttpServlet {
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
-        if(response == null)
+        if (response == null)
             servletResponse.getWriter().println(gson.toJson(new Response("NO_RESULTS", null)));
         else if (response.getStatus().equals("OK"))
-            response.pick();
-        servletResponse.getWriter().println(gson.toJson(response));
+            servletResponse.getWriter().println(gson.toJson(response));
+        response.pick();
     }
 
     @Override
@@ -65,6 +65,8 @@ public class QueryServlet extends HttpServlet {
         String lat = servletRequest.getParameter("lat");
         String lon = servletRequest.getParameter("lng");
         String radius = servletRequest.getParameter("radius");
+        int priceLevel = Integer.parseInt(servletRequest.getParameter("priceLevel"));
+        System.out.println(priceLevel);
         String type = "restaurant";
         String searchTerms = servletRequest.getParameter("searchTerms");
         String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
@@ -77,6 +79,8 @@ public class QueryServlet extends HttpServlet {
         Response response = gson.fromJson(responseJson, Response.class);
 
         HttpSession session = servletRequest.getSession(true);
+        if (response.getStatus().equals("OK"))
+            response.pick();
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
         servletResponse.getWriter().println(gson.toJson(response));

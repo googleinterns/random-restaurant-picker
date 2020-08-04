@@ -93,6 +93,7 @@ function getLastVisited() {
     }
     fetch(`/searches?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((searches) => {
         for (search of searches) {
+            console.log(search);
             lastVisitedEl.innerText = search.name;
             break;
         }
@@ -100,36 +101,15 @@ function getLastVisited() {
 }
 
 function getFavFood() {
-    let foodHolder = document.getElementById('fav-food');
-    fetch(`/fav-food?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((foods) => {
-        if (foods.length == 0) {
-            console.log("hello");
-            let favFoodFormEl = document.createElement('form');
-            favFoodFormEl.action = "/fav-food";
-            favFoodFormEl.method = "POST";
-            favFoodFormEl.id = "fav-food-form";
-
-            let favFoodInputEl = document.createElement('textarea');
-            favFoodInputEl.id = "food-selection";
-            favFoodInputEl.placeholder = "or foods :)";
-
-            let formInputHolderEl = document.createElement('div');
-            formInputHolderEl.class = "input-group";
-
-            let inputButtonEl = document.createElement('input');
-            inputButtonEl.type = "submit";
-
-            formInputHolderEl.appendChild(favFoodInputEl);
-            favFoodFormEl.appendChild(formInputHolderEl);
-            favFoodFormEl.appendChild(inputButtonEl);
-            foodHolder.appendChild(favFoodFormEl);
+    let food = document.getElementById('fav-food');
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
+    fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
+        if (foods[0].length == 0) {
+            food.appendChild('<textarea id="food-selection" placeholder="or foods :)"></textarea>');
         } else {
-            for (food of foods) {
-                let foodTextEl = document.createElement('p');
-                foodTextEl.innerText = food;
-                foodHolder.appendChild(foodTextEl);
-                break;
-            }
+            food.innerText = foods[0];
         }
     });
 }
