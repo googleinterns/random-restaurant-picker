@@ -14,6 +14,12 @@
 
 package com.google.sps;
 
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+
 import com.google.sps.servlets.FavFoodServlet;
 import com.google.sps.data.UrlOpener;
 
@@ -28,12 +34,6 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertEquals;
 
 import org.mockito.Mock;
 import org.mockito.ArgumentCaptor;
@@ -81,7 +81,7 @@ public final class FavFoodServletTest {
   }
 
   @Test
-  public void POSTTest() throws IOException{
+  public void postTest() throws IOException{
       when(request.getParameter("user")).thenReturn("1");
       when(request.getParameter("fav-food")).thenReturn("ice cream");
 
@@ -94,7 +94,7 @@ public final class FavFoodServletTest {
   }
 
   @Test
-  public void GETOneMatching() throws IOException{
+  public void getOneMatching() throws IOException{
       //Test that the servlet retrieves items from the datastore
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
       Entity foodEntity = new Entity("FavFood");
@@ -123,7 +123,7 @@ public final class FavFoodServletTest {
   }
 
   @Test
-  public void GETZeroMatching() throws IOException{
+  public void getZeroMatching() throws IOException{
       //Test the servlet when no items are in the datastore
       //Handle calls to the mock objects
       when(request.getParameter("user")).thenReturn("2");

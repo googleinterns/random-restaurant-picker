@@ -246,7 +246,6 @@ function getFavFood() {
     }
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
         if (foods.length == 0) {
-            console.log("hello");
             let favFoodFormEl = document.createElement('form');
             favFoodFormEl.action = "/fav-food";
             favFoodFormEl.method = "POST";
@@ -267,12 +266,9 @@ function getFavFood() {
             favFoodFormEl.appendChild(inputButtonEl);
             foodHolder.appendChild(favFoodFormEl);
         } else {
-            for (food of foods) {
-                let foodTextEl = document.createElement('p');
-                foodTextEl.innerText = food;
-                foodHolder.appendChild(foodTextEl);
-                break;
-            }
+            let foodTextEl = document.createElement('p');
+            foodTextEl.innerText = foods[0];
+            foodHolder.appendChild(foodTextEl);
         }
     });
 }

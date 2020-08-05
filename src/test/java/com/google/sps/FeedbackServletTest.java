@@ -14,6 +14,12 @@
 
 package com.google.sps;
 
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+
 import com.google.sps.servlets.FeedbackServlet;
 import com.google.sps.data.UrlOpener;
 
@@ -28,12 +34,6 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertEquals;
 
 import org.mockito.Mock;
 import org.mockito.ArgumentCaptor;
@@ -81,7 +81,7 @@ public final class FeedbackServletTest {
   }
 
   @Test
-  public void POSTTest() throws IOException{
+  public void postTest() throws IOException{
       when(request.getParameter("user-id")).thenReturn("1");
       when(request.getParameter("restaurant-name-fill")).thenReturn("Starbucks");
       when(request.getParameter("restaurant-rating")).thenReturn("Pretty good");
@@ -97,7 +97,7 @@ public final class FeedbackServletTest {
   }
 
   @Test
-  public void GETOneMatching() throws IOException{
+  public void getOneMatching() throws IOException{
       //Test that the servlet retrieves items from the datastore
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
       Entity feedbackEntity = new Entity("Feedback");
@@ -127,7 +127,7 @@ public final class FeedbackServletTest {
   }
 
   @Test
-  public void GETZeroMatching() throws IOException{
+  public void getZeroMatching() throws IOException{
       //Test the servlet when no items are in the datastore
       //Handle calls to the mock objects
       when(request.getParameter("user")).thenReturn("2");
@@ -146,7 +146,7 @@ public final class FeedbackServletTest {
   }
 
   @Test
-  public void GETOneNotMatching() throws IOException{
+  public void getOneNotMatching() throws IOException{
       //Test that the servlet when an item in the datastore doesn't
       //match the user request that was processed
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
@@ -175,7 +175,7 @@ public final class FeedbackServletTest {
   }
 
   @Test
-  public void GETTwoInOrder() throws IOException{
+  public void getTwoInOrder() throws IOException{
       //Test that the servlet returns the items in correct order
       //when two matching entities are in the datastore
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();

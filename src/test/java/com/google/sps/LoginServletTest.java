@@ -14,6 +14,13 @@
 
 package com.google.sps;
 
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.junit.Assert.assertEquals;
+
 import com.google.sps.servlets.LoginServlet;
 
 import javax.servlet.http.HttpServlet;
@@ -27,13 +34,6 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.*;
-import static org.junit.Assert.assertEquals;
 
 import org.mockito.Mock;
 import org.mockito.ArgumentCaptor;
@@ -73,7 +73,7 @@ public final class LoginServletTest {
   Payload payload;
 
   @Test
-  public void GETTest() throws IOException, GeneralSecurityException {
+  public void getTest() throws IOException, GeneralSecurityException {
       //See that the login authenticator works
       //Set up mock object responses
       String payloadResponse = "{\"name\":\"tom\",\"email\":\"tom@example.com\",\"age\":\"25\"}";
