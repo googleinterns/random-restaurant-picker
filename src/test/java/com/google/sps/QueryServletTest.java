@@ -162,7 +162,7 @@ public final class QueryServletTest {
   public void GETOneResults() throws IOException{
     //Submit a post request to query servlet that returns one result
     List<Restaurant> restaurants = new ArrayList<>();
-    restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}));
+    restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}, "255 West Avenue"));
     Response apiResponse = new Response("OK", restaurants);
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
@@ -190,8 +190,8 @@ public final class QueryServletTest {
   public void GETMultipleResults() throws IOException{
     //Submit a post request to query servlet that returns 0 results
     List<Restaurant> restaurants = new ArrayList<>();
-    restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}));
-    restaurants.add(new Restaurant("Starbucks", 5, "OPERATIONAL", new Photo[]{}));
+    restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}, "255 West Avenue"));
+    restaurants.add(new Restaurant("Starbucks", 5, "OPERATIONAL", new Photo[]{}, "456 East Avenue"));
     Response apiResponse = new Response("OK", restaurants);
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
