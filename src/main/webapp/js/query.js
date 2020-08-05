@@ -243,7 +243,7 @@ function getLastVisited() {
 
 function getFavFood() {
     let food = document.getElementById('fav-food');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
@@ -428,14 +428,13 @@ async function getFeedback(search) {
     let buttons = true;
     let tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
     let fetchedFeedback = await fetchFeedback();
-    fetchedFeedback.forEach((feedback) => {
-        if (feedback.restaurantName == search.name) {
-            thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
-            buttons = false;
-            tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
-            return [tempFeedbackElement, buttons];
+    let correctFeedback = fetchedFeedback.find(feedback => feedback.restaurantName == search.name);
+    if (correctFeedback != undefined) {
+        thisRestaurantsFeedback = correctFeedback.restaurantRating + "; " + correctFeedback.notes;
+        buttons = false;
+        tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
+        return [tempFeedbackElement, buttons];
         }
-    });
     return [tempFeedbackElement, buttons];
 }
 
@@ -566,14 +565,13 @@ async function fetchFeedback() {
     if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
-    let response = await fetch(`/feedback?user=${userID}`, {
+    return await fetch(`/feedback?user=${userID}`, {
         method: 'GET'
     })
     .then(response => response.json())
     .then(data => {
         return data;
     });
-    return response;
 }
 
 async function getFeedback(search) {
