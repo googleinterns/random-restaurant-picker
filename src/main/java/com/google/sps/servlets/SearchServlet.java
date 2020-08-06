@@ -16,12 +16,14 @@ package com.google.sps.servlets;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
-import com.google.gson.Gson;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -35,6 +37,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import com.google.sps.data.SearchItem;
 
 @WebServlet("/searches")
@@ -50,7 +53,7 @@ public class SearchServlet extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
-        List <SearchItem> searches = new ArrayList<>();
+        List<SearchItem> searches = new ArrayList<>();
         for (Entity entity : results.asIterable()) {
             String userID = (String) entity.getProperty("user");
             String date = (String) entity.getProperty("date");

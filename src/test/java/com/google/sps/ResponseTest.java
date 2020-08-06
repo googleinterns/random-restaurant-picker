@@ -14,12 +14,13 @@
 
 package com.google.sps;
 
+import static org.junit.Assert.assertEquals;
+
 import com.google.sps.data.Response;
 import com.google.sps.data.Restaurant;
 import com.google.sps.data.Photo;
 
 import org.junit.Assert;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

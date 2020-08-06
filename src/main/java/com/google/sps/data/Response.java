@@ -50,7 +50,7 @@ public final class Response implements java.io.Serializable {
         if (results.size() == 0)
             status = "NO_REROLLS";
     }
-
+ 
     public String toString() {
         return (this.results).stream().map(n -> n.toString()).collect(Collectors.joining(","));
     }
