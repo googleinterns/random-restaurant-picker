@@ -55,7 +55,15 @@ public final class Response implements java.io.Serializable {
         return (this.results).stream().map(n -> n.toString()).collect(Collectors.joining(","));
     }
 
-    public Restaurant getPick(){
+    public void setPick(Restaurant restaurant) {
+        this.pick = restaurant;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Restaurant getPick() {
         return this.pick;
     }
 }
