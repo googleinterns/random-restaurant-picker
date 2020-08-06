@@ -16,7 +16,7 @@ package com.google.sps.data;
 
 import java.io.Serializable;
 
-public final class User implements java.io.Serializable {
+public class User implements java.io.Serializable {
     private int priceLevel;
 
     public User(int priceLevel) {

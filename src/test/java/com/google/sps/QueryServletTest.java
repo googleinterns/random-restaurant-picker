@@ -69,6 +69,8 @@ public final class QueryServletTest {
   UrlOpener urlOpener;
   @Mock
   RequestDispatcher rd;
+  @Mock
+  User user;
   
   @Test
   public void postZeroResults() throws IOException, ServletException {
@@ -79,6 +81,7 @@ public final class QueryServletTest {
     when(request.getParameter("lng")).thenReturn("74.0060");
     when(request.getParameter("radius")).thenReturn("1");
     when(request.getParameter("searchTerms")).thenReturn("asdk");
+    when(request.getParameter("dietary-options")).thenReturn("Nothing specific");
     when(request.getSession(true)).thenReturn(session);
     when(request.getParameter("priceLevel")).thenReturn("4");
     when(urlOpener.openUrl(anyString())).thenReturn(apiResponse);
@@ -111,6 +114,7 @@ public final class QueryServletTest {
     when(request.getParameter("lng")).thenReturn("-74.0060");
     when(request.getParameter("radius")).thenReturn("500");
     when(request.getParameter("searchTerms")).thenReturn("mexican");
+    when(request.getParameter("dietary-options")).thenReturn("Nothing specific");
     when(request.getSession(true)).thenReturn(session);
     when(request.getParameter("priceLevel")).thenReturn("4");
     when(urlOpener.openUrl(anyString())).thenReturn(apiResponse);
@@ -130,7 +134,7 @@ public final class QueryServletTest {
     //Process results and check correctness
     String resultStatus = ((Response) asObject.getAllValues().get(0)).getStatus();
     int userPrice = ((User) asObject.getAllValues().get(1)).getPriceLevel();
-    assertEquals(resultStatus, "NO_REROLLS");
+    assertEquals(resultStatus, "ZERO_RESULTS");
     assertEquals(userPrice, 4);
   }
 
@@ -144,6 +148,7 @@ public final class QueryServletTest {
     when(request.getSession(false)).thenReturn(session);
     when(session.getAttribute("response")).thenReturn(apiResponse);
     when(response.getWriter()).thenReturn(pw);
+    when(session.getAttribute("user")).thenReturn(user);
 
     //Run servlet with mock objects
     new QueryServlet().doGet(request, response);
@@ -162,13 +167,15 @@ public final class QueryServletTest {
   public void getOneResults() throws IOException{
     //Submit a post request to query servlet that returns one result
     List<Restaurant> restaurants = new ArrayList<>();
-    restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}, "255 West Avenue"));
+    restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", 2, new Photo[]{}, "255 West Avenue"));
     Response apiResponse = new Response("OK", restaurants);
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
     when(request.getSession(false)).thenReturn(session);
     when(session.getAttribute("response")).thenReturn(apiResponse);
     when(response.getWriter()).thenReturn(pw);
+    when(session.getAttribute("user")).thenReturn(user);
+    when(user.getPriceLevel()).thenReturn(2);
 
     //Run the servlet with mock objects 
     new QueryServlet().doGet(request, response);
@@ -183,21 +190,23 @@ public final class QueryServletTest {
     JsonObject pick = json.get("pick").getAsJsonObject();
     assertEquals(pick.get("name").getAsString(), "McDonalds");
     assertEquals(pick.get("businessStatus").getAsString(), "OPERATIONAL");
-    assertEquals(json.get("status").getAsString(), "NO_REROLLS");
+    assertEquals(json.get("status").getAsString(), "ZERO_RESULTS");
   }
 
   @Test
   public void getMultipleResults() throws IOException{
     //Submit a post request to query servlet that returns 0 results
     List<Restaurant> restaurants = new ArrayList<>();
-    restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}, "255 West Avenue"));
-    restaurants.add(new Restaurant("Starbucks", 5, "OPERATIONAL", new Photo[]{}, "456 East Avenue"));
+    restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", 2, new Photo[]{}, "255 West Avenue"));
+    restaurants.add(new Restaurant("Starbucks", 5, "OPERATIONAL", 2, new Photo[]{}, "456 East Avenue"));
     Response apiResponse = new Response("OK", restaurants);
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
     when(request.getSession(false)).thenReturn(session);
     when(session.getAttribute("response")).thenReturn(apiResponse);
     when(response.getWriter()).thenReturn(pw);
+    when(session.getAttribute("user")).thenReturn(user);
+    when(user.getPriceLevel()).thenReturn(2);
 
     //Run the servlet with mock objects
     new QueryServlet().doGet(request, response);
@@ -223,6 +232,7 @@ public final class QueryServletTest {
     when(request.getSession(false)).thenReturn(session);
     when(session.getAttribute("response")).thenReturn(apiResponse);
     when(response.getWriter()).thenReturn(pw);
+    when(session.getAttribute("user")).thenReturn(user);
 
     //Run the servlet with mock objects
     new QueryServlet().doGet(request, response);

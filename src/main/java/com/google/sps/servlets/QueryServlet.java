@@ -73,7 +73,7 @@ public class QueryServlet extends HttpServlet {
         Response response = (Response) session.getAttribute("response");
         User user = (User) session.getAttribute("user");
         if (response == null)
-            servletResponse.getWriter().println(gson.toJson(new Response("NO_RESULTS", null)));
+            response = new Response("NO_RESULTS", null);
         else if (response.getStatus().equals("OK"))
             RestaurantChooser.chooseRestaurant(response, user.getPriceLevel());
         servletResponse.getWriter().println(gson.toJson(response));
