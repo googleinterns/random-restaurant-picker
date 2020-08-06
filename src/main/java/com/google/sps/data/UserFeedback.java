@@ -14,8 +14,6 @@
 
 package com.google.sps.data;
 
-import java.util.ArrayList;
-
 public class UserFeedback {
     private String user; 
     private String restaurantName;
