@@ -13,19 +13,19 @@ describe("Test the query function", ()=>{
         spyOn(window, 'resultsPage');
     });
 
-    it("Tese the query funciton works properly", async () => {
+    it("Test the query funciton works properly", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(htmlResponse));
-        let x = await query("string");
+        await query("string");
         expect(fetch).toHaveBeenCalledWith('/query?string', { method: 'POST' });
         expect(resultsPage).toHaveBeenCalled();
         expect(dummyElement.innerText).toEqual("Chipotle");
     });
 
-    it("Tese the query function when an invalid request is returned", async () => {
+    it("Test the query function when an invalid request is returned", async () => {
         dummyElement.classList.add("success-banner");
         dummyElement.classList.add("hidden");
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "INVALID_REQUEST"}')));
-        let x = await query("string");
+        await query("string");
         expect(fetch).toHaveBeenCalledWith('/query?string', { method: 'POST' });
         expect(dummyElement.innerText).toEqual("Invalid request");
         expect(dummyElement.classList.contains("error-banner")).toBeTruthy();
@@ -34,11 +34,11 @@ describe("Test the query function", ()=>{
         expect(resultsPage).toHaveBeenCalledTimes(0);
     });
 
-     it("Tese the query function when zero results are returned", async () => {
+     it("Test the query function when zero results are returned", async () => {
         dummyElement.classList.add("success-banner");
         dummyElement.classList.add("hidden");
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "ZERO_RESULTS"}')));
-        let x = await query("string");
+        await query("string");
         expect(fetch).toHaveBeenCalledWith('/query?string', { method: 'POST' });
         expect(dummyElement.innerText).toEqual("No results");
         expect(dummyElement.classList.contains("error-banner")).toBeTruthy();
@@ -47,11 +47,11 @@ describe("Test the query function", ()=>{
         expect(resultsPage).toHaveBeenCalledTimes(0);
     });
 
-    it("Tese the query function when no rerolls are returned", async () => {
+    it("Test the query function when no rerolls are returned", async () => {
         dummyElement.classList.add("success-banner");
         dummyElement.classList.add("hidden");
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "NO_REROLLS"}')));
-        let x = await query("string");
+        await query("string");
         expect(fetch).toHaveBeenCalledWith('/query?string', { method: 'POST' });
         expect(dummyElement.innerText).toEqual("No re-rolls left");
         expect(dummyElement.classList.contains("error-banner")).toBeTruthy();
@@ -77,7 +77,7 @@ describe("Test the reroll function", () => {
 
     it("Test that reRoll works properly", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(htmlResponse));
-        let x = await reroll();
+        await reroll();
         expect(reroll).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalled();
         expect(document.getElementById).toHaveBeenCalledTimes(2);
@@ -88,7 +88,7 @@ describe("Test the reroll function", () => {
 
     it("Test reroll when an invalid request error is returned", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "INVALID_REQUEST"}')));
-        let x = await reroll();
+        await reroll();
         expect(reroll).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalled();
         expect(document.getElementById).toHaveBeenCalledTimes(2);
@@ -98,7 +98,7 @@ describe("Test the reroll function", () => {
 
     it("Test reroll when a zero results error is returned", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "ZERO_RESULTS"}')));
-        let x = await reroll();
+        await reroll();
         expect(reroll).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalled();
         expect(document.getElementById).toHaveBeenCalledTimes(2);
@@ -108,7 +108,7 @@ describe("Test the reroll function", () => {
 
     it("Test reroll when a no rerolls error is returned", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "NO_REROLLS"}')));
-        let x = await reroll();
+        await reroll();
         expect(reroll).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalled();
         expect(document.getElementById).toHaveBeenCalledTimes(2);
@@ -118,7 +118,7 @@ describe("Test the reroll function", () => {
 
     it("Test reroll when an unknown error is returned", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "UNKNOWN_ERROR"}')));
-        let x = await reroll();
+        await reroll();
         expect(reroll).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalled();
         expect(document.getElementById).toHaveBeenCalledTimes(2);
@@ -142,7 +142,7 @@ describe("Test the geoLocEnabled function", () => {
 
     it("Test that the function runs correctly", async () => {
         spyOn(window, 'convertLocation').and.returnValue(Promise.resolve("155 W 51st St, New York, NY 10019"));
-        let x = await geoLocEnabled({coords: {latitude: 40, longitude: -80}});
+        await geoLocEnabled({coords: {latitude: 40, longitude: -80}});
         expect(geoLocEnabled).toHaveBeenCalled();
         expect(convertLocation).toHaveBeenCalled();
         expect(localStorage.setItem).toHaveBeenCalledTimes(2);
@@ -173,7 +173,7 @@ describe("Test the geoLocFallback function", () => {
             "contentType": "application/json",
             "responseJSON": {location: {lat: 40, lng: -80}}
         });
-        let x = await geoLocFallback();
+        await geoLocFallback();
         expect(geoLocFallback).toHaveBeenCalled();
         expect(convertLocation).toHaveBeenCalled();
         expect(dummyElement.innerText).toEqual("155 W 51st St, New York, NY 10019");
@@ -187,7 +187,7 @@ describe("Test the geoLocFallback function", () => {
             "contentType": "application/json"
         });
         spyOn(console, 'log');
-        let x = await geoLocFallback();
+        await geoLocFallback();
         expect(geoLocFallback).toHaveBeenCalled();
         expect(console.log).toHaveBeenCalledWith("No results");
         expect(geoLocHardcoded).toHaveBeenCalled();
@@ -199,7 +199,7 @@ describe("Test the geoLocFallback function", () => {
             "contentType": "application/json"
         });
         spyOn(console, 'log');
-        let x = await geoLocFallback();
+        await geoLocFallback();
         expect(geoLocFallback).toHaveBeenCalled();
         expect(console.log).toHaveBeenCalledWith("API key is invalid or JSON parsing error");
         expect(geoLocHardcoded).toHaveBeenCalled();
@@ -211,7 +211,7 @@ describe("Test the geoLocFallback function", () => {
             "contentType": "application/json"
         });
         spyOn(console, 'log');
-        let x = await geoLocFallback();
+        await geoLocFallback();
         expect(geoLocFallback).toHaveBeenCalled();
         expect(console.log).toHaveBeenCalledWith("Usage limits exceeded");
         expect(geoLocHardcoded).toHaveBeenCalled();
@@ -300,13 +300,13 @@ describe("Test the ResultsPage Function", () => {
     });
 
     it("Test that the function runs correctly", async () =>{
-        let x = await resultsPage("restaurant", "5", "https://www.w3schools.com/images/lamp.jpg");
+        await resultsPage("restaurant", "5", "https://www.w3schools.com/images/lamp.jpg");
         expect(fetch).toHaveBeenCalledWith("../results.html");
         expect(resultsPage).toHaveBeenCalled();
     });
 
     it("Test that the function alters the DOM correctly", async () =>{
-        let x = await resultsPage("restaurant", "5", "https://www.w3schools.com/images/lamp.jpg");
+        await resultsPage("restaurant", "5", "https://www.w3schools.com/images/lamp.jpg");
         expect(fetch).toHaveBeenCalledWith("../results.html");
         expect(resultsPage).toHaveBeenCalled();
         expect(dummyContainer.innerHTML).toEqual(htmlCode);
