@@ -34,7 +34,7 @@ import java.util.List;
 @RunWith(JUnit4.class)
 public final class ResponseTest {
   @Test
-  public void NoRerolls() {
+  public void noRerolls() {
     // A Response with only one restaurant.
     // pick() is called once, which should update the response status to NO_REROLLS.
     List<Restaurant> restaurants = new ArrayList<>();

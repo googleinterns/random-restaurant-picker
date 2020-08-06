@@ -30,9 +30,10 @@ import java.io.UnsupportedEncodingException;
 import com.google.sps.data.Response;
 import com.google.sps.data.Restaurant;
 import com.google.sps.data.User;
+
 import com.google.sps.data.AccessSecret;
 import com.google.sps.data.RestaurantChooser;
-
+import com.google.sps.data.UrlOpener;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -55,7 +56,16 @@ public class QueryServlet extends HttpServlet {
     private final Gson gson = new GsonBuilder().create();
     private Response response;
     private User user;
+    private UrlOpener urlOpener;
 
+    public QueryServlet(UrlOpener opener) {
+        this.urlOpener = opener;
+    }
+
+    public QueryServlet() {
+        this.urlOpener = new UrlOpener();
+    }
+    
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
@@ -63,7 +73,7 @@ public class QueryServlet extends HttpServlet {
         Response response = (Response) session.getAttribute("response");
         User user = (User) session.getAttribute("user");
         if (response == null)
-            servletResponse.getWriter().println(gson.toJson(new Response("NO_RESULTS", null)));
+            response = new Response("NO_RESULTS", null);
         else if (response.getStatus().equals("OK"))
             RestaurantChooser.chooseRestaurant(response, user.getPriceLevel());
         servletResponse.getWriter().println(gson.toJson(response));
@@ -85,10 +95,8 @@ public class QueryServlet extends HttpServlet {
             searchTerms = searchTerms + "+" + dietaryOptions;
 
         String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=" + radius + "&type=" + type + "&keyword=" + searchTerms + "&key=" + apiKey;
-        URLConnection conn = new URL(urlStr).openConnection();
-        conn.connect();
 
-        JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
+        JsonElement jsonElement = urlOpener.openUrl(urlStr);
         JsonObject responseJson = jsonElement.getAsJsonObject();
         Response response = gson.fromJson(responseJson, Response.class);
         HttpSession session = servletRequest.getSession(true);

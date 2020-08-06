@@ -43,6 +43,8 @@ import com.google.sps.data.SearchItem;
 @WebServlet("/searches")
 public class SearchServlet extends HttpServlet {
 
+    private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -50,7 +52,6 @@ public class SearchServlet extends HttpServlet {
         Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
         Query query = new Query("savedSearch").setFilter(propertyFilter).addSort("timestamp", SortDirection.DESCENDING);
 
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
 
         List<SearchItem> searches = new ArrayList<>();
@@ -93,8 +94,6 @@ public class SearchServlet extends HttpServlet {
         searchEntity.setProperty("timestamp", timestamp);
         searchEntity.setProperty("lat", lat);
         searchEntity.setProperty("lng", lng);
-
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(searchEntity);
     }
 }
