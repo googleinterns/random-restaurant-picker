@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import java.lang.String;
 
 import com.google.sps.servlets.ConvertLocationServlet;
 import com.google.sps.data.UrlOpener;
@@ -47,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.String;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

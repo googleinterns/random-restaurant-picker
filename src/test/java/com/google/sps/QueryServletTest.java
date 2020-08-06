@@ -14,6 +14,14 @@
 
 package com.google.sps;
 
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.junit.Assert.assertEquals;
+
 import com.google.sps.data.User;
 import com.google.sps.data.Response;
 import com.google.sps.data.Restaurant;
@@ -33,14 +41,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.any;
-import static org.junit.Assert.assertEquals;
 
 import org.mockito.Mock;
 import org.mockito.ArgumentCaptor;
@@ -71,7 +71,7 @@ public final class QueryServletTest {
   RequestDispatcher rd;
   
   @Test
-  public void POSTZeroResults() throws IOException, ServletException {
+  public void postZeroResults() throws IOException, ServletException {
     //Submit a post request to query servlet that returns 0 results
     String json = "{'html_attributions' : [], 'results' : [], 'status' : 'ZERO_RESULTS'}";
     JsonElement apiResponse = new JsonParser().parse(json);
@@ -103,7 +103,7 @@ public final class QueryServletTest {
   }
 
   @Test
-  public void POSTValidResults() throws IOException, ServletException {
+  public void postValidResults() throws IOException, ServletException {
     //Submit a post request to query servlet that returns results
     String json = "{\"html_attributions\":[],\"results\":[{\"business_status\":\"OPERATIONAL\",\"id\":\"8d44812b1137bf4dd53eada0252dcbc31f151898\",\"name\":\"Molcajetes Mexican Restaurant\",\"place_id\":\"ChIJz4ZjbCdRwokRJPxzM_Zs_jE\",\"rating\":4.7,\"vicinity\":\"520 West Side Ave, Jersey City\"}],\"status\":\"OK\"}";
     JsonElement apiResponse = new JsonParser().parse(json);
@@ -135,7 +135,7 @@ public final class QueryServletTest {
   }
 
   @Test
-  public void GETNoResults() throws IOException{
+  public void getNoResults() throws IOException{
     //Submit a post request to query servlet that returns 0 results
     List<Restaurant> restaurants = new ArrayList<>();
     Response apiResponse = new Response("ZERO_RESULTS", restaurants);
@@ -159,7 +159,7 @@ public final class QueryServletTest {
   }
 
   @Test
-  public void GETOneResults() throws IOException{
+  public void getOneResults() throws IOException{
     //Submit a post request to query servlet that returns one result
     List<Restaurant> restaurants = new ArrayList<>();
     restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}, "255 West Avenue"));
@@ -187,7 +187,7 @@ public final class QueryServletTest {
   }
 
   @Test
-  public void GETMultipleResults() throws IOException{
+  public void getMultipleResults() throws IOException{
     //Submit a post request to query servlet that returns 0 results
     List<Restaurant> restaurants = new ArrayList<>();
     restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", new Photo[]{}, "255 West Avenue"));
@@ -215,7 +215,7 @@ public final class QueryServletTest {
   }
 
   @Test
-  public void GETNullResult() throws IOException{
+  public void getNullResult() throws IOException{
     //Submit a post request to query servlet that returns 0 results
     Response apiResponse = null;
     StringWriter sw = new StringWriter();
