@@ -88,7 +88,7 @@ public class QueryServlet extends HttpServlet {
         Response response = gson.fromJson(responseJson, Response.class);
         if (response.getStatus().equals("OK"))
             response.pick();
-        
+
         HttpSession session = servletRequest.getSession(true);
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
