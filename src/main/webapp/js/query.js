@@ -15,29 +15,15 @@
 /* ==========================================================================
    RESTAURANT QUERY AND RE-ROLL
    ========================================================================== */
-$("#randomize-form").submit(event => {
-    const errorEl = document.getElementById("error");
-    errorEl.classList.add("hidden");
-
-    event.preventDefault();
-    let url = $(this).attr("action");
-    let lat = localStorage.getItem("lat");
-    let lng = localStorage.getItem("lng");
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}&user=${userID}`;
-    query(queryStr);
-});
-
 function query(queryStr) {
     const errorEl = document.getElementById("error");
     fetch(`/query?${queryStr}`, { method: "POST" })
         .then((response) => response.json())
         .then((response) => {
-            if (response.status === "OK")
+            if (response.status === "OK"){
+                localStorage.setItem("restaurantAddress", response.pick.vicinity);
                 redirectToUrl('results.html');
+            }
             else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
             else if (response.status === "NO_REROLLS") throw "No re-rolls left";
@@ -51,7 +37,7 @@ function query(queryStr) {
         });
 }
 
-function reroll() {
+function roll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
     fetch(`/query`, { method: "GET" })
@@ -468,39 +454,6 @@ async function getFeedback(search) {
         }
     });
     return [tempFeedbackElement, buttons];
-}
-
-/*=========================
-    HTML
-=========================*/
-// Form underline element
-$("input, textarea").blur(() => {
-    if ($(this).val() != "") {
-        $(this).addClass("active");
-    } else {
-        $(this).removeClass("active");
-    }
-});
-
-// TODO: make this more seamless
-// Loads the results page
-function resultsPage(name, rating, photoUrl) {
-    fetch(`../results.html`)
-        .then((html) => html.text())
-        .then((html) => {
-            document.getElementById("page-container").innerHTML = html;
-            document.getElementById("pick").innerText = name;
-            document.getElementById("rating").innerText = rating;
-            loadImage(photoUrl);
-        });
-        newCardBody.appendChild(feedbackButton);
-    let searchButton = document.createElement('button');
-    searchButton.className = 'btn1 search';
-    searchButton.innerText = "Search with These Parameters Again";
-    newCardBody.appendChild(searchButton);
-    searchButton.addEventListener('click', () => {
-        reroll()});
-    return newCardBody;
 }
 
 /* ==========================================================================
