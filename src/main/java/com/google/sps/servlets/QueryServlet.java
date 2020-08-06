@@ -93,7 +93,7 @@ public class QueryServlet extends HttpServlet {
         HttpSession session = servletRequest.getSession(true);
         if (response.getStatus().equals("OK"))
             RestaurantChooser.chooseRestaurant(response, Integer.parseInt(servletRequest.getParameter("priceLevel")));
-            
+
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
         servletResponse.setContentType("application/json");
