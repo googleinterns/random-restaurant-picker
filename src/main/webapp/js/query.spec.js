@@ -6,19 +6,20 @@ describe("Test the query function", ()=>{
     let htmlReponse;
 
     beforeEach(() => {
-        htmlResponse = new Response('{\"pick\":{\"name\":\"Chipotle\",\"rating\":\"4.5\",\"photos\":[\"photo1\",\"photo2\"]},\"results\":[{\"name\":\"Qdoba\",\"rating\":\"4\",\"photos\":[\"photo1\",\"photo2\"]}],\"status\":\"OK\"}');
+        htmlResponse = new Response('{\"pick\":{\"name\":\"Chipotle\",\"rating\":\"4.5\", \"price\": \"2\", \"vicinity\": \"West Chester Avenue\",\"photos\":[\"photo1\",\"photo2\"]},\"results\":[{\"name\":\"Qdoba\",\"rating\":\"4\",\"photos\":[\"photo1\",\"photo2\"]}],\"status\":\"OK\"}');
         dummyElement = document.createElement('div');
         spyOn(document, 'getElementById').and.returnValue(dummyElement);
         spyOn(window, 'query').and.callThrough();
-        spyOn(window, 'resultsPage');
+        spyOn(window, 'redirectToUrl');
     });
 
-    it("Test the query funciton works properly", async () => {
+    it("Test the query function works properly", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(htmlResponse));
+        spyOn(localStorage, 'setItem');
         await query("string");
         expect(fetch).toHaveBeenCalledWith('/query?string', { method: 'POST' });
-        expect(resultsPage).toHaveBeenCalled();
-        expect(dummyElement.innerText).toEqual("Chipotle");
+        expect(redirectToUrl).toHaveBeenCalled();
+        expect(localStorage.setItem).toHaveBeenCalledWith('restaurantAddress', 'West Chester Avenue');
     });
 
     it("Test the query function when an invalid request is returned", async () => {
@@ -31,7 +32,7 @@ describe("Test the query function", ()=>{
         expect(dummyElement.classList.contains("error-banner")).toBeTruthy();
         expect(dummyElement.classList.contains("hidden")).toBeFalsy();
         expect(dummyElement.classList.contains("success-banner")).toBeFalsy();
-        expect(resultsPage).toHaveBeenCalledTimes(0);
+        expect(redirectToUrl).toHaveBeenCalledTimes(0);
     });
 
      it("Test the query function when zero results are returned", async () => {
@@ -44,7 +45,7 @@ describe("Test the query function", ()=>{
         expect(dummyElement.classList.contains("error-banner")).toBeTruthy();
         expect(dummyElement.classList.contains("hidden")).toBeFalsy();
         expect(dummyElement.classList.contains("success-banner")).toBeFalsy();
-        expect(resultsPage).toHaveBeenCalledTimes(0);
+        expect(redirectToUrl).toHaveBeenCalledTimes(0);
     });
 
     it("Test the query function when no rerolls are returned", async () => {
@@ -57,11 +58,11 @@ describe("Test the query function", ()=>{
         expect(dummyElement.classList.contains("error-banner")).toBeTruthy();
         expect(dummyElement.classList.contains("hidden")).toBeFalsy();
         expect(dummyElement.classList.contains("success-banner")).toBeFalsy();
-        expect(resultsPage).toHaveBeenCalledTimes(0);
+        expect(redirectToUrl).toHaveBeenCalledTimes(0);
     });
 });
 
-describe("Test the reroll function", () => {
+describe("Test the roll function", () => {
     let dummyPick;
     let dummyRating;
     let htmlResponse;
@@ -70,15 +71,16 @@ describe("Test the reroll function", () => {
         htmlResponse = new Response('{\"pick\":{\"name\":\"Chipotle\",\"rating\":\"4.5\",\"photos\":[\"photo1\",\"photo2\"]},\"results\":[{\"name\":\"Qdoba\",\"rating\":\"4\",\"photos\":[\"photo1\",\"photo2\"]}],\"status\":\"OK\"}');
         dummyPick = document.createElement('div');
         dummyRating = document.createElement('div');
-        spyOn(window, 'reroll').and.callThrough();
+        spyOn(window, 'roll').and.callThrough();
         spyOn(document, 'getElementById').and.returnValues(dummyPick, dummyRating);
         spyOn(window, 'loadImage');
+        spyOn(window, 'calculateAndDisplayRoute');
     });
 
-    it("Test that reRoll works properly", async () => {
+    it("Test that Roll works properly", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(htmlResponse));
-        await reroll();
-        expect(reroll).toHaveBeenCalled();
+        await roll();
+        expect(roll).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalled();
         expect(document.getElementById).toHaveBeenCalledTimes(2);
         expect(loadImage).toHaveBeenCalled();
@@ -86,40 +88,40 @@ describe("Test the reroll function", () => {
         expect(dummyRating.innerText).toEqual("4.5 ★");
     });
 
-    it("Test reroll when an invalid request error is returned", async () => {
+    it("Test Roll when an invalid request error is returned", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "INVALID_REQUEST"}')));
-        await reroll();
-        expect(reroll).toHaveBeenCalled();
+        await roll();
+        expect(roll).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalled();
         expect(document.getElementById).toHaveBeenCalledTimes(2);
         expect(loadImage).toHaveBeenCalledTimes(0);
         expect(dummyPick.innerText).toEqual("Invalid request");
     });
 
-    it("Test reroll when a zero results error is returned", async () => {
+    it("Test Roll when a zero results error is returned", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "ZERO_RESULTS"}')));
-        await reroll();
-        expect(reroll).toHaveBeenCalled();
+        await roll();
+        expect(roll).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalled();
         expect(document.getElementById).toHaveBeenCalledTimes(2);
         expect(loadImage).toHaveBeenCalledTimes(0);
         expect(dummyPick.innerText).toEqual("No results");
     });
 
-    it("Test reroll when a no rerolls error is returned", async () => {
+    it("Test Roll when a no rerolls error is returned", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "NO_REROLLS"}')));
-        await reroll();
-        expect(reroll).toHaveBeenCalled();
+        await roll();
+        expect(roll).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalled();
         expect(document.getElementById).toHaveBeenCalledTimes(2);
         expect(loadImage).toHaveBeenCalledTimes(0);
         expect(dummyPick.innerText).toEqual("No re-rolls left");
     });
 
-    it("Test reroll when an unknown error is returned", async () => {
+    it("Test Roll when an unknown error is returned", async () => {
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"status": "UNKNOWN_ERROR"}')));
-        await reroll();
-        expect(reroll).toHaveBeenCalled();
+        await roll();
+        expect(roll).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalled();
         expect(document.getElementById).toHaveBeenCalledTimes(2);
         expect(loadImage).toHaveBeenCalledTimes(0);
@@ -154,7 +156,6 @@ describe("Test the geoLocFallback function", () => {
     let dummyElement;
 
     beforeEach(() => {
-        jasmine.Ajax.install();
         dummyElement = document.createElement('div');
         spyOn(window, 'geoLocFallback').and.callThrough();
         spyOn(document, 'getElementById').and.returnValue(dummyElement);
@@ -163,16 +164,8 @@ describe("Test the geoLocFallback function", () => {
         spyOn(localStorage, 'setItem');
     });
 
-    afterEach(() => {
-        jasmine.Ajax.uninstall();
-    });
-
     it("Test that the function runs correctly", async () => {
-        jasmine.Ajax.stubRequest('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc').andReturn({
-            "status": 200,
-            "contentType": "application/json",
-            "responseJSON": {location: {lat: 40, lng: -80}}
-        });
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response('{"location": {"lat": 40, "lng": -80}}')));
         await geoLocFallback();
         expect(geoLocFallback).toHaveBeenCalled();
         expect(convertLocation).toHaveBeenCalled();
@@ -181,41 +174,14 @@ describe("Test the geoLocFallback function", () => {
         expect(localStorage.setItem).toHaveBeenCalledTimes(2);
     });
 
-    it("Test the function when server returns a 404 error", async () => {
-        jasmine.Ajax.stubRequest('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc').andReturn({
-            "status": 404,
-            "contentType": "application/json"
-        });
-        spyOn(console, 'log');
+    /*it("Test the function when server returns a 404 error", async () => {
+        let init = {"status": 404};
+        spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response("", init)))
         await geoLocFallback();
         expect(geoLocFallback).toHaveBeenCalled();
-        expect(console.log).toHaveBeenCalledWith("No results");
         expect(geoLocHardcoded).toHaveBeenCalled();
-    });
-
-    it("Test the function when server returns a 400 error", async () => {
-        jasmine.Ajax.stubRequest('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc').andReturn({
-            "status": 400,
-            "contentType": "application/json"
-        });
-        spyOn(console, 'log');
-        await geoLocFallback();
-        expect(geoLocFallback).toHaveBeenCalled();
-        expect(console.log).toHaveBeenCalledWith("API key is invalid or JSON parsing error");
-        expect(geoLocHardcoded).toHaveBeenCalled();
-    });
-
-    it("Test the function when server returns a 403 error", async () => {
-        jasmine.Ajax.stubRequest('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc').andReturn({
-            "status": 403,
-            "contentType": "application/json"
-        });
-        spyOn(console, 'log');
-        await geoLocFallback();
-        expect(geoLocFallback).toHaveBeenCalled();
-        expect(console.log).toHaveBeenCalledWith("Usage limits exceeded");
-        expect(geoLocHardcoded).toHaveBeenCalled();
-    });
+        expect(function(){geoLocFallback}).toThrow();
+    });*/
 });
 
 describe("Test the geoLocHardcoded function", () => {
@@ -271,54 +237,10 @@ describe("Test the convertLocation function", () => {
 /*=========================
     HTML
  =========================*/
-describe("Test the ResultsPage Function", () => {
-    let dummyContainer;
-    let dummyPick;
-    let dummyRating;
-    let htmlResponse;
-    let htmlCode;
-    
-    beforeEach(async () => {
-        htmlResponse = new Response('<div><h id="pick"></h><h1 id="rating"></h1><div id="photo"></div></div>');
-        htmlCode = '<div><h id="pick"></h><h1 id="rating"></h1><div id="photo"></div></div>';
-        spyOn(window, 'resultsPage').and.callThrough();
-        dummyContainer = document.createElement('div');
-        dummyPick = document.createElement('div');
-        dummyRating = document.createElement('div');
-        spyOn(document, 'getElementById').and.returnValues(dummyContainer, dummyPick, dummyRating);
-        spyOn(window, 'loadImage');
-        spyOn(window, 'fetch').and.returnValue(Promise.resolve(htmlResponse));
-    });
-
-    it("Test that the function runs correctly", async () =>{
-        await resultsPage("restaurant", "5", "https://www.w3schools.com/images/lamp.jpg");
-        expect(fetch).toHaveBeenCalledWith("../results.html");
-        expect(resultsPage).toHaveBeenCalled();
-    });
-
-    it("Test that the function alters the DOM correctly", async () =>{
-        await resultsPage("restaurant", "5", "https://www.w3schools.com/images/lamp.jpg");
-        expect(fetch).toHaveBeenCalledWith("../results.html");
-        expect(resultsPage).toHaveBeenCalled();
-        expect(dummyContainer.innerHTML).toEqual(htmlCode);
-        expect(dummyPick.innerText).toEqual("restaurant");
-        expect(dummyRating.innerText).toEqual("5");
-    });
-});
-
 describe("Test Load Image Function", () => {
     it("see the the load image function runs", function() {
         spyOn(window, 'loadImage');
         loadImage('link');
         expect(loadImage).toHaveBeenCalledWith('link');
-    });
-
-    it("check the interior functions of loadImage", function() {
-        spyOn(window, 'loadImage').and.callThrough();
-        let dummyElement = document.createElement('div');
-        spyOn(document, 'getElementById').and.returnValue(dummyElement);
-        loadImage('https://www.w3schools.com/images/lamp.jpg');
-        expect(loadImage).toHaveBeenCalledWith('https://www.w3schools.com/images/lamp.jpg');
-        expect(dummyElement.firstChild.src).toEqual('https://www.w3schools.com/images/lamp.jpg');
     });
 });

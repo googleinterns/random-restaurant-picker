@@ -17,7 +17,7 @@
    ========================================================================== */
 function query(queryStr) {
     const errorEl = document.getElementById("error");
-    fetch(`/query?${queryStr}`, { method: "POST" })
+    return fetch(`/query?${queryStr}`, { method: "POST" })
         .then((response) => response.json())
         .then((response) => {
             if (response.status === "OK"){
@@ -94,8 +94,10 @@ async function geoLocEnabled(position) {
 // Use inaccurate IP-based geolocation instead
 async function geoLocFallback() {
     let locationEl = document.getElementById("location-container");
-    fetch("/geolocate", {method: "POST"}).then(response => response.json()).then(response => {
-        try{
+    return fetch("/geolocate", {method: "POST"}).then(response => {
+        if(!response.ok) throw "Error";
+        return response.json()
+    }).then(response => {
             let pos = {
                 lat: response.location.lat,
                 lng: response.location.lng,
@@ -103,10 +105,9 @@ async function geoLocFallback() {
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address) => { locationEl.innerText = address; });
-        } catch(error) {
-            throw "Location not found";
-            geoLocHardcoded();
-        }
+    }).catch(error => {
+        geoLocHardcoded();
+        throw error;
     });
 }
 
