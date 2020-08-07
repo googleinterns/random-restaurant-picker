@@ -82,7 +82,6 @@ public final class FavFoodServletTest {
 
   @Test
   public void postTest() throws IOException {
-      when(request.getParameter("user")).thenReturn("1");
       when(request.getParameter("fav-food")).thenReturn("ice cream");
 
       new FavFoodServlet().doPost(request, response);
@@ -116,10 +115,10 @@ public final class FavFoodServletTest {
 
       //Process data and check correctness
       String results = sw.getBuffer().toString().trim();
-      JsonArray resultsArray = new JsonParser().parse(results).getAsJsonArray();
-      String foodItem = resultsArray.get(0).getAsString();
+      String item = new JsonParser().parse(results).getAsString();
+      //String foodItem = resultsArray.get(0).getAsString();
 
-      assertEquals(resultsArray.get(0).getAsString(), "pizza");
+      assertEquals(item, "pizza");
   }
 
   @Test
@@ -138,6 +137,6 @@ public final class FavFoodServletTest {
 
       //Process data and check correctness
       String results = sw.getBuffer().toString().trim();
-      assertEquals(results, "[]");
+      assertEquals(results, "null");
   }
 }
