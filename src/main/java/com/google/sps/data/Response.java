@@ -45,7 +45,7 @@ public final class Response implements java.io.Serializable {
     public void pick() {
         if(results.size() > 0){
             int randIdx = (results.size() > 1) ? new Random().nextInt(results.size() - 1) : 0;
-            pick = results.get(randIdx);
+            this.pick = results.get(randIdx); 
             results.remove(randIdx);
         }
         if (results.size() == 0)
@@ -56,7 +56,15 @@ public final class Response implements java.io.Serializable {
         return (this.results).stream().map(n -> n.toString()).collect(Collectors.joining(","));
     }
 
-    public Restaurant getPick(){
+    public void setPick(Restaurant restaurant) {
+        this.pick = restaurant;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Restaurant getPick() {
         return this.pick;
     }
 }

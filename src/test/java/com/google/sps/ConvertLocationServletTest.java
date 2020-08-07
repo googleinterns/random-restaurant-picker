@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.String;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -87,7 +88,7 @@ public final class ConvertLocationServletTest {
     JsonElement jsonEl = new JsonParser().parse(results);
     JsonObject jsonResponse = jsonEl.getAsJsonObject();
     assertEquals(jsonResponse.get("status").getAsString(), "ZERO_RESULTS");
-    assertTrue(asString.getValue().startsWith(("https://maps.googleapis.com/maps/api/geocode/json?latlng=40.84,74.01&result_type=street_address&key=")));
+    assertTrue(asString.getValue().startsWith("https://maps.googleapis.com/maps/api/geocode/json?latlng=40.84,74.01&result_type=street_address&key="));
   }
 
   @Test

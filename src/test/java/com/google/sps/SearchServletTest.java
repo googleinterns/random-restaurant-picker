@@ -93,7 +93,7 @@ public final class SearchServletTest {
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
       List<Entity> results = ds.prepare(new Query("savedSearch")).asList(FetchOptions.Builder.withDefaults());
       assertEquals(1, ds.prepare(new Query("savedSearch")).countEntities());
-      assertEquals("coffee", (String) results.get(0).getProperty("keywords"));
+      assertEquals((String)results.get(0).getProperty("keywords"), "coffee");
   }
 
   @Test
@@ -118,7 +118,7 @@ public final class SearchServletTest {
 
       //Run the servlet and verify functions are called
       new SearchServlet().doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).getWriter();
 
       //Process data and check correctness
@@ -139,7 +139,7 @@ public final class SearchServletTest {
 
       //Run the servlet and verify functions are called
       new SearchServlet().doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).getWriter();
 
       //Process data and check correctness
@@ -170,7 +170,7 @@ public final class SearchServletTest {
 
       //Run the servlet and verify functions are called
       new SearchServlet().doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).getWriter();
 
       //Process data and check correctness
@@ -211,7 +211,7 @@ public final class SearchServletTest {
 
       //Run the servlet and verify functions are called
       new SearchServlet().doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).getWriter();
 
       //Process data and check correctness
