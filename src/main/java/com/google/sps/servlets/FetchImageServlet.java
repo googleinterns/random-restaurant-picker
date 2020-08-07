@@ -38,7 +38,7 @@ import java.net.URLDecoder;
 @WebServlet("/image")
 public class FetchImageServlet extends HttpServlet {
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String decodedUrl = new URLDecoder().decode(request.getParameter("url"));
         String apiKey = (AccessSecret.getInstance()).getKey();
         String urlStr = decodedUrl + apiKey;

@@ -57,7 +57,7 @@ function roll() {
         .catch((error) => { pickEl.innerText = error; });
 }
 
-//Retrieve and display restaurant image
+// Retrieve and display restaurant image
 async function loadImage(photoUrl) {
     let photoEl = document.getElementById("photo");
     photoEl.innerHTML = "";
@@ -213,7 +213,7 @@ function accountFunctions() {
 function getNumSearches() {
     let count = 0;
     let numSearchesEl = document.getElementById('num-searches');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
@@ -226,7 +226,7 @@ function getNumSearches() {
 
 function getLastVisited() {
     let lastVisitedEl = document.getElementById('last-visited');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
@@ -239,9 +239,11 @@ function getLastVisited() {
 
 function getFavFood() {
     let foodHolder = document.getElementById('fav-food');
+    if (localStorage.getItem("loggedIn")) {
+        userID = localStorage.getItem("user");
+    }
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
         if (foods.length == 0) {
-            console.log("hello");
             let favFoodFormEl = document.createElement('form');
             favFoodFormEl.action = "/fav-food";
             favFoodFormEl.method = "POST";
@@ -262,12 +264,9 @@ function getFavFood() {
             favFoodFormEl.appendChild(inputButtonEl);
             foodHolder.appendChild(favFoodFormEl);
         } else {
-            for (food of foods) {
-                let foodTextEl = document.createElement('p');
-                foodTextEl.innerText = food;
-                foodHolder.appendChild(foodTextEl);
-                break;
-            }
+            let foodTextEl = document.createElement('p');
+            foodTextEl.innerText = foods[0];
+            foodHolder.appendChild(foodTextEl);
         }
     });
 }
@@ -275,7 +274,7 @@ function getFavFood() {
 function getNumReviews() {
     let count = 0;
     let numFeedbackEl = document.getElementById('num-feedback');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/feedback?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((feedbackList) => {
@@ -327,7 +326,7 @@ function createSearchElement(search) {
 
     newCardBody.appendChild(document.createElement('br'));
 
-    //creating the feedback element
+    // creating the feedback element
     const feedbackElement = document.createElement('p3');
 
     (async () => {

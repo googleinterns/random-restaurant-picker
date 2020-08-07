@@ -73,6 +73,7 @@ public class FeedbackServlet extends HttpServlet {
             UserFeedback feedback = new UserFeedback(userID, restaurantName, restaurantRating, rrpRating, notes);
             feedbackList.add(feedback);
         }
+        
         response.setContentType("application/json");
         response.getWriter().println(new Gson().toJson(feedbackList));
     }

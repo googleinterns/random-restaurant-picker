@@ -134,12 +134,13 @@ public final class QueryServletTest {
     //Process results and check correctness
     String resultStatus = ((Response) asObject.getAllValues().get(0)).getStatus();
     int userPrice = ((User) asObject.getAllValues().get(1)).getPriceLevel();
+
     assertEquals(resultStatus, "ZERO_RESULTS");
     assertEquals(userPrice, 4);
   }
 
   @Test
-  public void getNoResults() throws IOException{
+  public void getNoResults() throws IOException {
     //Submit a post request to query servlet that returns 0 results
     List<Restaurant> restaurants = new ArrayList<>();
     Response apiResponse = new Response("ZERO_RESULTS", restaurants);
@@ -164,7 +165,7 @@ public final class QueryServletTest {
   }
 
   @Test
-  public void getOneResults() throws IOException{
+  public void getOneResults() throws IOException {
     //Submit a post request to query servlet that returns one result
     List<Restaurant> restaurants = new ArrayList<>();
     restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", 2, new Photo[]{}, "255 West Avenue"));
@@ -194,7 +195,7 @@ public final class QueryServletTest {
   }
 
   @Test
-  public void getMultipleResults() throws IOException{
+  public void getMultipleResults() throws IOException {
     //Submit a post request to query servlet that returns 0 results
     List<Restaurant> restaurants = new ArrayList<>();
     restaurants.add(new Restaurant("McDonalds", 4.5, "OPERATIONAL", 2, new Photo[]{}, "255 West Avenue"));
@@ -224,7 +225,7 @@ public final class QueryServletTest {
   }
 
   @Test
-  public void getNullResult() throws IOException{
+  public void getNullResult() throws IOException {
     //Submit a post request to query servlet that returns 0 results
     Response apiResponse = null;
     StringWriter sw = new StringWriter();

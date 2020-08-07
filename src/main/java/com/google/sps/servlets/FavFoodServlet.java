@@ -18,6 +18,9 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 
@@ -29,36 +32,40 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns the user's inputted favorite food */
+/** Servlet that returns the user's favorite food, if previously inputted */
 @WebServlet("/fav-food")
 public final class FavFoodServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("FavFood");
-
+    String user = request.getParameter("user");
+    Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
+    Query query = new Query("FavFood").setFilter(propertyFilter).addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<String> favFoodList = new ArrayList<>();
+    String favFood = null;
     for (Entity entity : results.asIterable()) {
-        String favFood = (String) entity.getProperty("food");
-        favFoodList.add(favFood);
+        String food = (String) entity.getProperty("food");
+        favFood = food;
     }
 
     // Send the JSON as the response
     response.setContentType("application/json");
-    response.getWriter().println(new Gson().toJson(favFoodList));
+    Gson gson = new Gson();
+    gson.toJson(gson.toJsonTree(favFood), gson.newJsonWriter(response.getWriter()));
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     String food = request.getParameter("fav-food");
+    long timestamp = System.currentTimeMillis();
 
     // creates Entity for the food
     Entity foodEntity = new Entity("FavFood");
     foodEntity.setProperty("food", food);
+    foodEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(foodEntity);
