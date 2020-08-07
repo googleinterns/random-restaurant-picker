@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 /* ==========================================================================
    RESTAURANT QUERY AND RE-ROLL
    ========================================================================== */
@@ -37,7 +36,7 @@ function query(queryStr) {
         });
 }
 
-function reroll() {
+function roll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
     return fetch(`/query`, { method: "GET" })
@@ -58,7 +57,7 @@ function reroll() {
         .catch((error) => { pickEl.innerText = error; });
 }
 
-//Retrieve and display restaurant image
+// Retrieve and display restaurant image
 async function loadImage(photoUrl) {
     let photoEl = document.getElementById("photo");
     photoEl.innerHTML = "";
@@ -214,7 +213,7 @@ function accountFunctions() {
 function getNumSearches() {
     let count = 0;
     let numSearchesEl = document.getElementById('num-searches');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
@@ -227,7 +226,7 @@ function getNumSearches() {
 
 function getLastVisited() {
     let lastVisitedEl = document.getElementById('last-visited');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
@@ -240,7 +239,7 @@ function getLastVisited() {
 
 function getFavFood() {
     let foodHolder = document.getElementById('fav-food');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
@@ -275,7 +274,7 @@ function getFavFood() {
 function getNumReviews() {
     let count = 0;
     let numFeedbackEl = document.getElementById('num-feedback');
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/feedback?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((feedbackList) => {
@@ -327,7 +326,7 @@ function createSearchElement(search) {
 
     newCardBody.appendChild(document.createElement('br'));
 
-    //creating the feedback element
+    // creating the feedback element
     const feedbackElement = document.createElement('p3');
 
     (async () => {
@@ -432,156 +431,6 @@ async function fetchFeedback() {
         userID = localStorage.getItem("user");
     }
     return fetch(`/feedback?user=${userID}`, {
-        method: 'GET'
-    })
-    .then(response => response.json())
-    .then(data => {
-        return data;
-    });
-}
-
-async function getFeedback(search) {
-    let buttons = true;
-    let tempFeedbackElement = "Feedback: You haven't submitted feedback yet";
-    let fetchedFeedback = await fetchFeedback();
-    let correctFeedback = fetchedFeedback.find(feedback => feedback.restaurantName == search.name);
-    if (correctFeedback != undefined) {
-        thisRestaurantsFeedback = correctFeedback.restaurantRating + "; " + correctFeedback.notes;
-        buttons = false;
-        tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
-        return [tempFeedbackElement, buttons];
-        }
-    return [tempFeedbackElement, buttons];
-}
-
-//Create the card containing the search's information
-function createSearchElement(search) {
-    const newCardEl = document.createElement('div');
-    newCardEl.className = 'card card-2';
-    const newCardBody = document.createElement('div');
-    newCardBody.className = 'card-body';
-    //creating the restaurant name element
-    const nameElement = document.createElement('p2');
-    nameElement.id = 'restaurant-name';
-    nameElement.innerText = search.name;
-    newCardBody.appendChild(nameElement);
-    newCardBody.appendChild(document.createElement('br'));
-
-    //creating the list of parameters
-    const paramElement = document.createElement('p3');
-    const tempParamElement = "Parameters: " + search.keywords;
-
-    // tempParamElement += radius;
-    paramElement.innerText = tempParamElement;
-    newCardBody.appendChild(paramElement);
-
-    newCardBody.appendChild(document.createElement('br'));
-
-    //creating the feedback element
-    const feedbackElement = document.createElement('p3');
-
-    (async () => {
-        let updatedFeedbackElements = await getFeedback(search);
-        tempFeedbackElement = updatedFeedbackElements[0];
-        buttons = updatedFeedbackElements[1];
-
-        feedbackElement.innerText = tempFeedbackElement;
-        newCardBody.appendChild(feedbackElement);
-        newCardBody.appendChild(document.createElement('br'));
-        newCardBodyWithButtons = createSearchesButtons(search, buttons, newCardBody);
-        newCardEl.appendChild(newCardBodyWithButtons);
-    })()
-
-    return newCardEl;
-}
-
-// Create feedback button (if feedback is not already submitted) and and search again button
-function createSearchesButtons(search, buttons, newCardBody) {
-    let feedbackButton = null;
-    let formEl = document.getElementById('searches-form');
-    if (buttons) {
-        let modal = document.getElementById('searchModal');
-        let span = document.getElementsByClassName("close")[0];
-        span.onclick = () => {
-            let restaurantContainerEl = document.getElementById("restaurant-name-container");
-            restaurantContainerEl.remove();
-            let submitButtonEl = document.getElementById("submit-button");
-            if (submitButtonEl != null) {
-                submitButtonEl.remove();
-            }
-            modal.style.display = "none";
-        }
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = event => {
-            if (event.target == modal) {
-                let restaurantContainerEl = document.getElementById("restaurant-name-container");
-                restaurantContainerEl.remove();
-                let submitButtonEl = document.getElementById("submit-button");
-                if (submitButtonEl != null) {
-                    submitButtonEl.remove();
-                }
-                modal.style.display = "none";
-            }
-        }
-        feedbackButton = document.createElement('button');
-        feedbackButton.className = 'btn1 feedback';
-        feedbackButton.innerText = "Submit Feedback";
-        feedbackButton.addEventListener('click', () => {
-            let restaurantNameEl = createRestaurantElement(search.name);
-            formEl.appendChild(restaurantNameEl);
-            modal.style.display = "block";
-        });
-        newCardBody.appendChild(feedbackButton);
-    }
-    let searchButton = document.createElement('button');
-    searchButton.className = 'btn1 search';
-    searchButton.innerText = "Search with These Parameters Again";
-    newCardBody.appendChild(searchButton);
-    searchButton.addEventListener('click', () => {
-        reroll()});
-    return newCardBody;
-}
-
-//Function to append restaurant name to modal form to force it to follow through to feedback
-function createRestaurantElement(restaurantName) {
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    let userEl = document.createElement('input');
-    userEl.className = "input--style-2";
-    userEl.type = "text";
-    userEl.id = "user-id";
-    userEl.name = "user-id";
-    userEl.value = userID;
-    userEl.hidden = true;
-
-    let inputGroupEl = document.createElement('div');
-    inputGroupEl.className = "input-group";
-    inputGroupEl.id = "restaurant-name-container";
-    let inputContainer = document.createElement('input');
-    inputContainer.className = "input--style-2";
-    inputContainer.type = "text";
-    inputContainer.id = "restaurant-name-fill";
-    inputContainer.name = "restaurant-name-fill";
-    inputContainer.value = restaurantName;
-    inputContainer.innerText = restaurantName;
-    inputGroupEl.appendChild(inputContainer);
-    inputGroupEl.appendChild(userEl);
-
-    let submitEl = document.createElement('input');
-    submitEl.type = "submit";
-    submitEl.id = "submit-button";
-    inputGroupEl.appendChild(submitEl);
-    return inputGroupEl;
-}
-
-async function fetchFeedback() {
-    let userID = 0;
-    if (localStorage.getItem("loggedIn")) {
-        userID = localStorage.getItem("user");
-    }
-    return await fetch(`/feedback?user=${userID}`, {
         method: 'GET'
     })
     .then(response => response.json())
