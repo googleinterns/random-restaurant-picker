@@ -111,3 +111,5 @@ public class QueryServlet extends HttpServlet {
         servletRequest.getRequestDispatcher("/searches").include(servletRequest, servletResponse);
     }
 }
+
+        

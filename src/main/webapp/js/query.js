@@ -11,13 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 /* ==========================================================================
    RESTAURANT QUERY AND RE-ROLL
    ========================================================================== */
 function query(queryStr) {
     const errorEl = document.getElementById("error");
-    fetch(`/query?${queryStr}`, { method: "POST" })
+    return fetch(`/query?${queryStr}`, { method: "POST" })
         .then((response) => response.json())
         .then((response) => {
             if (response.status === "OK"){
@@ -40,7 +39,7 @@ function query(queryStr) {
 function roll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
-    fetch(`/query`, { method: "GET" })
+    return fetch(`/query`, { method: "GET" })
         .then((response) => response.json())
         .then((response) => {
             if (response.status === "OK") {
@@ -80,7 +79,7 @@ function getLocation() {
 }
 
 // Geolocation is supported and enabled
-function geoLocEnabled(position) {
+async function geoLocEnabled(position) {
     let locationEl = document.getElementById("location-container");
     let pos = {
         lat: position.coords.latitude,
@@ -92,10 +91,12 @@ function geoLocEnabled(position) {
 }
 
 // Use inaccurate IP-based geolocation instead
-function geoLocFallback() {
+async function geoLocFallback() {
     let locationEl = document.getElementById("location-container");
-    fetch("/geolocate", {method: "POST"}).then(response => response.json()).then(response => {
-        try{
+    return fetch("/geolocate", {method: "POST"}).then(response => {
+        if(!response.ok) throw "Error";
+        return response.json()
+    }).then(response => {
             let pos = {
                 lat: response.location.lat,
                 lng: response.location.lng,
@@ -103,10 +104,9 @@ function geoLocFallback() {
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address) => { locationEl.innerText = address; });
-        } catch(error) {
-            throw "Location not found";
-            geoLocHardcoded();
-        }
+    }).catch(error => {
+        geoLocHardcoded();
+        throw error;
     });
 }
 
@@ -128,7 +128,7 @@ function convertLocation(location) {
     return fetch(`/convert?lat=${lat}&lng=${long}`)
         .then(response => response.json())
         .then((response) => { return response.results[0].formatted_address; })
-        .catch((error) => console.log(error));
+        .catch((error) => {return "Couldn't convert the address"});
 }
 
 /* ==========================================================================
