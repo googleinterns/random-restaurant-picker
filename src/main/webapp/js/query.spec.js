@@ -245,14 +245,12 @@ describe("Test the geoLocHardcoded function", () => {
 });
 
 describe("Test the convertLocation function", () => {
-    let location;
-    
     beforeEach(() => {
         spyOn(window, 'convertLocation').and.callThrough();
     });
 
     it("Check that the function runs properly", async () => {
-        location = new Response('{\"plus_code\":{\"compound_code\":\"2232+5C Fredericktown, PA, USA\",\"global_code\":\"87G22232+5C\"},\"results\":[{\"formatted_address\":\"17 Water St, Fredericktown, PA 15333, USA\",\"geometry\":{\"location\":{\"lat\":40.00271559999999,\"lng\":-79.9978914},\"location_type\":\"ROOFTOP\",\"viewport\":{\"northeast\":{\"lat\":40.0040645802915,\"lng\":-79.99654241970849},\"southwest\":{\"lat\":40.0013666197085,\"lng\":-79.9992403802915}}},\"place_id\":\"ChIJc9FCJiYPNYgRO5lqnx-nPt8\",\"plus_code\":{\"compound_code\":\"2232+3R Fredericktown, PA, USA\",\"global_code\":\"87G22232+3R\"},\"types\":[\"street_address\"]}],\"status\":\"OK\"}');
+        let location = new Response('{\"plus_code\":{\"compound_code\":\"2232+5C Fredericktown, PA, USA\",\"global_code\":\"87G22232+5C\"},\"results\":[{\"formatted_address\":\"17 Water St, Fredericktown, PA 15333, USA\",\"geometry\":{\"location\":{\"lat\":40.00271559999999,\"lng\":-79.9978914},\"location_type\":\"ROOFTOP\",\"viewport\":{\"northeast\":{\"lat\":40.0040645802915,\"lng\":-79.99654241970849},\"southwest\":{\"lat\":40.0013666197085,\"lng\":-79.9992403802915}}},\"place_id\":\"ChIJc9FCJiYPNYgRO5lqnx-nPt8\",\"plus_code\":{\"compound_code\":\"2232+3R Fredericktown, PA, USA\",\"global_code\":\"87G22232+3R\"},\"types\":[\"street_address\"]}],\"status\":\"OK\"}');
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(location));
         let response =  await convertLocation({lat: 40.003, lng: -79.999});
         expect(convertLocation).toHaveBeenCalled();
@@ -261,20 +259,13 @@ describe("Test the convertLocation function", () => {
     });
 
     it("Check the function response with invalid return", async () => {
-        location = new Response('{\"plus_code\":{\"compound_code\":\"2232+52 K\u00fc\u00e7\u00fckotlukbeli\/Otlukbeli\/Erzincan, Turkey\",\"global_code\":\"8HG22232+52\"},\"results\":[],\"status\":\"ZERO_RESULTS\"}');
+        let location = new Response('{\"plus_code\":{\"compound_code\":\"2232+52 K\u00fc\u00e7\u00fckotlukbeli\/Otlukbeli\/Erzincan, Turkey\",\"global_code\":\"8HG22232+52\"},\"results\":[],\"status\":\"ZERO_RESULTS\"}');
         spyOn(window, 'fetch').and.returnValue(Promise.resolve(location));
         let response = await convertLocation({lat: 40.003, lng: 40});
         expect(convertLocation).toHaveBeenCalled();
         expect(fetch).toHaveBeenCalledWith('/convert?lat=40.003&lng=40');
         expect(response).toEqual("Couldn't convert the address");
     });
-});
-
-/*=========================
-    USER SIGN-IN
- =========================*/
-describe("Test the addUserContent Function", () => {
-
 });
 
 /*=========================
