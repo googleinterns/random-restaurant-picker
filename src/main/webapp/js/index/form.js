@@ -19,33 +19,9 @@ $("#randomize-form").submit((event) => {
 
 // Form underline element
 $("input, textarea").blur(() => {
-    if ($(this).val() != "") {
-        $(this).addClass("active");
+    if ((event.currentTarget).val() != "") {
+        (event.currentTarget).addClass("active");
     } else {
-        $(this).removeClass("active");
+        (event.currentTarget).removeClass("active");
     }
 });
-
-/* ==========================================================================
-   SELECT 2 (THIRD-PARTY)
-   ========================================================================== */
-(($) => {
-    'use strict';
-    try {
-        var selectSimple = $('.js-select-simple');
-
-        selectSimple.each(function() {
-            var that = $(this);
-            var selectBox = that.find('select');
-            var selectDropdown = that.find('.select-dropdown');
-            selectBox.select2({
-                dropdownParent: selectDropdown
-            });
-        });
-
-    } catch (err) {
-        console.log(err);
-    }
-
-
-})(jQuery);

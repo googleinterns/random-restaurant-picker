@@ -24,9 +24,11 @@ public class SearchItem {
     private String lng;
     private String radius;
     private long id;
-    private UserFeedback feedback;
+    private String name;
+    private String rating;
+    private String priceLevel;
 
-    public SearchItem(String user, String date, String keywords, String lat, String lng, String radius, long id){
+    public SearchItem(String user, String date, String keywords, String lat, String lng, String radius, long id, String name, String rating, String priceLevel) {
         this.user = user;
         this.date = date;
         this.keywords = keywords;
@@ -34,5 +36,8 @@ public class SearchItem {
         this.lng = lng;
         this.radius = radius;
         this.id = id;
+        this.name = name;
+        this.rating = rating;
+        this.priceLevel = priceLevel;
     }
 }

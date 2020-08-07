@@ -2,75 +2,231 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
-    <title>Results</title>
-    <script src="https://apis.google.com/js/platform.js" async defer></script> 
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/transition.css">
-    <link rel="stylesheet" href="css/style.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Random Restaurant Picker</title>
+    <!-- Global -->
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/button.css">
-    <link rel="stylesheet" href="css/form.css">
-    <link rel="stylesheet" href="css/banner.css">
-    <!-- Form -->
-    <link rel="stylesheet" href="third-party/mdi-font/css/material-design-iconic-font.min.css">
-    <link rel="stylesheet" href="third-party/select2/select2.min.css">
-    <link rel="stylesheet" href="third-party/datepicker/daterangepicker.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/transition.css">
+    <!-- Local -->
+    <link rel="stylesheet" href="css/results/results.css">
+    <!-- Third-party -->
+    <link rel="stylesheet" href="css/third-party/normalize.css">
+    <!-- Google Sign-in -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
 </head>
 
 <body>
-    <div class="loading-container">
-        <div class="loading-screen">
-        </div>
-    </div>
-    <header class="main-navigation">
-        <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-        <div class="dropdown" id="account-menu">
-            <button onclick="toggleShow()" class="dropbtn">
-                <img id="profile-pic" src="">
-                <h3 id="user-name">name</h3>
-            </button>
-            <div id="myDropdown" class="dropdown-content">
-                <a href="#">Account</a>
-                <a href="#">History</a>
-                <a onclick="signOut()">Sign Out</a>
-            </div>
-        </div>
-    </header>
     <div data-barba="wrapper">
-        <!-- Only main container changes on link navigation -->
-        <main data-barba="container" data-barba-namespace="results">
-            <div style="text-align:center">
-                <div class="heading-container">
-                    <h2 class="is-animated">You're headed to:</h2>
-                    <h1 class="is-animated" id="pick"></h1>
+        <header class="header">
+            <div class="header-wrapper">
+                <div class="header-external-links" style="transform: translate(0px, 0px);">
+                    <div class="login-button">
+                        <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
+                        <div class="hide" id="account-menu">
+                            <img id="profile-pic" src="" style="max-width:50px; max-height:50px; width: auto; height: auto;">
+                        </div>
+                    </div>
+                    <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">
+                        <svg viewBox="0 0 50 50" width="50" height="50" class="menu-trigger-shape">
+                            <circle r="25" cx="25" cy="25"></circle>
+                        </svg>
+                        <span class="menu-trigger-bar"></span>
+                        <span class="menu-trigger-bar"></span>
+                        <span class="menu-trigger-bar"></span>
+                    </div>
                 </div>
-                </br>
-                </br>
-                <h1 id="rating"></h1>
-                </br>
-                </br>
-                </br>
-                <div id="photo"></div>
-                <div class="map-container">
-                    <div id="map"></div>
-                    <div id="directionsPanel"></div>
-                </div>
-                </br>
-                <h3 class="m-t-80">Not feeling it?</h3>
-                <button class="btn style4" onclick="roll()">Roll Again</button>
-                <button class="btn style4" onclick="redirectToUrl('index.html')">Search</button>
             </div>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="https://unpkg.com/@barba/core"></script>
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
-            <script src="js/nav.js"></script>
-            <script src="js/query.js"></script>
-        </main>
+            <nav class="header-nav">
+                <div class="menu" data-component="menu">
+                    <div class="menu-overlay" onclick="menuClose()"></div>
+                    <div class="menu-panel" style="transform: translate(110%, 0px);">
+                        <div class="menu-pages">
+                            <ul class="menu-pages-list">
+                                <li id="menu-roulette" class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link" href="index.html">
+                                        Restaurant Roulette
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>About</span>
+                                                </a>
+                                            </li>
+                                            <li id="menu-result" class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="results.html">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Result</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link" href="account-info.html">
+                                        Account
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="past-searches.html">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Past searches</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="signOut()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Sign out</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link">
+                                        Theme
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme1()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Royal Blue</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme2()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Summer Sky</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme3()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Light Green</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme4()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Yellow Orange</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme5()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Cinnabar</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme6()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Blue Violet</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- Only data-barba container changes on link navigation -->
+        <div data-barba="container" data-barba-namespace="results">
+            <svg>
+                <symbol viewBox="0 0 21 15" id="barba-arrow-next">
+                    <path d="M16.243 8.142H0v-2h16.385l-4.728-4.728L13.07 0l5.657 5.657 1.414 1.414-7.07 7.071-1.415-1.414 4.586-4.586z" fill-rule="evenodd"></path>
+                </symbol>
+                <symbol viewBox="0 0 21 15" id="barba-arrow-prev">
+                    <path d="M4.757 8.142H21v-2H4.615l4.728-4.728L7.93 0 2.272 5.657.858 7.07l7.07 7.071 1.415-1.414-4.586-4.586z" fill-rule="evenodd"></path>
+                </symbol>
+            </svg>
+            <main class="main">
+                <div class="main-wrapper">
+                    <ul class="results-nav">
+                        <li class="results-nav-el">
+                            <a onclick="backward()">
+                                <svg viewBox="0 0 21 15" class="arrow">
+                                    <use href="#barba-arrow-prev"></use>
+                                </svg>
+                                <span class="no-select" id="left-arrow">Reviews</span>
+                            </a>
+                        </li>
+                        <li class="results-nav-el">
+                            <a onclick="forward()">
+                                <span class="no-select" id="right-arrow">Directions</span>
+                                <svg viewBox="0 0 21 15" class="arrow">
+                                    <use href="#barba-arrow-next"></use>
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
+                    <h1 class="results-title" id="pick"></h1>
+                    <h2 id="info"></h2>
+                    <div class="results-wrapper" style="opacity: 1; transform: translate(0px, 0px);">
+                        <div class="box--images" style="opacity: 1; transform: translate(-50%, 0%);">
+                            <div class="results-box-body">
+                                <div id="photo"></div>
+                            </div>
+                        </div>
+                        <div class="box--directions" style="opacity: 1; transform: translate(-50%, 0%);">
+                            <div class="results-box-body">
+                                <div class="map-container">
+                                    <div id="map"></div>
+                                    <div id="directionsPanel"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box--reviews" style="opacity: 1; transform: translate(-50%, 0%);">
+                            <div class="results-box-body">
+                                <p class="results-box-body-text">
+                                    Insert reviews here
+                                </p>
+                                <br>
+                                <p class="results-box-body-text">
+                                    Insert form to leave a review here
+                                </p>
+                            </div>
+                            <div class="results-box-footer">
+                                <div class="button-wrapper">
+                                    <a onclick="alert('TODO: implement this!')" class="link-button" style="opacity: 1; transform: translate(0px, 0px);">Submit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-wrapper--back">
+                        <a href="index.html" class="link-button" style="opacity: 1; transform: translate(0px, 0px);">Back</a>
+                    </div>
+                    <div class="button-wrapper--roll">
+                        <a onclick="roll()" class="link-button" style="opacity: 1; transform: translate(0px, 0px);">Re-roll</a>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
+    <div class="transition">
+        <div class="transition-title"></div>
+        <div class="transition-background"></div>
+    </div>
+    <!-- Third-party -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
+    <!-- Global -->
+    <script src="js/menu.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/login.js"></script>
+    <!-- Local -->
+    <script src="js/results/results.js"></script>
+    <script src="js/results/resultsNav.js"></script>
 </body>
 
 </html>
