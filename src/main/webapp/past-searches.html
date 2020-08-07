@@ -1,92 +1,208 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta charset="UTF-8">
-      <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
-      <title>Past Searches</title>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script src="https://apis.google.com/js/platform.js" async defer></script>
-      <!-- Form -->
-      <link href="third-party/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-      <link href="third-party/select2/select2.min.css" rel="stylesheet" media="all">
-      <link href="third-party/datepicker/daterangepicker.css" rel="stylesheet" media="all">
-      <!-- CSS -->
-      <link href="css/style.css" rel="stylesheet">
-      <link href="css/button.css" rel="stylesheet">
-      <link href="css/form.css" rel="stylesheet">
-      <link href="css/banner.css" rel="stylesheet">
-   </head>
-   <body onload="getSearches()">
-      <header>
-         <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-         <div class="dropdown" id="account-menu">
-            <button onclick="toggleShow()" class="dropbtn">
-               <img id="profile-pic" src="">
-               <h3 id="user-name">name</h3>
-            </button>
-            <div id="myDropdown" class="dropdown-content">
-               <a onclick="backToHome()">Home</a>
-               <a onclick="toAccount()">Account</a>
-               <a onclick="toSearches()">History</a>
-               <a onclick="signOut()">Sign Out</a>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Past Searches</title>
+    <!-- Global -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/button.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/transition.css">
+    <link rel="stylesheet" href="css/login.css">
+    <!-- Local -->
+    <link rel="stylesheet" href="css/index/form.css">
+    <!-- Third-party -->
+    <link rel="stylesheet" href="css/third-party/normalize.css">
+    <!-- Google Sign-in -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
+</head>
+
+<body onload="getSearches()">
+    <div data-barba="wrapper">
+        <header class="header">
+            <div class="header-wrapper">
+                <div class="header-external-links" style="transform: translate(0px, 0px);">
+                    <div class="login-button">
+                        <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
+                        <div class="hide" id="account-menu">
+                            <img id="profile-pic" src="" style="max-width:50px; max-height:50px; width: auto; height: auto;">
+                        </div>
+                    </div>
+                    <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">
+                        <svg viewBox="0 0 50 50" width="50" height="50" class="menu-trigger-shape">
+                            <circle r="25" cx="25" cy="25"></circle>
+                        </svg>
+                        <span class="menu-trigger-bar"></span>
+                        <span class="menu-trigger-bar"></span>
+                        <span class="menu-trigger-bar"></span>
+                    </div>
+                </div>
             </div>
-         </div>
-      </header>
-      <div class="p-t-80" style="text-align:center">
-         <h style="font-size:40px">Past Searches</h>
-         <!-- The Modal -->
-         <div id="searchModal" class="modal">
-            <!-- Modal content -->
-            <div class="modal-content">
-               <span class="close">&times;</span>
-               <p>Feedback Form</p>
-               <form id="searches-form" action="/feedback" method="POST">
-                  <div class="input-group">
-                     <div class="rs-select2 js-select-simple select--no-search">
-                        <select id="restaurant-rating" name="restaurant-rating">
-                           <option disabled="disabled" selected="selected">How was the restaurant?</option>
-                           <option>No preference</option>
-                           <option>It was terrible!</option>
-                           <option>Not my favorite</option>
-                           <option>It was alright</option>
-                           <option>Pretty good</option>
-                           <option>I loved it!</option>
-                        </select>
-                        <div class="select-dropdown"></div>
-                     </div>
-                  </div>
-                  <div class="input-group">
-                     <div class="rs-select2 js-select-simple select--no-search">
-                        <select id="rrp-rating" name="rrp-rating">
-                           <option disabled="disabled" selected="selected">How well did the selected restaurant meet your parameters?</option>
-                           <option>It didn't meet any of them</option>
-                           <option>It met one or two</option>
-                           <option>It met all of them</option>
-                        </select>
-                        <div class="select-dropdown"></div>
-                     </div>
-                  </div>
-                  <div class="input-group">
-                     <input class="input--style-2" type="text" placeholder="Notes" name="notes" id="notes" autocomplete="off">
-                  </div>
-               </form>
+            <nav class="header-nav">
+                <div class="menu" data-component="menu">
+                    <div class="menu-overlay" onclick="menuClose()"></div>
+                    <div class="menu-panel" style="transform: translate(110%, 0px);">
+                        <div class="menu-pages">
+                            <ul class="menu-pages-list">
+                                <li id="menu-roulette" class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link" href="index.html">
+                                        Restaurant Roulette
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>About</span>
+                                                </a>
+                                            </li>
+                                            <li id="menu-result" class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="results.html">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Result</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link" href="account-info.html">
+                                        Account
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" href="past-searches.html">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Past searches</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="signOut()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Sign out</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                    <a class="menu-pages-item-link">
+                                        Theme
+                                    </a>
+                                    <div class="menu-pages-item-subpages menu-subpages">
+                                        <ul class="menu-subpages-list">
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme1()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Royal Blue</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme2()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Summer Sky</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme3()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Light Green</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme4()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Yellow Orange</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme5()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Cinnabar</span>
+                                                </a>
+                                            </li>
+                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
+                                                <a class="menu-subpages-item-link" onclick="theme6()">
+                                                    <div class="menu-subpages-item-link-line"></div>
+                                                    <span>Blue Violet</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div data-barba="container" data-barba-namespace="Past Searches">
+            <div class="p-t-80" style="text-align:center">
+                <h1>Past Searches</h1>
+                <!-- The Modal -->
+                <div id="searchModal" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <p>Feedback Form</p>
+                        <form id="searches-form" action="/feedback" method="POST">
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select id="restaurant-rating" name="restaurant-rating">
+                                        <option disabled="disabled" selected="selected">How was the restaurant?</option>
+                                        <option>No preference</option>
+                                        <option>It was terrible!</option>
+                                        <option>Not my favorite</option>
+                                        <option>It was alright</option>
+                                        <option>Pretty good</option>
+                                        <option>I loved it!</option>
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select id="rrp-rating" name="rrp-rating">
+                                        <option disabled="disabled" selected="selected">How well did the selected restaurant meet your parameters?</option>
+                                        <option>It didn't meet any of them</option>
+                                        <option>It met one or two</option>
+                                        <option>It met all of them</option>
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <input class="input--style-2" type="text" placeholder="Notes" name="notes" id="notes" autocomplete="off">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-      <div class="page-wrapper p-t-40">
-         <div class="wrapper wrapper--w960">
-            <div id="cards">
+            <div class="page-wrapper p-t-40">
+                <div class="wrapper wrapper--w960">
+                    <div id="cards"></div>
+                </div>
             </div>
-         </div>
-      </div>
-      </div>
-      <script src="js/query.js"></script>
-      <!-- Form -->
-      <script src="third-party/select2/select2.min.js"></script>
-      <script src="third-party/datepicker/moment.min.js"></script>
-      <script src="third-party/datepicker/daterangepicker.js"></script>
-      <script src="js/form.js"></script>
-   </body>
+        </div>
+    </div>
+    <div class="transition">
+        <div class="transition-title"></div>
+        <div class="transition-background"></div>
+    </div>
+    <!-- Third-party -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
+    <!-- Global -->
+    <script src="js/menu.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/login.js"></script>
+    <!-- Local -->
+    <script src="js/login.js"></script>
+</body>
+
 </html>

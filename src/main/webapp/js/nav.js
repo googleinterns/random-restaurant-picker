@@ -4,30 +4,107 @@ function redirectToUrl(url) {
     barba.go(url)
 }
 
-const loadingScreen = document.querySelector('.loading-screen')
-const mainNavigation = document.querySelector('.main-navigation')
+function isTransitioning() { return document.querySelector('html').classList.contains('is-transitioning') }
 
-function pageTransitionIn() {
-    return gsap
-        .to(loadingScreen, { duration: .5, scaleY: 1, transformOrigin: 'bottom left' })
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function pageTransitionOut(container) {
+function defaultTransition(currContainer, nextContainer) {
+    const transitionTitle = document.querySelector('.transition-title');
+    const transitionBackground = document.querySelector('.transition-background');
+    transitionTitle.innerHTML = capitalizeFirstLetter(nextContainer.dataset.barbaNamespace);
     return gsap
-        .timeline({ delay: 0.25 })
-        .add('start')
-        .to(loadingScreen, {
-            duration: 0.5,
-            scaleY: 0,
-            skewX: 0,
-            transformOrigin: 'top left',
-            ease: 'power1.out'
-        }, 'start')
-        .call(contentAnimation, [container], 'start')
+        .timeline({
+            onComplete: () => {
+                transitionTitle.innerHTML = '';
+            }
+        })
+        .set(transitionBackground, {
+            clearProps: 'all'
+        })
+        .set(transitionTitle, {
+            y: 100
+        })
+        .to(transitionBackground, {
+            duration: 0.7,
+            x: '0',
+            ease: 'power4',
+            onComplete: () => {
+                currContainer.remove()
+            }
+        })
+        .to(transitionTitle, 0.5, {
+            y: 0,
+            opacity: 1,
+            ease: 'power4'
+        }, 0.1)
+        .from(nextContainer, {
+            duration: 0.1,
+            opacity: 0,
+            ease: 'power4'
+        })
+        .to(transitionBackground, {
+            duration: 0.7,
+            x: '100%',
+            ease: 'power4.inOut'
+        }, 1)
+        .to(transitionTitle, 0.7, {
+            y: -100,
+            opacity: 0,
+            ease: 'power4.inOut'
+        }, 0.8)
+        .then();
+}
+
+function toResults(currContainer, nextContainer) {
+    const transitionTitle = document.querySelector('.transition-title');
+    const transitionBackground = document.querySelector('.transition-background');
+    transitionTitle.innerHTML = "You're headed to...";
+    return gsap
+        .timeline({
+            onComplete: () => {
+                transitionTitle.innerHTML = '';
+            }
+        })
+        .set(transitionBackground, {
+            clearProps: 'all'
+        })
+        .set(transitionTitle, {
+            y: 100
+        })
+        .to(transitionBackground, {
+            duration: 0.7,
+            x: '0',
+            ease: 'power4',
+            onComplete: () => {
+                currContainer.remove()
+            }
+        })
+        .to(transitionTitle, 0.5, {
+            y: 0,
+            opacity: 1,
+            ease: 'power4'
+        }, 0.1)
+        .from(nextContainer, {
+            duration: 0.1,
+            opacity: 0,
+            ease: 'power4'
+        })
+        .to(transitionBackground, {
+            duration: 0.7,
+            x: '100%',
+            ease: 'power4.inOut'
+        }, 2)
+        .to(transitionTitle, 0.7, {
+            y: -100,
+            opacity: 0,
+            ease: 'power4.inOut'
+        }, 1.8)
+        .then();
 }
 
 function contentAnimation(container) {
-    $(container.querySelector('.green-heading-bg')).addClass('show')
     return gsap
         .timeline()
         .from(container.querySelector('.is-animated'), {
@@ -36,45 +113,92 @@ function contentAnimation(container) {
             opacity: 0,
             stagger: 0.4
         })
-        .from(mainNavigation, { duration: .5, translateY: -10, opacity: 0 })
 }
 
+
+
+/* ==========================================================================
+   GLOBAL (DEFAULT) HOOKS
+
+   These always run before their respective specific hook
+   ========================================================================== */
+barba.hooks.leave(async (data) => {
+    document.querySelector('html').classList.add('is-transitioning');
+    document.body.classList.add('prevent-scroll');
+    if (isMenuOpen())
+        menuClose();
+});
+barba.hooks.enter(async (data) => {
+    window.scrollTo(0, 0);
+});
+barba.hooks.afterEnter(async (data) => {
+    document.querySelector('html').classList.remove('is-transitioning');
+    document.body.classList.remove('prevent-scroll');
+});
+barba.hooks.once(async (data) => {
+    // TODO: use async once(data) for content animation
+    // await contentAnimation(data.next.container)
+});
+
+/* ==========================================================================
+   SPECIFIC HOOKS
+   ========================================================================== */
 $(() => {
     barba.init({
         preventRunning: true,
-        transitions: [{
-                from: { namespace: ['search'] },
-                to: { namespace: ['results'] },
-                async leave(data) {
-                    await pageTransitionIn()
-                    data.current.container.remove()
-                },
-
-                async enter(data) {
-                    await pageTransitionOut(data.next.container)
-                    addMapScript()
-                    roll()
-                },
-
-                async once(data) { await contentAnimation(data.next.container); }
-            },
+        transitions: [
+            // To Restaurant Roulette
             {
-                from: { namespace: ['results'] },
-                to: { namespace: ['search'] },
-                async leave(data) {
-                    await pageTransitionIn()
-                    data.current.container.remove()
-                },
-
-                async enter(data) { await pageTransitionOut(data.next.container) },
-
-                async once(data) { await contentAnimation(data.next.container); },
+                to: { namespace: ['Restaurant Roulette'] },
+                async enter(data) { await defaultTransition(data.current.container, data.next.container); },
 
                 async beforeEnter(data) {
-                    $.getScript("third-party/select2/select2.min.js");
-                    $.getScript("third-party/datepicker/moment.min.js");
-                    $.getScript("third-party/datepicker/daterangepicker.js");
-                    $.getScript("js/form.js");
+                    $('head').append('<link rel="stylesheet" href="css/index/index.css">');
+                    $('head').append('<link rel="stylesheet" href="css/index/form.css">');
+                    $('head').append('<link rel="stylesheet" href="css/index/banner.css">');
+                    $.getScript("js/index/index.js");
+                    $.getScript("js/index/form.js");
+                }
+            },
+            // To results
+            {
+                to: { namespace: ['results'] },
+                async enter(data) {
+                    await toResults(data.current.container, data.next.container);
+                    await addMapScript();
+                    await roll();
+                },
+
+                async beforeEnter(data) {
+                    $('head').append('<link rel="stylesheet" href="css/results/results.css">');
+                    $.getScript("js/results/results.js");
+                    $.getScript("js/results/resultsNav.js");
+                }
+            },
+            // To account info
+            {
+                to: { namespace: ['Account Info'] },
+                async enter(data) {
+                    await defaultTransition(data.current.container, data.next.container);
+                    accountFunctions();
+                },
+
+                async beforeEnter(data) {
+                    $('head').append('<link rel="stylesheet" href="css/index/form.css">');
+                    $.getScript("js/login.js");
+                }
+            },
+            // To past searches
+            {
+                to: { namespace: ['Past Searches'] },
+                async enter(data) {
+                    await defaultTransition(data.current.container, data.next.container);
+                    getSearches();
+                },
+
+                async beforeEnter(data) {
+                    $('head').append('<link rel="stylesheet" href="css/index/form.css">');
+                    $.getScript("js/login.js");
                 }
             }
         ]
