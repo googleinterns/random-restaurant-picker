@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
-     <title>Random Restaurant Picker</title>  
+     <title>Random Restaurant Picker</title>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
@@ -25,48 +25,6 @@
 </head>
 
 <body>
-<<<<<<< HEAD
-    <div class="loading-container">
-        <div class="loading-screen"></div>
-    </div>
-    <header>
-        <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-        <div class="dropdown" id="account-menu">
-            <button onclick="toggleShow()" class="dropbtn">
-                <img id="profile-pic" src="">
-                <h3 id="user-name">name</h3>
-            </button>
-            <div id="myDropdown" class="dropdown-content">
-                <a onclick="backToHome()">Home</a>
-                <a onclick="toAccount()">Account</a>
-                <a onclick="toSearches()">History</a>
-                <a onclick="signOut()">Sign Out</a>
-            </div>
-        </div>
-    </header>
-    <div data-barba="wrapper">
-        <!-- Only main container changes on link navigation -->
-        <main data-barba="container" data-barba-namespace="search">
-            <div id="page-container">
-                <div class="p-t-80" style="text-align:center">
-                    <h>Random Restaurant Picker</h>
-                </div>
-                <div class="page-wrapper p-t-40 font-robo">
-                    <div class="wrapper wrapper--w960">
-                        <div class="card card-2">
-                            <div class="card-body">
-                                <h2>Your location:</h2>
-                                </br>
-                                <p id="location-container"></p>
-                                </br>
-                                <button class="btn style4 small" onclick="getLocation()">Allow location access</button>
-                                </br></br></br>
-                                <form id="randomize-form" action="/query" method="POST">
-                                    <div class="input-group">
-                                        <input class="input--style-2" type="text" name="searchTerms" id="searchTerms">
-                                        <label for="searchTerms">Search terms</label>
-                                        <div class="border"></div>
-=======
     <div data-barba="wrapper">
         <header class="header">
             <div class="header-wrapper">
@@ -192,7 +150,6 @@
                                                 </a>
                                             </li>
                                         </ul>
->>>>>>> 7340b70... add login button to newUI
                                     </div>
                                     <div class="row row-space">
                                         <div class="col-2">
