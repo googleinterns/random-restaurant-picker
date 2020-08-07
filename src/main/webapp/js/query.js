@@ -17,12 +17,13 @@
    ========================================================================== */
 function query(queryStr) {
     const errorEl = document.getElementById("error");
-    fetch(`/query?${queryStr}`, { method: "POST" })
+    return fetch(`/query?${queryStr}`, { method: "POST" })
         .then((response) => response.json())
         .then((response) => {
-            console.log(response);
-            if (response.status === "OK")
+            if (response.status === "OK"){
+                localStorage.setItem("restaurantAddress", response.pick.vicinity);
                 redirectToUrl('results.html');
+            }
             else if (response.status === "INVALID_REQUEST") throw "Invalid request";
             else if (response.status === "ZERO_RESULTS") throw "No results";
             else if (response.status === "NO_REROLLS") throw "No re-rolls left";
@@ -36,16 +37,16 @@ function query(queryStr) {
         });
 }
 
-function roll() {
+function reroll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
-    fetch(`/query`, { method: "GET" })
+    return fetch(`/query`, { method: "GET" })
         .then((response) => response.json())
         .then((response) => {
             if (response.status === "OK") {
                 pickEl.innerText = response.pick.name;
                 ratingEl.innerText = response.pick.rating + ' ★';
-                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc';
+                let photoUrl = 'https://maps.googleapis.com/maps/api/place/photo?maxwidth=600&photoreference=' + response.pick.photos[0].photoReference + '&key=';
                 localStorage.setItem("restaurantAddress", response.pick.vicinity);
                 loadImage(photoUrl);
                 calculateAndDisplayRoute(directionsService, directionsRenderer);
@@ -58,12 +59,13 @@ function roll() {
 }
 
 //Retrieve and display restaurant image
-function loadImage(photoUrl) {
+async function loadImage(photoUrl) {
     let photoEl = document.getElementById("photo");
     photoEl.innerHTML = "";
 
     let img = document.createElement('img');
-    img.src = photoUrl;
+    let url = encodeURIComponent(photoUrl);
+    img.src = `/image?url=${url}`;
     photoEl.appendChild(img);
 }
 
@@ -78,7 +80,7 @@ function getLocation() {
 }
 
 // Geolocation is supported and enabled
-function geoLocEnabled(position) {
+async function geoLocEnabled(position) {
     let locationEl = document.getElementById("location-container");
     let pos = {
         lat: position.coords.latitude,
@@ -90,13 +92,12 @@ function geoLocEnabled(position) {
 }
 
 // Use inaccurate IP-based geolocation instead
-function geoLocFallback() {
+async function geoLocFallback() {
     let locationEl = document.getElementById("location-container");
-    $.ajax({
-        type: "POST",
-        url: 'https://www.googleapis.com/geolocation/v1/geolocate?key=' + 'AIzaSyBL_9GfCUu7DGDvHdtlM8CaAywE2bVFVJc', // TODO: use safe API key storage!!!
-        data: { considerIp: 'true' },
-        success: function(response) {
+    return fetch("/geolocate", {method: "POST"}).then(response => {
+        if(!response.ok) throw "Error";
+        return response.json()
+    }).then(response => {
             let pos = {
                 lat: response.location.lat,
                 lng: response.location.lng,
@@ -104,16 +105,9 @@ function geoLocFallback() {
             localStorage.setItem("lat", pos.lat);
             localStorage.setItem("lng", pos.lng);
             convertLocation(pos).then((address) => { locationEl.innerText = address; });
-        },
-        error: function(xhr) {
-            if (xhr.status == 404)
-                console.log("No results");
-            if (xhr.status == 403)
-                console.log("Usage limits exceeded");
-            if (xhr.status == 400)
-                console.log("API key is invalid or JSON parsing error");
-            geoLocHardcoded(); // DEBUG
-        }
+    }).catch(error => {
+        geoLocHardcoded();
+        throw error;
     });
 }
 
@@ -133,9 +127,9 @@ function convertLocation(location) {
     let lat = location.lat;
     let long = location.lng;
     return fetch(`/convert?lat=${lat}&lng=${long}`)
-        .then((response) => response.json())
+        .then(response => response.json())
         .then((response) => { return response.results[0].formatted_address; })
-        .catch((error) => console.log(error));
+        .catch((error) => {return "Couldn't convert the address"});
 }
 
 /* ==========================================================================
@@ -156,19 +150,19 @@ function onSignIn(googleUser) {
         });
 }
 
-//Add user information to signed in UI
+// Add user information to signed in UI
 function addUserContent(name, image) {
     document.getElementById("user-name").innerText = name;
     document.getElementById("profile-pic").src = image;
 }
 
-//Replaces the sign-in button with signed in UI
+// Replaces the sign-in button with signed in UI
 function toggleAccountMenu() {
     document.getElementById("account-menu").classList.toggle("show");
     document.getElementById("sign-in").classList.toggle("hide");
 }
 
-//Logs out of the account
+// Logs out of the account
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
@@ -178,17 +172,17 @@ function signOut() {
   toggleAccountMenu();
 }
 
-//Redirects to search page
+// Redirects to search page
 function backToHome() {
     window.location.replace("index.html");
 }
 
-//Redirects to user's account information page
+// Redirects to user's account information page
 function toAccount() {
     window.location.replace("account-info.html");
 }
 
-//Redirects to past searches page
+// Redirects to past searches page
 function toSearches() {
     window.location.replace("past-searches.html");
 }
@@ -198,7 +192,7 @@ function toggleShow() {
 }
 
 // Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
+window.onclick = event => {
   if (!event.target.matches('.dropbtn')) {
     let dropdown = document.getElementById("myDropdown");
       if (dropdown.classList.contains('show')) {
@@ -210,7 +204,6 @@ window.onclick = function(event) {
 /*
     FUNCTIONS RELATED TO THE ACCOUNTS PAGE
 */
-
 function accountFunctions() {
     getNumSearches();
     getLastVisited();
@@ -228,8 +221,8 @@ function getNumSearches() {
         searches.forEach((search) => {
             count += 1;
         });
+        numSearchesEl.innerText = count;
     });
-    numSearchesEl.innerText = count;
 }
 
 function getLastVisited() {
@@ -238,19 +231,43 @@ function getLastVisited() {
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
-        lastVisitedEl.innerText = searches[0].name()});
+        for (search of searches) {
+            lastVisitedEl.innerText = search.name;
+            break;
+        }
+    });
 }
 
 function getFavFood() {
-    let food = document.getElementById('fav-food');
-    if (localStorage.getItem("loggedIn")) {
+    let foodHolder = document.getElementById('fav-food');
+    if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
-        if (foods[0].length == 0) {
-            food.appendChild('<textarea id="food-selection" placeholder="or foods :)"></textarea>');
+        if (foods.length == 0) {
+            let favFoodFormEl = document.createElement('form');
+            favFoodFormEl.action = "/fav-food";
+            favFoodFormEl.method = "POST";
+            favFoodFormEl.id = "fav-food-form";
+
+            let favFoodInputEl = document.createElement('textarea');
+            favFoodInputEl.id = "food-selection";
+            favFoodInputEl.placeholder = "or foods :)";
+
+            let formInputHolderEl = document.createElement('div');
+            formInputHolderEl.class = "input-group";
+
+            let inputButtonEl = document.createElement('input');
+            inputButtonEl.type = "submit";
+
+            formInputHolderEl.appendChild(favFoodInputEl);
+            favFoodFormEl.appendChild(formInputHolderEl);
+            favFoodFormEl.appendChild(inputButtonEl);
+            foodHolder.appendChild(favFoodFormEl);
         } else {
-            food.innerText = foods[0];
+            let foodTextEl = document.createElement('p');
+            foodTextEl.innerText = foods[0];
+            foodHolder.appendChild(foodTextEl);
         }
     });
 }
@@ -265,46 +282,46 @@ function getNumReviews() {
         feedbackList.forEach((feedback) => {
             count += 1;
         });
-    });
     numFeedbackEl.innerText = count;
+    });
 }
 
 /* ==========================================================================
    RETRIEVING SEARCHES
    ========================================================================== */
-//Retrieve searches associated with the current user
-function getSearches(){
+// Retrieve searches associated with the current user
+function getSearches() {
     let userID = 0;
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
         let searchesEl = document.getElementById('cards');
-        searches.forEach((search) => {
+        searches.forEach(search => {
             let searchCard = createSearchElement(search);
             searchesEl.appendChild(searchCard);
         });
     });
 }
 
-//Create the card containing the search's information
+// Create the card containing the search's information
 function createSearchElement(search) {
     const newCardEl = document.createElement('div');
     newCardEl.className = 'card card-2';
     const newCardBody = document.createElement('div');
     newCardBody.className = 'card-body';
-    //creating the restaurant name element
+    // creating the restaurant name element
     const nameElement = document.createElement('p2');
     nameElement.id = 'restaurant-name';
     nameElement.innerText = search.name;
+
     newCardBody.appendChild(nameElement);
     newCardBody.appendChild(document.createElement('br'));
 
-    //creating the list of parameters
+    // creating the list of parameters
     const paramElement = document.createElement('p3');
     const tempParamElement = "Parameters: " + search.keywords;
 
-    // tempParamElement += radius;
     paramElement.innerText = tempParamElement;
     newCardBody.appendChild(paramElement);
 
@@ -375,7 +392,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
     return newCardBody;
 }
 
-//Function to append restaurant name to modal form to force it to follow through to feedback
+// Function to append restaurant name to modal form to force it to follow through to feedback
 function createRestaurantElement(restaurantName) {
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
@@ -414,14 +431,13 @@ async function fetchFeedback() {
     if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
-    let response = await fetch(`/feedback?user=${userID}`, {
+    return fetch(`/feedback?user=${userID}`, {
         method: 'GET'
     })
     .then(response => response.json())
     .then(data => {
         return data;
     });
-    return response;
 }
 
 async function getFeedback(search) {
@@ -583,6 +599,7 @@ async function getFeedback(search) {
             thisRestaurantsFeedback = feedback.restaurantRating + "; " + feedback.notes;
             buttons = false;
             tempFeedbackElement = "Feedback: " + thisRestaurantsFeedback;
+            return [tempFeedbackElement, buttons];
         }
     });
     return [tempFeedbackElement, buttons];

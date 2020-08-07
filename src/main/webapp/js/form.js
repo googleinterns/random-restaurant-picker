@@ -6,14 +6,14 @@ $("#randomize-form").submit((event) => {
     errorEl.classList.add("hidden");
 
     event.preventDefault();
-    let url = $(this).attr("action");
+    let url = (event.currentTarget).action;
     let lat = localStorage.getItem("lat");
     let lng = localStorage.getItem("lng");
     let userID = 0;
     if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
-    let queryStr = $(this).serialize() + `&lat=${lat}&lng=${lng}&user=${userID}`;
+    let queryStr = new URLSearchParams(new FormData(event.currentTarget)).toString() + `&lat=${lat}&lng=${lng}&user=${userID}`;
     query(queryStr);
 });
 

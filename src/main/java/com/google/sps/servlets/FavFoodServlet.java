@@ -69,5 +69,7 @@ public final class FavFoodServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(foodEntity);
+
+    response.sendRedirect("/account-info.html");
   }
 }

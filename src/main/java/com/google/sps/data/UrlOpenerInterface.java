@@ -14,20 +14,10 @@
 
 package com.google.sps.data;
 
-import java.io.Serializable;
+import java.lang.NullPointerException;
+import com.google.gson.JsonElement;
+import java.io.IOException;
 
-public class User implements java.io.Serializable {
-    private int priceLevel;
-
-    public User(int priceLevel) {
-        this.priceLevel = priceLevel;
-    }
-
-    public int getPriceLevel() {
-        return this.priceLevel;
-    }
-
-    public String toString() {
-        return "" + priceLevel;
-    }
+interface UrlOpenerInterface {
+    public JsonElement openUrl(String url) throws IOException;
 }
