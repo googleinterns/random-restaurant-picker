@@ -111,15 +111,14 @@ public final class FavFoodServletTest {
 
       //Run the servlet and verify functions are called
       new FavFoodServlet().doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).getWriter();
 
       //Process data and check correctness
       String results = sw.getBuffer().toString().trim();
-      JsonArray resultsArray = new JsonParser().parse(results).getAsJsonArray();
-      String foodItem = resultsArray.get(0).getAsString();
+      String foodItem = new JsonParser().parse(results).getAsString();
 
-      assertEquals(resultsArray.get(0).getAsString(), "pizza");
+      assertEquals(foodItem, "pizza");
   }
 
   @Test
@@ -133,11 +132,11 @@ public final class FavFoodServletTest {
 
       //Run the servlet and verify functions are called
       new FavFoodServlet().doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).getWriter();
 
       //Process data and check correctness
       String results = sw.getBuffer().toString().trim();
-      assertEquals(results, "[]");
+      assertEquals(results, "null");
   }
 }

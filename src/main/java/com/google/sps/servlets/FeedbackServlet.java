@@ -74,7 +74,7 @@ public class FeedbackServlet extends HttpServlet {
             feedbackList.add(feedback);
         }
         
-        response.setContentType("application/json");
+        response.setContentType("application/json;");
         response.getWriter().println(new Gson().toJson(feedbackList));
     }
 
