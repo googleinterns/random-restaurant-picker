@@ -81,7 +81,7 @@ public final class SearchServletTest {
   }
 
   @Test
-  public void postTest() throws IOException{
+  public void postTest() throws IOException {
       when(request.getParameter("lat")).thenReturn("40");
       when(request.getParameter("lng")).thenReturn("-80");
       when(request.getParameter("user")).thenReturn("1");
@@ -97,7 +97,7 @@ public final class SearchServletTest {
   }
 
   @Test
-  public void getOneMatching() throws IOException{
+  public void getOneMatching() throws IOException {
       //Test that the servlet retrieves items from the datastore
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
       Entity searchEntity = new Entity("savedSearch");
@@ -129,7 +129,7 @@ public final class SearchServletTest {
   }
 
   @Test
-  public void getZeroMatching() throws IOException{
+  public void getZeroMatching() throws IOException {
       //Test the servlet when no items are in the datastore
       //Handle calls to the mock objects
       when(request.getParameter("user")).thenReturn("2");
@@ -148,7 +148,7 @@ public final class SearchServletTest {
   }
 
   @Test
-  public void getOneNotMatching() throws IOException{
+  public void getOneNotMatching() throws IOException {
       //Test that the servlet when an item in the datastore doesn't
       //match the user request that was processed
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
@@ -179,7 +179,7 @@ public final class SearchServletTest {
   }
 
   @Test
-  public void getTwoInOrder() throws IOException{
+  public void getTwoInOrder() throws IOException {
       //Test that the servlet returns the items in correct order
       //when two matching entities are in the datastore
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();

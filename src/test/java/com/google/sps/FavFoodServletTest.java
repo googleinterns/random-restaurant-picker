@@ -81,7 +81,7 @@ public final class FavFoodServletTest {
   }
 
   @Test
-  public void postTest() throws IOException{
+  public void postTest() throws IOException {
       when(request.getParameter("user")).thenReturn("1");
       when(request.getParameter("fav-food")).thenReturn("ice cream");
 
@@ -94,7 +94,7 @@ public final class FavFoodServletTest {
   }
 
   @Test
-  public void getOneMatching() throws IOException{
+  public void getOneMatching() throws IOException {
       //Test that the servlet retrieves items from the datastore
       DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
       Entity foodEntity = new Entity("FavFood");
@@ -123,7 +123,7 @@ public final class FavFoodServletTest {
   }
 
   @Test
-  public void getZeroMatching() throws IOException{
+  public void getZeroMatching() throws IOException {
       //Test the servlet when no items are in the datastore
       //Handle calls to the mock objects
       when(request.getParameter("user")).thenReturn("2");

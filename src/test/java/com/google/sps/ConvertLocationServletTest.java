@@ -65,7 +65,7 @@ public final class ConvertLocationServletTest {
   UrlOpener urlOpener;
 
   @Test
-  public void getZeroResults() throws IOException{
+  public void getZeroResults() throws IOException {
     //Submit a post request to ConvertLocationServlet that has zero results
     //Actual JSON response
     String json = "{\"plus_code\":{\"global_code\":\"8MJ57PJR+22\"},\"results\":[],\"status\":\"ZERO_RESULTS\"}";
@@ -92,7 +92,7 @@ public final class ConvertLocationServletTest {
   }
 
   @Test
-  public void getValidResults() throws IOException{
+  public void getValidResults() throws IOException {
     //Submit a post request to ConvertLocationServlet that has zero results
     //Actual response abridged for readability
     String json = "{\"results\":[{\"formatted_address\":\"220 S Thayer St, Ann Arbor, MI 48104, USA\",\"place_id\":\"ChIJKQkrYECuPIgRVL8htvW27eM\",\"types\":[\"street_address\"]},{\"formatted_address\":\"208 S Thayer St, Ann Arbor, MI 48104, USA\",\"place_id\":\"EikyMDggUyBUaGF5ZXIgU3QsIEFubiBBcmJvciwgTUkgNDgxMDQsIFVTQSIbEhkKFAoSCTH47V5ArjyIEYGV766E3_UFENAB\",\"types\":[\"street_address\"]}],\"status\":\"OK\"}";

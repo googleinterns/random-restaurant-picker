@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns the user's inputted favorite food */
+/** Servlet that returns the user's favorite food, if previously inputted */
 @WebServlet("/fav-food")
 public final class FavFoodServlet extends HttpServlet {
 
@@ -44,15 +44,16 @@ public final class FavFoodServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<String> favFoodList = new ArrayList<>();
+    String favFood = null;
     for (Entity entity : results.asIterable()) {
-        String favFood = (String) entity.getProperty("food");
-        favFoodList.add(favFood);
+        String food = (String) entity.getProperty("food");
+        favFood = food;
     }
 
     // Send the JSON as the response
     response.setContentType("application/json");
-    response.getWriter().println(new Gson().toJson(favFoodList));
+    Gson gson = new Gson();
+    gson.toJson(gson.toJsonTree(favFood), gson.newJsonWriter(response.getWriter()));
   }
 
   @Override
