@@ -151,7 +151,10 @@ function onSignIn(googleUser) {
 
 // Add user information to signed in UI
 function addUserContent(name, image) {
+<<<<<<< HEAD:src/main/webapp/js/query.js
     document.getElementById("user-name").innerText = name;
+=======
+>>>>>>> a7e4907... address PR #43 comments:src/main/webapp/js/login.js
     document.getElementById("profile-pic").src = image;
 }
 
@@ -171,6 +174,7 @@ function signOut() {
   toggleAccountMenu();
 }
 
+<<<<<<< HEAD:src/main/webapp/js/query.js
 // Redirects to search page
 function backToHome() {
     window.location.replace("index.html");
@@ -198,6 +202,14 @@ window.onclick = event => {
         dropdown.classList.remove('show');
       }
   }
+=======
+//Logs out of the account
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut();
+    localStorage.setItem("user", 0);
+    hideAccountMenu();
+>>>>>>> a7e4907... address PR #43 comments:src/main/webapp/js/login.js
 }
 
 /*
@@ -229,11 +241,16 @@ function getLastVisited() {
     if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
+<<<<<<< HEAD:src/main/webapp/js/query.js
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
         for (search of searches) {
             lastVisitedEl.innerText = search.name;
             break;
         }
+=======
+    fetch(`/searches?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((searches) => {
+        lastVisitedEl.innerText = searches[0].name;
+>>>>>>> a7e4907... address PR #43 comments:src/main/webapp/js/login.js
     });
 }
 
@@ -241,7 +258,6 @@ function getFavFood() {
     let foodHolder = document.getElementById('fav-food');
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
         if (foods.length == 0) {
-            console.log("hello");
             let favFoodFormEl = document.createElement('form');
             favFoodFormEl.action = "/fav-food";
             favFoodFormEl.method = "POST";
@@ -262,12 +278,9 @@ function getFavFood() {
             favFoodFormEl.appendChild(inputButtonEl);
             foodHolder.appendChild(favFoodFormEl);
         } else {
-            for (food of foods) {
-                let foodTextEl = document.createElement('p');
-                foodTextEl.innerText = food;
-                foodHolder.appendChild(foodTextEl);
-                break;
-            }
+            let foodTextEl = document.createElement('p');
+            foodTextEl.innerText = foods[0];
+            foodHolder.appendChild(foodTextEl);
         }
     });
 }
@@ -278,11 +291,16 @@ function getNumReviews() {
     if (localStorage.getItem("loggedIn")){
         userID = localStorage.getItem("user");
     }
+<<<<<<< HEAD:src/main/webapp/js/query.js
     fetch(`/feedback?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((feedbackList) => {
         feedbackList.forEach((feedback) => {
             count += 1;
         });
     numFeedbackEl.innerText = count;
+=======
+    fetch(`/feedback?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((feedbackList) => {
+        numFeedbackEl.innerText = feedbackList.length;
+>>>>>>> a7e4907... address PR #43 comments:src/main/webapp/js/login.js
     });
 }
 
@@ -362,7 +380,11 @@ function createSearchesButtons(search, buttons, newCardBody) {
             modal.style.display = "none";
         }
         // When the user clicks anywhere outside of the modal, close it
+<<<<<<< HEAD:src/main/webapp/js/query.js
         window.onclick = event => {
+=======
+        window.onclick = (event) => {
+>>>>>>> a7e4907... address PR #43 comments:src/main/webapp/js/login.js
             if (event.target == modal) {
                 let restaurantContainerEl = document.getElementById("restaurant-name-container");
                 restaurantContainerEl.remove();

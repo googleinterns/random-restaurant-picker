@@ -42,14 +42,45 @@ function contentAnimation(container) {
 $(() => {
     barba.init({
         preventRunning: true,
+<<<<<<< HEAD
         transitions: [{
                 from: { namespace: ['search'] },
+=======
+        transitions: [
+            // To Restaurant Roulette
+            {
+                to: { namespace: ['Restaurant Roulette'] },
+                async enter(data) { await defaultTransition(data.current.container, data.next.container); },
+
+                async beforeEnter(data) {
+                    $('head').append('<link rel="stylesheet" href="css/index/index.css">');
+                    $('head').append('<link rel="stylesheet" href="css/index/form.css">');
+                    $('head').append('<link rel="stylesheet" href="css/index/banner.css">');
+                    $.getScript("js/index/index.js");
+                    $.getScript("js/index/form.js");
+                }
+            },
+            // To results
+            {
+>>>>>>> a7e4907... address PR #43 comments
                 to: { namespace: ['results'] },
                 async leave(data) {
                     await pageTransitionIn()
                     data.current.container.remove()
                 },
 
+<<<<<<< HEAD
+=======
+                async beforeEnter(data) {
+                    $('head').append('<link rel="stylesheet" href="css/results/results.css">');
+                    $.getScript("js/results/results.js");
+                    $.getScript("js/results/resultsNav.js");
+                }
+            },
+            // To account info
+            {
+                to: { namespace: ['Account Info'] },
+>>>>>>> a7e4907... address PR #43 comments
                 async enter(data) {
                     await pageTransitionOut(data.next.container)
                     addMapScript()
