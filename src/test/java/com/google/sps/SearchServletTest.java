@@ -118,7 +118,7 @@ public final class SearchServletTest {
 
       //Run the servlet and verify functions are called
       new SearchServlet().doGet(request, response);
-      verify(response).setContentType("application/json;");
+      verify(response).setContentType("application/json");
       verify(response).getWriter();
 
       //Process data and check correctness
@@ -139,7 +139,7 @@ public final class SearchServletTest {
 
       //Run the servlet and verify functions are called
       new SearchServlet().doGet(request, response);
-      verify(response).setContentType("application/json;");
+      verify(response).setContentType("application/json");
       verify(response).getWriter();
 
       //Process data and check correctness
@@ -170,7 +170,7 @@ public final class SearchServletTest {
 
       //Run the servlet and verify functions are called
       new SearchServlet().doGet(request, response);
-      verify(response).setContentType("application/json;");
+      verify(response).setContentType("application/json");
       verify(response).getWriter();
 
       //Process data and check correctness
@@ -211,7 +211,7 @@ public final class SearchServletTest {
 
       //Run the servlet and verify functions are called
       new SearchServlet().doGet(request, response);
-      verify(response).setContentType("application/json;");
+      verify(response).setContentType("application/json");
       verify(response).getWriter();
 
       //Process data and check correctness
