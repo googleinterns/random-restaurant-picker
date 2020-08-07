@@ -2,24 +2,21 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
-     <title>Random Restaurant Picker</title>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/transition.css">
-    <link rel="stylesheet" href="css/style.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Random Restaurant Picker</title>
+    <!-- Global -->
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/button.css">
-    <link rel="stylesheet" href="css/form.css">
-    <link rel="stylesheet" href="css/banner.css">
-    <!-- Form -->
-    <link rel="stylesheet" href="third-party/mdi-font/css/material-design-iconic-font.min.css">
-    <link rel="stylesheet" href="third-party/select2/select2.min.css">
-    <link rel="stylesheet" href="third-party/datepicker/daterangepicker.css">
-
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/transition.css">
+    <link rel="stylesheet" href="css/login.css">
+    <!-- Local -->
+    <link rel="stylesheet" href="css/index/index.css">
+    <link rel="stylesheet" href="css/index/form.css">
+    <link rel="stylesheet" href="css/index/banner.css">
+    <!-- Third-party -->
+    <link rel="stylesheet" href="css/third-party/normalize.css">
+    <!-- Google Sign-in -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id" content="758286654746-8e5tr4b5tr0gukbkdjpb6vj6upd9pl6l.apps.googleusercontent.com">
 </head>
@@ -31,16 +28,8 @@
                 <div class="header-external-links" style="transform: translate(0px, 0px);">
                     <div class="login-button">
                         <div class="g-signin2" data-onsuccess="onSignIn" id="sign-in"></div>
-                        <div class="dropdown" id="account-menu">
-                            <button onclick="toggleShow()" class="dropbtn">
-                                <img id="profile-pic" src="">
-                                <h3 id="user-name">name</h3>
-                            </button>
-                            <div id="myDropdown" class="dropdown-content">
-                                <a href="#">Account</a>
-                                <a href="#">History</a>
-                                <a onclick="signOut()">Sign Out</a>
-                            </div>
+                        <div class="hide" id="account-menu">
+                            <img id="profile-pic" src="" style="max-width:50px; max-height:50px; width: auto; height: auto;">
                         </div>
                     </div>
                     <div class="menu-trigger" data-component="menu-trigger" onclick="menuToggle()">
@@ -59,7 +48,7 @@
                     <div class="menu-panel" style="transform: translate(110%, 0px);">
                         <div class="menu-pages">
                             <ul class="menu-pages-list">
-                                <li id="menu-roulette" class="menu-pages-item is-active" style="opacity: 1; transform: translate(0px, 0px);">
+                                <li id="menu-roulette" class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
                                     <a class="menu-pages-item-link" href="index.html">
                                         Restaurant Roulette
                                     </a>
@@ -81,21 +70,15 @@
                                     </div>
                                 </li>
                                 <li class="menu-pages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                    <a class="menu-pages-item-link" onclick="alert('TODO: implement this!')">
+                                    <a class="menu-pages-item-link" href="account-info.html">
                                         Account
                                     </a>
                                     <div class="menu-pages-item-subpages menu-subpages">
                                         <ul class="menu-subpages-list">
                                             <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
+                                                <a class="menu-subpages-item-link" href="past-searches.html">
                                                     <div class="menu-subpages-item-link-line"></div>
-                                                    <span>Settings</span>
-                                                </a>
-                                            </li>
-                                            <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
-                                                <a class="menu-subpages-item-link" onclick="alert('TODO: implement this!')">
-                                                    <div class="menu-subpages-item-link-line"></div>
-                                                    <span>Search history</span>
+                                                    <span>Past searches</span>
                                                 </a>
                                             </li>
                                             <li class="menu-subpages-item" style="opacity: 1; transform: translate(0px, 0px);">
@@ -151,16 +134,48 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="row row-space">
-                                        <div class="col-2">
-                                            <div class="input-group">
-                                                <input class="input--style-2" type="text" name="radius" id="radius">
-                                                <label for="radius">Max distance (meters)</label>
-                                                <div class="border"></div>
-                                            </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- Only data-barba container changes on link navigation -->
+        <div data-barba="container" data-barba-namespace="Restaurant Roulette">
+            <main class="main">
+                <div id="page-container">
+                    <h1 class="search-title">
+                        Restaurant Roulette
+                    </h1>
+                    <div class="page-wrapper font-robo">
+                        <div class="wrapper wrapper--w960">
+                            <div class="card card-2">
+                                <div class="card-body">
+                                    <h2>Your location:</h2>
+                                    <p id="location-container"></p>
+                                    <button class="button--small" onclick="getLocation()">Allow location access</button>
+                                    </br></br></br>
+                                    <form id="randomize-form" action="/query" method="POST">
+                                        <div class="input-group">
+                                            <input class="input--style-2" type="text" name="searchTerms" id="searchTerms">
+                                            <label for="searchTerms">Search terms</label>
+                                            <div class="border"></div>
                                         </div>
-                                        <div class="col-2">
-                                            <div>
+                                        <div class="row row-space">
+                                            <div class="col-2">
+                                                <input type="radio" id="radius1" name="radius" value="1609" checked>
+                                                <label for="radius1">1 mi.</label>
+                                                <input type="radio" id="radius2" name="radius" value="3218">
+                                                <label for="radius2">2 mi.</label>
+                                                <input type="radio" id="radius3" name="radius" value="4827">
+                                                <label for="radius3">3 mi.</label>
+                                                <input type="radio" id="radius5" name="radius" value="8045">
+                                                <label for="radius5">5 mi.</label>
+                                                <input type="radio" id="radius10" name="radius" value="16090">
+                                                <label for="radius10">10 mi.</label>
+                                            </div>
+                                            <div class="col-2">
                                                 <input type="radio" id="price0" name="priceLevel" value="0" checked>
                                                 <label for="price0">Any</label>
                                                 <input type="radio" id="price1" name="priceLevel" value="1">
@@ -173,52 +188,35 @@
                                                 <label for="price4">$$$$</label>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="input-group">
-                                        <div class="rs-select2 js-select-simple select--no-search">
-                                            <select name="category">
-                                                <option value="">Category...</option>
-                                                <option>No preference</option>
-                                                <option>Dine-in</option>
-                                                <option>Fast Food</option>
-                                            </select>
-                                            <div class="select-dropdown"></div>
+                                        <div class="success-banner hidden" id="error"></div>
+                                        <div style="text-align:center">
+                                            <button class="button" type="submit">Randomize</button>
                                         </div>
-                                    </div>
-                                    <div class="input-group">
-                                        <div class="rs-select2 js-select-simple select--no-search">
-                                            <select name="dietary-options">
-                                                <option value="">Dietary options...</option>
-                                                <option>Nothing specific</option>
-                                                <option>Vegetarian</option>
-                                                <option>Vegan</option>
-                                                <option>Kosher</option>
-                                                <option>Halal</option>
-                                                <option>Gluten-free</option>
-                                            </select>
-                                            <div class="select-dropdown"></div>
-                                        </div>
-                                    </div>
-                                    <div class="success-banner hidden" id="error"></div>
-                                    <div style="text-align:center">
-                                        <button class="btn style4" type="submit">Randomize</button>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                <script src="https://unpkg.com/@barba/core"></script>
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
-                <script src="js/nav.js"></script>
-                <script src="js/query.js"></script>
-                <!-- Form -->
-                <script src="third-party/select2/select2.min.js"></script>
-                <script src="third-party/datepicker/moment.min.js"></script>
-                <script src="third-party/datepicker/daterangepicker.js"></script>
-                <script src="js/form.js"></script>
-        </main>
+            </main>
+        </div>
     </div>
+    <div class="transition">
+        <div class="transition-title"></div>
+        <div class="transition-background"></div>
+    </div>
+    <!-- Third-party -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/@barba/core"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
+    <!-- Global -->
+    <script src="js/menu.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/roulette.js"></script>
+    <!-- Local -->
+    <script src="js/index/index.js"></script>
+    <script src="js/index/form.js"></script>
 </body>
+
 </html>

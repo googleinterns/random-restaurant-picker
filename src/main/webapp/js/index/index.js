@@ -13,30 +13,6 @@
 // limitations under the License.
 
 /* ==========================================================================
-   ROULETTE
-   ========================================================================== */
-function query(queryStr) {
-    const errorEl = document.getElementById("error");
-    fetch(`/query?${queryStr}`, { method: "POST" })
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response);
-            if (response.status === "OK")
-                redirectToUrl('results.html');
-            else if (response.status === "INVALID_REQUEST") throw "Invalid request";
-            else if (response.status === "ZERO_RESULTS") throw "No results";
-            else if (response.status === "NO_REROLLS") throw "No re-rolls left";
-            else throw "Unforeseen error";
-        })
-        .catch((error) => {
-            errorEl.classList.remove("success-banner");
-            errorEl.classList.remove("hidden");
-            errorEl.classList.add("error-banner");
-            errorEl.innerText = error;
-        });
-}
-
-/* ==========================================================================
    USER LOCATION AND ADDRESS
    ========================================================================== */
 function getLocation() {
