@@ -5,21 +5,13 @@ const menuItem = '.menu-pages-item'
 
 document.onkeydown = function(evt) {
     evt = evt || window.event;
-    let isEscape = false;
-    if ("key" in evt)
-        isEscape = (evt.key === "Escape" || evt.key === "Esc");
-    else
-        isEscape = (evt.keyCode === 27);
-    if (isEscape) {
-        menuClose()
-    }
+    let isEscape = (evt.keyCode === 27);
+    if (isEscape)
+        menuClose();
 };
 
 function menuToggle() {
-    if (isMenuOpen())
-        menuClose();
-    else
-        menuOpen();
+    isMenuOpen() ? menuClose() : menuOpen()
 }
 
 function menuOpen() {

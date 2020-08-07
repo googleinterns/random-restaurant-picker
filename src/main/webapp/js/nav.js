@@ -158,8 +158,6 @@ $(() => {
                     $('head').append('<link rel="stylesheet" href="css/index/banner.css">');
                     $.getScript("js/index/index.js");
                     $.getScript("js/index/form.js");
-                    // document.getElementById('menu-roulette').classList.add('is-active');
-                    // document.getElementById('menu-result').classList.remove('is-active');
                 }
             },
             // To results
@@ -175,8 +173,6 @@ $(() => {
                     $('head').append('<link rel="stylesheet" href="css/results/results.css">');
                     $.getScript("js/results/results.js");
                     $.getScript("js/results/resultsNav.js");
-                    // document.getElementById('menu-result').classList.add('is-active');
-                    // document.getElementById('menu-roulette').classList.remove('is-active');
                 }
             },
             // To account info

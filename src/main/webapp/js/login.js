@@ -32,7 +32,6 @@ function onSignIn(googleUser) {
 
 //Add user information to signed in UI
 function addUserContent(name, image) {
-    // document.getElementById("user-name").innerText = name;
     document.getElementById("profile-pic").src = image;
 }
 
@@ -54,9 +53,7 @@ function hideAccountMenu() {
 //Logs out of the account
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function() {
-        console.log('User signed out.');
-    });
+    auth2.signOut();
     localStorage.setItem("user", 0);
     hideAccountMenu();
 }
@@ -92,10 +89,7 @@ function getLastVisited() {
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((searches) => {
-        for (search of searches) {
-            lastVisitedEl.innerText = search.name;
-            break;
-        }
+        lastVisitedEl.innerText = searches[0].name;
     });
 }
 
@@ -103,7 +97,6 @@ function getFavFood() {
     let foodHolder = document.getElementById('fav-food');
     fetch(`/fav-food?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((foods) => {
         if (foods.length == 0) {
-            console.log("hello");
             let favFoodFormEl = document.createElement('form');
             favFoodFormEl.action = "/fav-food";
             favFoodFormEl.method = "POST";
@@ -124,12 +117,9 @@ function getFavFood() {
             favFoodFormEl.appendChild(inputButtonEl);
             foodHolder.appendChild(favFoodFormEl);
         } else {
-            for (food of foods) {
-                let foodTextEl = document.createElement('p');
-                foodTextEl.innerText = food;
-                foodHolder.appendChild(foodTextEl);
-                break;
-            }
+            let foodTextEl = document.createElement('p');
+            foodTextEl.innerText = foods[0];
+            foodHolder.appendChild(foodTextEl);
         }
     });
 }
@@ -141,10 +131,7 @@ function getNumReviews() {
         userID = localStorage.getItem("user");
     }
     fetch(`/feedback?user=${userID}`, { method: 'GET' }).then(response => response.json()).then((feedbackList) => {
-        feedbackList.forEach((feedback) => {
-            count += 1;
-        });
-        numFeedbackEl.innerText = count;
+        numFeedbackEl.innerText = feedbackList.length;
     });
 }
 
@@ -215,7 +202,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
     if (buttons) {
         let modal = document.getElementById('searchModal');
         let span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
+        span.onclick = () => {
             let restaurantContainerEl = document.getElementById("restaurant-name-container");
             restaurantContainerEl.remove();
             let submitButtonEl = document.getElementById("submit-button");
@@ -225,7 +212,7 @@ function createSearchesButtons(search, buttons, newCardBody) {
             modal.style.display = "none";
         }
         // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
+        window.onclick = (event) => {
             if (event.target == modal) {
                 let restaurantContainerEl = document.getElementById("restaurant-name-container");
                 restaurantContainerEl.remove();

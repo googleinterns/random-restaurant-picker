@@ -8,13 +8,13 @@ var len = boxOrder.length;
 var idx = 0;
 
 function forward() {
-    var nextIdx = ((idx+1 % len) + len) % len;
+    var nextIdx = ((idx + 1 % len) + len) % len;
     var currentBox = boxOrder[idx];
     var nextBox = boxOrder[nextIdx];
     idx = nextIdx;
 
-    rightIdx = ((idx+1 % len) + len) % len;
-    leftIdx = ((idx-1 % len) + len) % len;
+    rightIdx = ((idx + 1 % len) + len) % len;
+    leftIdx = ((idx - 1 % len) + len) % len;
     rightName = boxNames[rightIdx];
     leftName = boxNames[leftIdx];
 
@@ -40,8 +40,7 @@ function forward() {
             left: "-150%",
             ease: 'power4.inOut'
         }, 0)
-        .fromTo(nextBox, { left: "250%" },
-        {
+        .fromTo(nextBox, { left: "250%" }, {
             left: "50%",
             duration: 1,
             ease: 'power4.inOut'
@@ -50,13 +49,13 @@ function forward() {
 }
 
 function backward() {
-    var nextIdx = ((idx-1 % len) + len) % len;
+    var nextIdx = ((idx - 1 % len) + len) % len;
     var currentBox = boxOrder[idx];
     var nextBox = boxOrder[nextIdx];
     idx = nextIdx;
 
-    rightIdx = ((idx+1 % len) + len) % len;
-    leftIdx = ((idx-1 % len) + len) % len;
+    rightIdx = ((idx + 1 % len) + len) % len;
+    leftIdx = ((idx - 1 % len) + len) % len;
     rightName = boxNames[rightIdx];
     leftName = boxNames[leftIdx];
 
@@ -82,8 +81,7 @@ function backward() {
             left: "250%",
             ease: 'power4.inOut'
         }, 0)
-        .fromTo(nextBox, { left: "-150%" },
-        {
+        .fromTo(nextBox, { left: "-150%" }, {
             left: "50%",
             duration: 0.7,
             ease: 'power4.inOut'
