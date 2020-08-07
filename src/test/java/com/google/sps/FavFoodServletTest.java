@@ -116,7 +116,6 @@ public final class FavFoodServletTest {
       //Process data and check correctness
       String results = sw.getBuffer().toString().trim();
       String item = new JsonParser().parse(results).getAsString();
-      //String foodItem = resultsArray.get(0).getAsString();
 
       assertEquals(item, "pizza");
   }
