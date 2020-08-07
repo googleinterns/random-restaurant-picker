@@ -105,7 +105,7 @@ public class QueryServlet extends HttpServlet {
 
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));
-        servletResponse.setContentType("application/json");
+        servletResponse.setContentType("application/json;");
         servletResponse.getWriter().println(gson.toJson(response));
         //TODO: make this a separate class or function, doesn't need a servlet to handle storing
         servletRequest.getRequestDispatcher("/searches").include(servletRequest, servletResponse);

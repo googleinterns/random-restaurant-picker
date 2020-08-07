@@ -88,7 +88,7 @@ public final class LoginServletTest {
 
       //Run the servlet with mock objects
       new LoginServlet(verifier).doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
       verify(response).getWriter();
 

@@ -66,7 +66,7 @@ public class SearchServlet extends HttpServlet {
             SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id);
             searches.add(search);
         }
-        response.setContentType("application/json");
+        response.setContentType("application/json;");
         response.getWriter().println(new Gson().toJson(searches));
     }
 

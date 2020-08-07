@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 /* ==========================================================================
    RESTAURANT QUERY AND RE-ROLL
    ========================================================================== */
@@ -36,7 +37,7 @@ function query(queryStr) {
         });
 }
 
-function roll() {
+function reroll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
     return fetch(`/query`, { method: "GET" })
@@ -239,6 +240,7 @@ function getLastVisited() {
 
 function getFavFood() {
     let foodHolder = document.getElementById('fav-food');
+
     if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }

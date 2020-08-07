@@ -116,7 +116,7 @@ public final class FeedbackServletTest {
 
       //Run the servlet and verify functions are called
       new FeedbackServlet().doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).getWriter();
 
       //Process data and check correctness
@@ -137,7 +137,7 @@ public final class FeedbackServletTest {
 
       //Run the servlet and verify functions are called
       new FeedbackServlet().doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).getWriter();
 
       //Process data and check correctness
@@ -166,7 +166,7 @@ public final class FeedbackServletTest {
 
       //Run the servlet and verify functions are called
       new FeedbackServlet().doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).getWriter();
 
       //Process data and check correctness
@@ -203,7 +203,7 @@ public final class FeedbackServletTest {
 
       //Run the servlet and verify functions are called
       new FeedbackServlet().doGet(request, response);
-      verify(response).setContentType("application/json");
+      verify(response).setContentType("application/json;");
       verify(response).getWriter();
 
       //Process data and check correctness

@@ -51,7 +51,7 @@ public final class FavFoodServlet extends HttpServlet {
     }
 
     // Send the JSON as the response
-    response.setContentType("application/json");
+    response.setContentType("application/json;");
     Gson gson = new Gson();
     gson.toJson(gson.toJsonTree(favFood), gson.newJsonWriter(response.getWriter()));
   }
@@ -59,6 +59,7 @@ public final class FavFoodServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
+    String user = request.getParameter("user");
     String food = request.getParameter("fav-food");
     long timestamp = System.currentTimeMillis();
 
