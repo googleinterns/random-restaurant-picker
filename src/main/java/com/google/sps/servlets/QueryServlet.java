@@ -28,6 +28,7 @@ import com.google.sps.data.Response;
 import com.google.sps.data.Restaurant;
 import com.google.sps.data.User;
 import com.google.sps.data.AccessSecret;
+import com.google.sps.data.UrlOpener;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -46,16 +47,27 @@ public class QueryServlet extends HttpServlet {
     private final Gson gson = new GsonBuilder().create();
     private Response response;
     private User user;
+    private UrlOpener urlOpener;
 
+    public QueryServlet(UrlOpener opener){
+        this.urlOpener = opener;
+    }
+
+    public QueryServlet(){
+        this.urlOpener = new UrlOpener();
+    }
+    
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
         HttpSession session = servletRequest.getSession(false);
         Response response = (Response) session.getAttribute("response");
-        if(response == null)
-            servletResponse.getWriter().println(gson.toJson(new Response("NO_RESULTS", null)));
-        else if (response.getStatus().equals("OK"))
+        if(response == null){
+            response = new Response("NO_RESULTS", new ArrayList<Restaurant>());
+        }
+        else if (response.getStatus().equals("OK")){
             response.pick();
+        }
         servletResponse.getWriter().println(gson.toJson(response));
     }
 
@@ -75,8 +87,10 @@ public class QueryServlet extends HttpServlet {
         JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
         JsonObject responseJson = jsonElement.getAsJsonObject();
         Response response = gson.fromJson(responseJson, Response.class);
-        if(response.getStatus().equals("OK"))
+
+        if (response.getStatus().equals("OK"))
             response.pick();
+            
         HttpSession session = servletRequest.getSession(true);
         session.setAttribute("response", response);
         session.setAttribute("user", new User(Integer.parseInt(servletRequest.getParameter("priceLevel"))));

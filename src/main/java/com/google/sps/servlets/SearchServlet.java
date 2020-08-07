@@ -29,7 +29,6 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -43,14 +42,16 @@ import com.google.sps.data.SearchItem;
 @WebServlet("/searches")
 public class SearchServlet extends HttpServlet {
 
+    private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
     @Override
     // TODO: return a user-friendly error rather than throwing an exception
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String user = request.getParameter("user");
         Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
         Query query = new Query("savedSearch").setFilter(propertyFilter).addSort("timestamp", SortDirection.DESCENDING);
-
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
         PreparedQuery results = datastore.prepare(query);
 
         List<SearchItem> searches = new ArrayList<>();
@@ -66,7 +67,7 @@ public class SearchServlet extends HttpServlet {
             SearchItem search = new SearchItem(userID, date, keywords, lat, lng, radius, id);
             searches.add(search);
         }
-        response.setContentType("application/json;");
+        response.setContentType("application/json");
         response.getWriter().println(new Gson().toJson(searches));
     }
 
@@ -93,8 +94,6 @@ public class SearchServlet extends HttpServlet {
         searchEntity.setProperty("timestamp", timestamp);
         searchEntity.setProperty("lat", lat);
         searchEntity.setProperty("lng", lng);
-
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(searchEntity);
     }
 }

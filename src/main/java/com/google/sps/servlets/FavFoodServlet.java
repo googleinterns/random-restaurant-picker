@@ -18,6 +18,9 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 
@@ -35,8 +38,9 @@ public final class FavFoodServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("FavFood");
-
+    String user = request.getParameter("user");
+    Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, user);
+    Query query = new Query("FavFood").setFilter(propertyFilter).addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
@@ -55,10 +59,12 @@ public final class FavFoodServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
     String food = request.getParameter("fav-food");
+    long timestamp = System.currentTimeMillis();
 
     // creates Entity for the food
     Entity foodEntity = new Entity("FavFood");
     foodEntity.setProperty("food", food);
+    foodEntity.setProperty("timestamp", timestamp);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(foodEntity);

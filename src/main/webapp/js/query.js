@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* ==========================================================================
-   RESTAURANT QUERY AND RE-ROLL
-   ========================================================================== */
+/*=========================
+    RESTAURANT QUERY AND RE-ROLL
+ =========================*/
+
 function query(queryStr) {
     const errorEl = document.getElementById("error");
     fetch(`/query?${queryStr}`, { method: "POST" })
@@ -37,7 +38,7 @@ function query(queryStr) {
         });
 }
 
-function roll() {
+function reroll() {
     const pickEl = document.getElementById("pick");
     const ratingEl = document.getElementById("rating");
     fetch(`/query`, { method: "GET" })
@@ -240,9 +241,11 @@ function getLastVisited() {
 
 function getFavFood() {
     let foodHolder = document.getElementById('fav-food');
+    if (localStorage.getItem("loggedIn")){
+        userID = localStorage.getItem("user");
+    }
     fetch(`/fav-food?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((foods) => {
         if (foods.length == 0) {
-            console.log("hello");
             let favFoodFormEl = document.createElement('form');
             favFoodFormEl.action = "/fav-food";
             favFoodFormEl.method = "POST";
@@ -263,12 +266,9 @@ function getFavFood() {
             favFoodFormEl.appendChild(inputButtonEl);
             foodHolder.appendChild(favFoodFormEl);
         } else {
-            for (food of foods) {
-                let foodTextEl = document.createElement('p');
-                foodTextEl.innerText = food;
-                foodHolder.appendChild(foodTextEl);
-                break;
-            }
+            let foodTextEl = document.createElement('p');
+            foodTextEl.innerText = foods[0];
+            foodHolder.appendChild(foodTextEl);
         }
     });
 }
@@ -293,7 +293,7 @@ function getNumReviews() {
 // Retrieve searches associated with the current user
 function getSearches(){
     let userID = 0;
-    if (localStorage.getItem("loggedIn")){
+    if (localStorage.getItem("loggedIn")) {
         userID = localStorage.getItem("user");
     }
     fetch(`/searches?user=${userID}`, {method: 'GET'}).then(response => response.json()).then((searches) => {
